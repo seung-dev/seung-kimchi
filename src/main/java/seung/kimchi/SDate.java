@@ -23,47 +23,81 @@ public class SDate {
 		return Long.toString(System.currentTimeMillis());
 	}// end of epoch
 	
-	public static String format(String pattern, Date date, TimeZone time_zone, Locale locale) {
+	public static String format(
+			final String pattern
+			, final Date date
+			, final TimeZone time_zone
+			, final Locale locale
+			) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, locale);
 		simpleDateFormat.setTimeZone(time_zone);
 		return simpleDateFormat.format(date);
 	}// end of format
-	public static String format(String pattern, Date date, TimeZone time_zone) {
+	public static String format(
+			final String pattern
+			, final Date date
+			, final TimeZone time_zone
+			) {
 		return format(pattern, date, time_zone, Locale.getDefault());
 	}// end of format
-	public static String format(String pattern, Date date, String time_zone) {
+	public static String format(
+			final String pattern
+			, final Date date
+			, final String time_zone
+			) {
 		return format(pattern, date, TimeZone.getTimeZone(time_zone));
 	}// end of format
-	public static String format(String pattern, Date date) {
+	public static String format(
+			final String pattern
+			, final Date date
+			) {
 		return format(pattern, date, TimeZone.getDefault());
 	}// end of format
-	public static String format(String pattern) {
+	public static String format(
+			final String pattern
+			) {
 		return format(pattern, new Date());
 	}// end of format
-	public static String format(Date date) {
+	public static String format(final Date date) {
 		return format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", date, TimeZone.getDefault());
 	}// end of format
 	public static String format() {
 		return format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", new Date(), TimeZone.getDefault());
 	}// end of format
 	
-	public static Date date(String date, String pattern, TimeZone time_zone, Locale locale) throws ParseException {
+	public static Date date(
+			final String date
+			, final String pattern
+			, final TimeZone time_zone
+			, final Locale locale
+			) throws ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, locale);
 		simpleDateFormat.setTimeZone(time_zone);
 		return simpleDateFormat.parse(date);
 	}// end of date
-	public static Date date(String date, String pattern, TimeZone time_zone) throws ParseException {
+	public static Date date(
+			final String date
+			, final String pattern
+			, final TimeZone time_zone
+			) throws ParseException {
 		return date(date, pattern, time_zone, Locale.getDefault());
 	}// end of date
-	public static Date date(String date, String pattern) throws ParseException {
+	public static Date date(
+			final String date
+			, final String pattern
+			) throws ParseException {
 		return date(date, pattern, TimeZone.getDefault(), Locale.getDefault());
 	}// end of date
 	
-	public static Long diff(Date date_from, Date date_to) {
+	public static Long diff(final Date date_from, final Date date_to) {
 		return Math.abs(date_to.getTime() - date_from.getTime());
 	}// end of diff
 	
-	public static Date add(Date date, String time_unit, int amount) {
+	public static Date add(
+			final Date date
+			, final String time_unit
+			, final int amount
+			) {
 		
 		Date date_add = null;
 		

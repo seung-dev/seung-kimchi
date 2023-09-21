@@ -70,10 +70,10 @@ public class SSecurity {
 	}// end of providers
 	
 	public static byte[] digest(
-			byte[] data
-			, String algorithm
-			, String provider
-			, int iteration
+			final byte[] data
+			, final String algorithm
+			, final String provider
+			, final int iteration
 			) throws NoSuchAlgorithmException, NoSuchProviderException {
 		
 		byte[] digest = null;
@@ -94,9 +94,9 @@ public class SSecurity {
 		return digest;
 	}// end of digest
 	public static byte[] digest(
-			byte[] data
-			, String algorithm
-			, String provider
+			final byte[] data
+			, final String algorithm
+			, final String provider
 			) throws NoSuchAlgorithmException, NoSuchProviderException {
 		return digest(
 				data
@@ -106,8 +106,8 @@ public class SSecurity {
 				);
 	}// end of digest
 	public static byte[] digest(
-			byte[] data
-			, String algorithm
+			final byte[] data
+			, final String algorithm
 			) throws NoSuchAlgorithmException, NoSuchProviderException {
 		return digest(
 				data
@@ -116,7 +116,7 @@ public class SSecurity {
 				);
 	}// end of digest
 	public static byte[] digest(
-			byte[] data
+			final byte[] data
 			) throws NoSuchAlgorithmException, NoSuchProviderException {
 		return digest(
 				data
@@ -125,10 +125,10 @@ public class SSecurity {
 	}// end of digest
 	
 	public static byte[] hmac(
-			String algorithm
-			, String provider
-			, byte[] key
-			, byte[] message
+			final String algorithm
+			, final String provider
+			, final byte[] key
+			, final byte[] message
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
 		
 		Mac mac = null;
@@ -146,21 +146,21 @@ public class SSecurity {
 		return mac.doFinal(message);
 	}// end of hmac
 	public static byte[] hmac(
-			String algorithm
-			, String provider
-			, String key
-			, String message
-			, Charset charset
+			final String algorithm
+			, final String provider
+			, final String key
+			, final String message
+			, final Charset charset
 			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException {
 		return hmac(algorithm, provider, key.getBytes(charset), message.getBytes(charset));
 	}// end of hmac
 	
 	public static byte[] encrypt(
-			byte[] data
-			, Key key
-			, String transformation
-			, AlgorithmParameterSpec algorithm_parameter_spec
-			, String provider
+			final byte[] data
+			, final Key key
+			, final String transformation
+			, final AlgorithmParameterSpec algorithm_parameter_spec
+			, final String provider
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		
 		Cipher cipher = null;
@@ -179,10 +179,10 @@ public class SSecurity {
 		return cipher.doFinal(data);
 	}// end of encrypt
 	public static byte[] encrypt(
-			byte[] data
-			, Key key
-			, String transformation
-			, AlgorithmParameterSpec algorithm_parameter_spec
+			final byte[] data
+			, final Key key
+			, final String transformation
+			, final AlgorithmParameterSpec algorithm_parameter_spec
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		return encrypt(
 				data
@@ -193,9 +193,9 @@ public class SSecurity {
 				);
 	}// end of encrypt
 	public static byte[] encrypt(
-			byte[] data
-			, Key key
-			, String transformation
+			final byte[] data
+			, final Key key
+			, final String transformation
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		return encrypt(
 				data
@@ -206,8 +206,8 @@ public class SSecurity {
 				);
 	}// end of encrypt
 	public static byte[] encrypt(
-			byte[] data
-			, Key key
+			final byte[] data
+			, final Key key
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		return encrypt(
 				data
@@ -219,11 +219,11 @@ public class SSecurity {
 	}// end of encrypt
 	
 	public static byte[] decrypt(
-			byte[] data
-			, Key key
-			, String transformation
-			, AlgorithmParameterSpec algorithm_parameter_spec
-			, String provider
+			final byte[] data
+			, final Key key
+			, final String transformation
+			, final AlgorithmParameterSpec algorithm_parameter_spec
+			, final String provider
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		
 		Cipher cipher = null;
@@ -242,10 +242,10 @@ public class SSecurity {
 		return cipher.doFinal(data);
 	}// end of decrypt
 	public static byte[] decrypt(
-			byte[] data
-			, Key key
-			, String transformation
-			, AlgorithmParameterSpec algorithm_parameter_spec
+			final byte[] data
+			, final Key key
+			, final String transformation
+			, final AlgorithmParameterSpec algorithm_parameter_spec
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		return decrypt(
 				data
@@ -256,9 +256,9 @@ public class SSecurity {
 				);
 	}// end of decrypt
 	public static byte[] decrypt(
-			byte[] data
-			, Key key
-			, String transformation
+			final byte[] data
+			, final Key key
+			, final String transformation
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		return decrypt(
 				data
@@ -269,8 +269,8 @@ public class SSecurity {
 				);
 	}// end of decrypt
 	public static byte[] decrypt(
-			byte[] data
-			, Key key
+			final byte[] data
+			, final Key key
 			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		return decrypt(
 				data
@@ -282,19 +282,19 @@ public class SSecurity {
 	}// end of decrypt
 	
 	public static SecretKeySpec secret_key_spec(
-			byte[] key
-			, String algorithm
+			final byte[] key
+			, final String algorithm
 			) {
 		return new SecretKeySpec(key, algorithm);
 	}// end of secret_key_spec
 	public static SecretKeySpec secret_key_spec(
-			byte[] key
+			final byte[] key
 			) {
 		return new SecretKeySpec(key, _S_AES);
 	}// end of secret_key_spec
 	
 	public static byte[] secure_random_iv(
-			int iv_size
+			final int iv_size
 			) {
 		SecureRandom secureRandom = new SecureRandom();
 		byte[] iv = new byte[iv_size];
@@ -303,7 +303,7 @@ public class SSecurity {
 	}// end of secure_random_iv
 	
 	public static AlgorithmParameterSpec iv_parameter_spec(
-			byte[] iv
+			final byte[] iv
 			) {
 		if(iv == null) {
 			return null;
@@ -312,9 +312,9 @@ public class SSecurity {
 	}// end of iv_parameter_spec
 	
 	public static KeyPair keypair(
-			String algorithm
-			, String provider
-			, int key_size
+			final String algorithm
+			, final String provider
+			, final int key_size
 			) throws NoSuchAlgorithmException, NoSuchProviderException {
 		
 		KeyPairGenerator keyPairGenerator = null;
@@ -336,7 +336,7 @@ public class SSecurity {
 		return keyPairGenerator.generateKeyPair();
 	}// end of keypair
 	
-	public static int[] xxtea_int_array_bak(String data) {
+	public static int[] xxtea_int_array_bak(final String data) {
 		int data_length = data.length();
 		int[] int_array = new int[(int) (Math.ceil(data_length / 4d))];
 		for(int i = 0; i < int_array.length; i++) {
@@ -350,7 +350,7 @@ public class SSecurity {
 		return int_array;
 	}// end of xxtea_int_array_bak
 	
-	public static int[] xxtea_int_array(byte[] data) {
+	public static int[] xxtea_int_array(final byte[] data) {
 		int data_length = data.length;
 		int[] int_array = new int[(data_length & 3) == 0 ? data_length >>> 2 : (data_length >>> 2) + 1];
 		for(int i = 0; i < data_length; i++) {
@@ -359,7 +359,7 @@ public class SSecurity {
 		return int_array;
 	}// end of xxtea_int_array
 	
-	public static byte[] xxtea_byte_array_bak(int[] int_array) {
+	public static byte[] xxtea_byte_array_bak(final int[] int_array) {
 		int int_array_length = int_array.length;
 		byte[] byte_array = new byte[int_array.length * 4];
 		for(int i = 0; i < int_array_length; i++) {
@@ -371,7 +371,7 @@ public class SSecurity {
 		return byte_array;
 	}// end of xxtea_byte_array_bak
 	
-	public static byte[] xxtea_byte_array(int[] int_array) {
+	public static byte[] xxtea_byte_array(final int[] int_array) {
 		int byte_size = int_array.length << 2;
 		byte[] byte_array = new byte[int_array.length << 2];
 		for(int i = 0; i < byte_size; i++) {
@@ -380,7 +380,7 @@ public class SSecurity {
 		return byte_array;
 	}// end of xxtea_byte_array
 	
-	public static int[] xxtea_encrypt(int[] v, int[] k) {
+	public static int[] xxtea_encrypt(final int[] v, final int[] k) {
 		int n = v.length;
 		int q = (int) Math.floor(6 + 52 / n);
 		int z = v[n - 1];
@@ -399,31 +399,28 @@ public class SSecurity {
 		}
 		return v;
 	}// end of xxtea_encrypt
-	public static byte[] xxtea_encrypt(byte[] data, byte[] key) {
+	public static byte[] xxtea_encrypt(final byte[] data, final byte[] key) {
 		if(key == null || key.length < 16) {
 			return null;
 		}
 		if(data == null) {
 			return null;
 		}
-		if(key.length > 16) {
-			key = Arrays.copyOfRange(key, 0, 16);
-		}
 		return xxtea_byte_array(
 				xxtea_encrypt(
-						xxtea_int_array(key)//k
+						xxtea_int_array(key.length > 16 ? Arrays.copyOfRange(key, 0, 16) : key)//k
 						, xxtea_int_array(data)//v
 						)
 				);
 	}// end of xxtea_encrypt
-	public static byte[] xxtea_encrypt(String plain_text, String secret) {
+	public static byte[] xxtea_encrypt(final String plain_text, final String secret) {
 		return xxtea_encrypt(
 				plain_text.getBytes()//data
 				, secret.getBytes()//key
 				);
 	}// end of xxtea_encrypt
 	
-	public static int[] xxtea_decrypt(int[] v, int[] k) {
+	public static int[] xxtea_decrypt(final int[] v, final int[] k) {
 		int n = v.length;
 		int q = (int) Math.floor(6 + 52 / n);
 		int z = v[n - 1], y = v[0];
@@ -440,19 +437,16 @@ public class SSecurity {
 		return v;
 	}// end of xxtea_decrypt
 	
-	public static byte[] xxtea_decrypt(byte[] encrypted, byte[] key) {
+	public static byte[] xxtea_decrypt(final byte[] encrypted, final byte[] key) {
 		if(key == null || key.length < 16) {
 			return null;
 		}
 		if(encrypted == null) {
 			return null;
 		}
-		if(key.length > 16) {
-			key = Arrays.copyOfRange(key, 0, 16);
-		}
 		return xxtea_byte_array(
 				xxtea_decrypt(
-						xxtea_int_array(key)//k
+						xxtea_int_array(key.length > 16 ? Arrays.copyOfRange(key, 0, 16) : key)//k
 						, xxtea_int_array(encrypted)//v
 						)
 				);

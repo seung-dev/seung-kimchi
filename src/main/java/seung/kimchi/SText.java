@@ -10,30 +10,34 @@ public class SText {
 	public static final String _S_LF = "\n";
 	public static final String _S_CR = "\r";
 	
-	public static boolean is_empty(final CharSequence data) {
+	public static boolean is_empty(final String data) {
 		return data == null || data.length() == 0;
 	}
 	
-	public static String trim(String data) {
+	public static String trim(final String data) {
 		if(data == null) {
 			return null;
 		}
 		return data.replaceAll("^\\s+|\\s+$", "");
 	}// end of trim
 	
-	public static String concat(String... elements) {
-		return String.join("", elements);
+	public static String concat(final String... data) {
+		return String.join("", data);
 	}// end of concat
 	
 	public static String uuid() {
 		return UUID.randomUUID().toString();
 	}// end of uuid
 	
-	public static int random(int min, int max) {
+	public static int random(final int min, final int max) {
 		return new Random().nextInt(max - min + 1) + min;
 	}// end of random
 	
-	public static String pad_right(String data, int max_length, String pad_char) {
+	public static String pad_right(
+			final String data
+			, final int max_length
+			, final String pad_char
+			) {
 		if(data == null) {
 			return null;
 		}
@@ -45,11 +49,19 @@ public class SText {
 				.replace(" ", pad_char)
 				;
 	}// end of pad_right
-	public static String pad_right(int data, int max_length, String pad_char) {
+	public static String pad_right(
+			final int data
+			, final int max_length
+			, final String pad_char
+			) {
 		return pad_right(String.valueOf(data), max_length, pad_char);
 	}// end of pad_right
 	
-	public static String pad_left(String data, int max_length, String pad_char) {
+	public static String pad_left(
+			final String data
+			, final int max_length
+			, final String pad_char
+			) {
 		if(data == null) {
 			return null;
 		}
@@ -61,11 +73,15 @@ public class SText {
 				.replace(" ", pad_char)
 				;
 	}// end of pad_left
-	public static String pad_left(int data, int max_length, String pad_char) {
+	public static String pad_left(
+			final int data
+			, final int max_length
+			, final String pad_char
+			) {
 		return pad_left(String.valueOf(data), max_length, pad_char);
 	}// end of pad_left
 	
-	public static String to_full_width(String data) {
+	public static String to_full_width(final String data) {
 		if(is_empty(data)) {
 			return null;
 		}
@@ -85,7 +101,7 @@ public class SText {
 		return new String(full_width);
 	}// end of to_full_width
 	
-	public static String to_half_width(String data) {
+	public static String to_half_width(final String data) {
 		if(is_empty(data)) {
 			return null;
 		}
@@ -105,7 +121,7 @@ public class SText {
 		return new String(half_width);
 	}// end of to_half_width
 	
-	public static String byte_array_java_script(byte[] data) {
+	public static String byte_array_java_script(final byte[] data) {
 		String script = "";
 		if(data == null) {
 			script = "byte[] byte_array = null;";

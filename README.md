@@ -6,9 +6,3 @@ Java Utilities
 ```
 $ gradlew build
 ```
-
-##### Refresh Dependencies
-
-```
-$ gradlew --refresh-dependencies
-```

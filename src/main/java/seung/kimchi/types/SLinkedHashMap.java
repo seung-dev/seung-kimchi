@@ -370,7 +370,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 	}// end of merge
 	@SuppressWarnings("unchecked")
 	public SLinkedHashMap merge(String data) throws JsonMappingException, JsonProcessingException {
-		this.putAll(SJson.parse(data));
+		this.putAll(SJson.to_slinkedhashmap(data));
 		return this;
 	}// end of merge
 	@SuppressWarnings("unchecked")

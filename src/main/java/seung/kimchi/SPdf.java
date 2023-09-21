@@ -13,12 +13,13 @@ import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 public class SPdf {
 
 	public static byte[] encrypt(
-			byte[] data
-			, String key
-			, boolean allowPrinting
-			, boolean allowExtraction
-			, boolean allowModifications
-			, boolean readOnly
+			final byte[] data
+			, final String key
+			, final int key_length
+			, final boolean allowPrinting
+			, final boolean allowExtraction
+			, final boolean allowModifications
+			, final boolean readOnly
 			) throws IOException {
 		
 		byte[] pdf = null;
@@ -48,7 +49,7 @@ public class SPdf {
 					, key
 					, accessPermission
 					);
-			policy.setEncryptionKeyLength(256);
+			policy.setEncryptionKeyLength(key_length);
 			
 			pdDocument.protect(policy);
 			pdDocument.save(byteArrayOutputStream);
@@ -62,21 +63,39 @@ public class SPdf {
 		return pdf;
 	}// end of encrypt
 	public static byte[] encrypt(
-			byte[] data
-			, String key
+			final byte[] data
+			, final String key
+			, final boolean allowPrinting
+			, final boolean allowExtraction
+			, final boolean allowModifications
+			, final boolean readOnly
+			) throws IOException {
+		return encrypt(
+				data
+				, key
+				, 256//key_length
+				, allowPrinting
+				, allowExtraction
+				, allowModifications
+				, readOnly
+				);
+	}// end of encrypt
+	public static byte[] encrypt(
+			final byte[] data
+			, final String key
 			) throws IOException {
 		return encrypt(data, key, false, false, false, true);
 	}// end of encrypt
 	public static byte[] encrypt(
-			File file
-			, String key
+			final File file
+			, final String key
 			) throws IOException {
 		return encrypt(FileUtils.readFileToByteArray(file), key);
 	}// end of encrypt
 	
 	public static byte[] decrypt(
-			byte[] data
-			, String password
+			final byte[] data
+			, final String password
 			) throws IOException {
 		
 		byte[] pdf = null;

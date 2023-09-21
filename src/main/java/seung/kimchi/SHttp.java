@@ -15,7 +15,7 @@ import kong.unirest.Unirest;
 public class SHttp {
 
 	public static String nslookup(
-			String host
+			final String host
 			) throws UnknownHostException {
 		
 		String ipv4 = "";
@@ -30,7 +30,10 @@ public class SHttp {
 		return ipv4;
 	}// end of nslookup
 	
-	public static String encode_uri_component(String data, String charset) throws UnsupportedEncodingException {
+	public static String encode_uri_component(
+			final String data
+			, final String charset
+			) throws UnsupportedEncodingException {
 		return URLEncoder
 				.encode(data, charset)
 				.replaceAll("\\+", "%20")
@@ -41,19 +44,25 @@ public class SHttp {
 				.replaceAll("\\%7E", "~")
 				;
 	}// end of encode_uri_component
-	public static String encode_uri_component(String data, Charset charset) throws UnsupportedEncodingException {
+	public static String encode_uri_component(
+			final String data
+			, final Charset charset
+			) throws UnsupportedEncodingException {
 		return encode_uri_component(data, charset.name());
 	}// end of encode_uri_component
 	
-	public static String decode_uri(String data, String charset) throws UnsupportedEncodingException {
+	public static String decode_uri(
+			final String data
+			, final String charset
+			) throws UnsupportedEncodingException {
 		return URLDecoder
 				.decode(data, charset)
 				;
 	}// end of decode_uri
 	
 	public static String content_disposition(
-			String user_agent
-			, String file_name
+			final String user_agent
+			, final String file_name
 			) throws UnsupportedEncodingException {
 		
 		String prefix = "attachment; file_name=";
@@ -85,7 +94,7 @@ public class SHttp {
 		return prefix.concat(suffix);
 	}// end of content_disposition
 	
-	public static String browser(String user_agent) {
+	public static String browser(final String user_agent) {
 		if(user_agent.indexOf("MSIE") > -1) {
 			return "MSIE";
 		} else if(user_agent.indexOf("Trident") > -1) {
@@ -98,7 +107,7 @@ public class SHttp {
 		return "Firefox";
 	}// end of browser
 	
-	public static String public_ip(String url) throws InterruptedException, UnsupportedEncodingException {
+	public static String public_ip(final String url) throws InterruptedException, UnsupportedEncodingException {
 		
 		HttpResponse<String> httpResponse = Unirest
 				.get(url)

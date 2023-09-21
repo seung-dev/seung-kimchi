@@ -211,38 +211,42 @@ public class SConvert {
 		return stringWriter.getBuffer().toString();
 	}// end of throwable
 	
-	public static byte[] encode_base64(byte[] data) {
+	public static byte[] encode_base64(final byte[] data) {
 		return Base64.getEncoder().encode(data);
 	}// end of encode_base64
-	public static String encode_base64(byte[] data, Charset charset) {
+	public static String encode_base64(final byte[] data, final Charset charset) {
 		return new String(encode_base64(data), charset);
 	}// end of encode_base64
 	
-	public static byte[] decode_base64(byte[] data) {
+	public static byte[] decode_base64(final byte[] data) {
 		return Base64.getDecoder().decode(data);
 	}// end of encode_base64
-	public static String decode_base64(byte[] data, Charset charset) {
+	public static String decode_base64(final byte[] data, final Charset charset) {
 		return new String(decode_base64(data), charset);
 	}// end of encode_base64
 	
-	public static String encode_hex(byte[] data, boolean to_lower_case) {
+	public static String encode_hex(final byte[] data, final boolean to_lower_case) {
 		return Hex.encodeHexString(data, to_lower_case);
 	}// end of encode_hex
-	public static String encode_hex(byte[] data) {
+	public static String encode_hex(final byte[] data) {
 		return encode_hex(data, true);
 	}// end of encode_hex
-	public static String encode_hex(BigInteger data, boolean to_lower_case) {
+	public static String encode_hex(final BigInteger data, final boolean to_lower_case) {
 		return encode_hex(data.toByteArray(), to_lower_case);
 	}// end of encode_hex
-	public static String encode_hex(BigInteger data) {
+	public static String encode_hex(final BigInteger data) {
 		return encode_hex(data, true);
 	}// end of encode_hex
 	
-	public static byte[] decode_hex(String data) throws DecoderException {
+	public static byte[] decode_hex(final String data) throws DecoderException {
 		return Hex.decodeHex(data);
 	}// end of decode_hex
 	
-	public static byte[] compress(byte[] data, int level, boolean nowrap) throws IOException {
+	public static byte[] compress(
+			final byte[] data
+			, final int level
+			, final boolean nowrap
+			) throws IOException {
 		
 		byte[] deflated = null;
 		
@@ -271,11 +275,14 @@ public class SConvert {
 		
 		return deflated;
 	}// end of compress
-	public static byte[] compress(byte[] data) throws IOException {
+	public static byte[] compress(final byte[] data) throws IOException {
 		return compress(data, Deflater.BEST_COMPRESSION, true);
 	}// end of compress
 	
-	public static byte[] decompress(byte[] data, boolean nowrap) throws IOException, DataFormatException {
+	public static byte[] decompress(
+			final byte[] data
+			, final boolean nowrap
+			) throws IOException, DataFormatException {
 		
 		byte[] inflated = null;
 		
@@ -305,43 +312,8 @@ public class SConvert {
 		
 		return inflated;
 	}// end of decompress
-	public static byte[] decompress(byte[] data) throws IOException, DataFormatException {
+	public static byte[] decompress(final byte[] data) throws IOException, DataFormatException {
 		return decompress(data, true);
 	}// end of decompress
-	
-	public static SLinkedHashMap to_slinkedhashmap(String data) throws JsonMappingException, JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.getSerializerProvider().setNullKeySerializer(new JsonSerializer<Object>() {
-			@Override
-			public void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-				jsonGenerator.writeFieldName("");
-			}
-		});
-		return objectMapper
-				.registerModule(
-						new SimpleModule("seung", Version.unknownVersion())
-						.addAbstractTypeMapping(Map.class, SLinkedHashMap.class)
-						)
-				.readValue(data, SLinkedHashMap.class)
-				;
-	}// end of to_slinkedhashmap
-	
-	@SuppressWarnings("unchecked")
-	public static List<SLinkedHashMap> to_list_slinkedhashmap(String data) throws JsonMappingException, JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.getSerializerProvider().setNullKeySerializer(new JsonSerializer<Object>() {
-			@Override
-			public void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-				jsonGenerator.writeFieldName("");
-			}
-		});
-		return objectMapper
-				.registerModule(
-						new SimpleModule("seung", Version.unknownVersion())
-						.addAbstractTypeMapping(Map.class, SLinkedHashMap.class)
-						)
-				.readValue(data, List.class)
-				;
-	}// end of to_list_slinkedhashmap
 	
 }

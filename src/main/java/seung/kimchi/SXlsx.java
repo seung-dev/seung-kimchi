@@ -28,7 +28,7 @@ public class SXlsx {
 	public final static String _S_SHEETS = "sheets";
 	public final static String _S_SHEET_NAME = "sheet_name";
 	
-	private static String cell_value(Cell cell) {
+	private static String cell_value(final Cell cell) {
 		
 		String cell_value = null;
 		if(CellType.STRING == cell.getCellType()) {
@@ -52,7 +52,7 @@ public class SXlsx {
 		return cell_value;
 	}// end of cell_value
 	
-	private static SCell read_cell(Cell cell) {
+	private static SCell read_cell(final Cell cell) {
 		return SCell.builder()
 				.row_no(cell.getRowIndex())
 				.column_no(cell.getColumnIndex())
@@ -60,7 +60,7 @@ public class SXlsx {
 				.build();
 	}// end of read_cell
 	
-	private static SRow read_row(Row row) {
+	private static SRow read_row(final Row row) {
 		SRow s_row = SRow.builder()
 				.row_no(row.getRowNum())
 				.build()
@@ -71,7 +71,7 @@ public class SXlsx {
 		return s_row;
 	}// end of read_row
 	
-	private static SSheet read_sheet(Sheet sheet) {
+	private static SSheet read_sheet(final Sheet sheet) {
 		SSheet s_sheet = SSheet.builder()
 				.sheet_name(sheet.getSheetName())
 				.physical_number_of_rows(sheet.getPhysicalNumberOfRows())
@@ -83,7 +83,7 @@ public class SXlsx {
 		return s_sheet;
 	}// end of read_sheet
 	
-	public static SExcel read(byte[] file) throws IOException {
+	public static SExcel read(final byte[] file) throws IOException {
 		
 		SExcel s_excel = null;
 		SExcel.builder()
@@ -113,7 +113,11 @@ public class SXlsx {
 		return s_excel;
 	}// end of read
 	
-	public static short[] row_height(Sheet sheet, int row_no_min, int row_no_max) {
+	public static short[] row_height(
+			final Sheet sheet
+			, final int row_no_min
+			, final int row_no_max
+			) {
 		short[] row_height = new short[row_no_max - row_no_min + 1];
 		for(int row_no = row_no_min; row_no <= row_no_max; row_no++) {
 			row_height[row_no] = sheet.getRow(row_no).getHeight();
@@ -121,7 +125,11 @@ public class SXlsx {
 		return row_height;
 	}// end of row_height
 	
-	private static CellStyle[] cell_style(Sheet sheet, int row_no, int cell_no_max) {
+	private static CellStyle[] cell_style(
+			final Sheet sheet
+			, final int row_no
+			, final int cell_no_max
+			) {
 		CellStyle[] cell_style = new CellStyle[cell_no_max + 1];
 		for(int cell_no = 0; cell_no <= cell_no_max; cell_no++) {
 			cell_style[cell_no] = sheet.getRow(row_no).getCell(cell_no).getCellStyle();
@@ -130,8 +138,8 @@ public class SXlsx {
 	}// end of cell_style
 	
 	private static boolean write_sheet_rows(
-			XSSFWorkbook read_workbook
-			, XSSFSheet read_sheet
+			final XSSFWorkbook read_workbook
+			, final XSSFSheet read_sheet
 			, SLinkedHashMap sheet_data
 			) {
 		
@@ -175,8 +183,8 @@ public class SXlsx {
 	}// end of write_sheet_rows
 	
 	private static void write_sheet(
-			XSSFWorkbook read_workbook
-			, XSSFSheet read_sheet
+			final XSSFWorkbook read_workbook
+			, final XSSFSheet read_sheet
 			, SLinkedHashMap sheet_data
 			) {
 		
@@ -189,9 +197,8 @@ public class SXlsx {
 	}// end of write_sheet
 	
 	public static byte[] write(
-			String request_code
-			, byte[] read_bytes
-			, SLinkedHashMap excel_data
+			final byte[] read_bytes
+			, final SLinkedHashMap excel_data
 			) throws IOException {
 		
 		byte[] excel = null;

@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils;
 
 public class SFile {
 
-	public static boolean is_zip(String file_path) throws IOException {
+	public static boolean is_zip(final String file_path) throws IOException {
 		boolean is_zip = false;
 		try (
 				ZipFile zip_file = new ZipFile(file_path);
@@ -28,9 +28,9 @@ public class SFile {
 	}// end of is_zip
 	
 	public static void add_zip_entry(
-			ZipOutputStream zipOutputStream
-			, String file_path
-			, byte[] file_data
+			final ZipOutputStream zipOutputStream
+			, final String file_path
+			, final byte[] file_data
 			) throws IOException {
 		
 		try (
@@ -58,7 +58,7 @@ public class SFile {
 	}
 	
 	public static byte[] zip(
-			List<String> file_path_list
+			final List<String> file_path_list
 			) throws IOException {
 		byte[] zip = null;
 		
@@ -87,8 +87,8 @@ public class SFile {
 	}// end of zip
 	
 	public static long zip(
-			String zip_path
-			, List<String> file_path_list
+			final String zip_path
+			, final List<String> file_path_list
 			) throws IOException {
 		
 		File zip = new File(zip_path);
