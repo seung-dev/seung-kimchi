@@ -2,57 +2,43 @@ package seung.kimchi.types;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
 @Builder
+@Accessors(fluent = true)
+@Getter
 public class SSignPriKey extends SType {
 
-	private static final long serialVersionUID = 1L;
-	
 	@NotNull
+	@JsonProperty
 	private byte[] encoded;
-	public byte[] encoded() {
-		return this.encoded;
-	}
 	
+	@JsonProperty
 	private String private_key_algorythm_oid;
-	public String private_key_algorythm_oid() {
-		return this.private_key_algorythm_oid;
-	}
 	
+	@JsonProperty
 	private String encryption_algorithm_oid;
-	public String encryption_algorithm_oid() {
-		return this.encryption_algorithm_oid;
-	}
 	
+	@JsonProperty
 	private byte[] salt;
-	public byte[] salt() {
-		return this.salt;
-	}
 	
+	@JsonProperty
 	private int iteration_count;
-	public int iteration_count() {
-		return this.iteration_count;
-	}
 	
+	@JsonProperty
 	private int key_length;
-	public int key_length() {
-		return this.key_length;
-	}
 	
+	@JsonProperty
 	private String prf_algorithm_oid;
-	public String prf_algorithm_oid() {
-		return this.prf_algorithm_oid;
-	}
 	
+	@JsonProperty
 	private byte[] iv;
-	public byte[] iv() {
-		return this.iv;
-	}
 	
+	@JsonProperty
 	private byte[] private_key;
-	public byte[] private_key() {
-		return this.private_key;
-	}
 	
 }

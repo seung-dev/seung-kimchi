@@ -10,101 +10,70 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
 @Builder
+@Accessors(fluent = true)
+@Getter
 public class SSignCertDer extends SType {
 
-	private static final long serialVersionUID = 1L;
-	
 	@NotNull
 	private byte[] encoded;
-	public byte[] encoded() {
-		return this.encoded;
-	}
 	
 	@NotBlank
+	@JsonProperty
 	private String type;
-	public String type() {
-		return this.type;
-	}
 	
 	@NotBlank
+	@JsonProperty
 	private int version;
-	public int version() {
-		return this.version;
-	}
 	
 	@NotBlank
+	@JsonProperty
 	private String serial_number;
-	public String serial_number() {
-		return this.serial_number;
-	}
 	
+	@JsonProperty
 	private String signiture_algorithm_oid;
-	public String signiture_algorithm_oid() {
-		return this.signiture_algorithm_oid;
-	}
 	
+	@JsonProperty
 	private String signiture_algorithm_name;
-	public String signiture_algorithm_name() {
-		return this.signiture_algorithm_name;
-	}
 	
+	@JsonProperty
 	private String issuer_dn;
-	public String issuer_dn() {
-		return this.issuer_dn;
-	}
 	
+	@JsonProperty
 	private String subject_dn;
-	public String subject_dn() {
-		return this.subject_dn;
-	}
 	
+	@JsonProperty
 	private long not_before;
-	public long not_before() {
-		return this.not_before;
-	}
 	
+	@JsonProperty
 	private long not_after;
-	public long not_after() {
-		return this.not_after;
-	}
 	
+	@JsonProperty
 	private List<String> key_usage;
-	public List<String> key_usage() {
-		return this.key_usage;
-	}
 	
+	@JsonProperty
 	private String certificate_policy_oid;
-	public String certificate_policy_oid() {
-		return this.certificate_policy_oid;
-	}
 	
+	@JsonProperty
 	private String subject_alternative_name_oid;
-	public String subject_alternative_name_oid() {
-		return this.subject_alternative_name_oid;
-	}
 	
+	@JsonProperty
 	private String vid_oid;
-	public String vid_oid() {
-		return this.vid_oid;
-	}
 	
+	@JsonProperty
 	private String vid_hash_algorithm_oid;
-	public String vid_hash_algorithm_oid() {
-		return this.vid_hash_algorithm_oid;
-	}
 	
+	@JsonProperty
 	private String vid;
-	public String vid() {
-		return this.vid;
-	}
 	
+	@JsonProperty
 	private String crl_distribution_point;
-	public String crl_distribution_point() {
-		return this.crl_distribution_point;
-	}
 	
 	public X509Certificate x509_certificate() throws IOException, CertificateException {
 		X509Certificate x509_certificate = null;

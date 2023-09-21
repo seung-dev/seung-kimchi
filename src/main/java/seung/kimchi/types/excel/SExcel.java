@@ -3,24 +3,24 @@ package seung.kimchi.types.excel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import seung.kimchi.types.SType;
 
 @Builder
+@Accessors(fluent = true)
+@Getter
 public class SExcel extends SType {
 
-	private static final long serialVersionUID = 1L;
-	
 	@Builder.Default
+	@JsonProperty
 	private int number_of_sheets = 0;
-	public int number_of_sheets() {
-		return this.number_of_sheets;
-	}
 	
 	@Builder.Default
+	@JsonProperty
 	private List<SSheet> sheets = new ArrayList<>();
-	public List<SSheet> sheets() {
-		return this.sheets;
-	}
 	
 }

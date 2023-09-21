@@ -1,26 +1,28 @@
 package seung.kimchi.types.excel;
 
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import seung.kimchi.types.SType;
 
 @Builder
+@Accessors(fluent = true)
+@Getter
 public class SCell extends SType {
 
-	private static final long serialVersionUID = 1L;
+	@NotNull
+	@JsonProperty
+	private Integer row_no;
 	
-	private int row_no;
-	public int row_no() {
-		return this.row_no;
-	}
-	
+	@NotNull
+	@JsonProperty
 	private int column_no;
-	public int column_no() {
-		return this.column_no;
-	}
 	
+	@JsonProperty
 	private String cell_text;
-	public String cell_text() {
-		return this.cell_text;
-	}
 	
 }

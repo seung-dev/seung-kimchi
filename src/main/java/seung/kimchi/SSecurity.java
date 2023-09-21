@@ -26,6 +26,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import seung.kimchi.types.SLinkedHashMap;
 
 public class SSecurity {
@@ -451,5 +453,11 @@ public class SSecurity {
 						)
 				);
 	}// end of xxtea_decrypt
+	
+	public static void add_bouncy_castle_provider() {
+		if(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
+	}// end of add_bouncy_castle_provider
 	
 }
