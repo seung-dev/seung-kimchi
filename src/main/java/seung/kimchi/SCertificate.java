@@ -11,11 +11,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.io.FileUtils;
 import org.bouncycastle.asn1.ASN1BitString;
 import org.bouncycastle.asn1.ASN1Encodable;
@@ -77,8 +81,134 @@ import seung.kimchi.types.SSignPriKey;
 
 public class SCertificate {
 
+	public final static String _S_RSA = "RSA";
+	public final static String _S_RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
 	public final static String _S_X509 = "X.509";
 	public final static String _S_DER = "DER";
+	
+	public static PublicKey public_key(
+			final byte[] encoded
+			, final String algorithm
+			, final String provider
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+		EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(encoded);
+		if(provider != null) {
+			KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
+			return keyFactory.generatePublic(encodedKeySpec);
+		} else {
+			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+			return keyFactory.generatePublic(encodedKeySpec);
+		}
+	}// end of public_key
+	public static PublicKey public_key(
+			final byte[] encoded
+			, final String algorithm
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+		return public_key(
+				encoded
+				, algorithm
+				, BouncyCastleProvider.PROVIDER_NAME//provider
+				);
+	}// end of public_key
+	public static PublicKey public_key(
+			final byte[] encoded
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+		return public_key(
+				encoded
+				, _S_RSA//algorithm
+				);
+	}// end of public_key
+	public static PublicKey public_key(
+			final String encoded_hex
+			, final String algorithm
+			, final String provider
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
+		return public_key(
+				SConvert.decode_hex(encoded_hex)
+				, algorithm
+				, provider
+				);
+	}// end of public_key
+	public static PublicKey public_key(
+			final String encoded_hex
+			, final String algorithm
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
+		return public_key(
+				SConvert.decode_hex(encoded_hex)
+				, algorithm
+				, BouncyCastleProvider.PROVIDER_NAME//provider
+				);
+	}// end of public_key
+	public static PublicKey public_key(
+			final String encoded_hex
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
+		return public_key(
+				SConvert.decode_hex(encoded_hex)
+				, _S_RSA//algorithm
+				);
+	}// end of public_key
+	
+	public static PrivateKey private_key(
+			final byte[] encoded
+			, final String algorithm
+			, final String provider
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+		PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(encoded);
+		if(provider != null) {
+			KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
+			return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+		} else {
+			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+			return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+		}
+	}// end of private_key
+	public static PrivateKey private_key(
+			final byte[] encoded
+			, final String algorithm
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+		return private_key(
+				encoded
+				, algorithm
+				, BouncyCastleProvider.PROVIDER_NAME//provider
+				);
+	}// end of private_key
+	public static PrivateKey private_key(
+			final byte[] encoded
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+		return private_key(
+				encoded
+				, _S_RSA//algorithm
+				);
+	}// end of private_key
+	public static PrivateKey private_key(
+			final String encoded_hex
+			, final String algorithm
+			, final String provider
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
+		return private_key(
+				SConvert.decode_hex(encoded_hex)
+				, algorithm
+				, provider
+				);
+	}// end of private_key
+	public static PrivateKey private_key(
+			final String encoded_hex
+			, final String algorithm
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
+		return private_key(
+				SConvert.decode_hex(encoded_hex)
+				, algorithm
+				, BouncyCastleProvider.PROVIDER_NAME//provider
+				);
+	}// end of private_key
+	public static PrivateKey private_key(
+			final String encoded_hex
+			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
+		return private_key(
+				SConvert.decode_hex(encoded_hex)
+				, _S_RSA//algorithm
+				);
+	}// end of private_key
 	
 	public static X509Certificate x509_certificate(
 			final byte[] encoded
@@ -587,7 +717,7 @@ public class SCertificate {
 		
 		byte[] decrypted = decrypt_private_key(sign_pri_key, secret);
 		
-		KeyFactory keyFactory = KeyFactory.getInstance(SSecurity._S_RSA);
+		KeyFactory keyFactory = KeyFactory.getInstance(_S_RSA);
 		PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(decrypted));
 		
 		ContentSigner contentSigner = new JcaContentSignerBuilder(s_sign_cert_der.signiture_algorithm_name())
