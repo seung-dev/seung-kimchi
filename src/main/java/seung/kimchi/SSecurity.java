@@ -61,7 +61,7 @@ public class SSecurity {
 			}// end of getServices
 			providers.add(new SLinkedHashMap()
 					.add("name", provider.getName())
-					.add("version", provider.getVersion())
+					.add("version", provider.getVersionStr())
 					.add("info", provider.getInfo())
 					.add("services", services)
 					);
