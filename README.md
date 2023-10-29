@@ -6,6 +6,8 @@ Java Utilities
 ```
 $ cp settings.gradle.windows settings.gradle
 $ vi settings.gradle
+$ cp build.gradle.windows build.gradle
+$ vi build.gradle
 $ gradlew build
 ```
 
