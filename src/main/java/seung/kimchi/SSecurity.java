@@ -86,12 +86,14 @@ public class SSecurity {
 		}
 		
 		for(int i = 0; i < iteration; i++) {
-			if(digest != null) {
+			if(digest == null) {
+				messageDigest.update(data);
+			} else {
 				messageDigest.update(digest);
 			}
-			messageDigest.update(data);
 			digest = messageDigest.digest();
 		}
+		
 		return digest;
 	}// end of digest
 	public static byte[] digest(
