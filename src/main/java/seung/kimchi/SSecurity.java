@@ -89,6 +89,7 @@ public class SSecurity {
 			if(digest != null) {
 				messageDigest.update(digest);
 			}
+			messageDigest.update(data);
 			digest = messageDigest.digest();
 		}
 		return digest;
