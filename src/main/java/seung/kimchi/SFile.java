@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
@@ -121,5 +122,25 @@ public class SFile {
 		
 		return new File(zip_path).length();
 	}// end of zip
+	
+	public static void write(
+			ZipInputStream zipInputStream
+			, File file
+			) throws FileNotFoundException, IOException {
+		
+		try(FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+			
+			byte[] b = new byte[4096];
+			int len = 0;
+			
+			while((len = zipInputStream.read(b)) > 0) {
+				fileOutputStream.write(b, 0, len);
+			}// end of while
+			
+			fileOutputStream.close();
+			
+		}// end of try
+		
+	}// end of write
 	
 }
