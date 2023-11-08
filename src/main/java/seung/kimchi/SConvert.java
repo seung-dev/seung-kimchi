@@ -204,12 +204,18 @@ public class SConvert {
 	public static String encode_base64(final byte[] data, final Charset charset) {
 		return new String(encode_base64(data), charset);
 	}// end of encode_base64
+	public static String encode_base64(final byte[] data, final String charset) {
+		return encode_base64(data, Charset.forName(charset));
+	}// end of encode_base64
 	
 	public static byte[] decode_base64(final byte[] data) {
 		return Base64.getDecoder().decode(data);
 	}// end of encode_base64
 	public static String decode_base64(final byte[] data, final Charset charset) {
 		return new String(decode_base64(data), charset);
+	}// end of encode_base64
+	public static String decode_base64(final byte[] data, final String charset) {
+		return decode_base64(data, Charset.forName(charset));
 	}// end of encode_base64
 	
 	public static String encode_hex(final byte[] data, final boolean to_lower_case) {

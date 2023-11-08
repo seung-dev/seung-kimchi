@@ -16,16 +16,22 @@ import org.apache.commons.io.FileUtils;
 
 public class SFile {
 
-	public static boolean is_zip(final String file_path) throws IOException {
+	public static boolean is_zip(final File file) throws IOException {
 		boolean is_zip = false;
 		try (
-				ZipFile zip_file = new ZipFile(file_path);
+				ZipFile zip_file = new ZipFile(file);
 				) {
 			if(zip_file.size() > 0) {
 				is_zip = true;
 			}
 		}// end of try
 		return is_zip;
+	}// end of is_zip
+	public static boolean is_zip(final String file_path) throws IOException {
+		return is_zip(new File(file_path));
+	}// end of is_zip
+	public static boolean is_zip(final String file_path, String a) throws IOException {
+		return is_zip(new File(file_path));
 	}// end of is_zip
 	
 	public static void add_zip_entry(
