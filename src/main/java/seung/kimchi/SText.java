@@ -1,7 +1,10 @@
 package seung.kimchi;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class SText {
 
@@ -28,6 +31,19 @@ public class SText {
 	public static String uuid() {
 		return UUID.randomUUID().toString();
 	}// end of uuid
+	
+	public static String item_no(int random_size, String prefix, Date date) {
+		return String.format("%s%d%s", prefix, date.getTime() / 1000, RandomStringUtils.random(random_size, true, true));
+	}
+	public static String item_no(int random_size, String prefix) {
+		return item_no(random_size, prefix, new Date());
+	}
+	public static String item_no(int random_size) {
+		return item_no(random_size, "", new Date());
+	}
+	public static String item_no() {
+		return item_no(5, "I", new Date());
+	}
 	
 	public static int random(final int min, final int max) {
 		return new Random().nextInt(max - min + 1) + min;
