@@ -9,8 +9,11 @@ import java.nio.charset.Charset;
 
 import org.apache.http.HttpStatus;
 
+import kong.unirest.Headers;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import seung.kimchi.types.SCharset;
+import seung.kimchi.types.SHttpHeader;
 
 public class SHttp {
 
@@ -70,14 +73,14 @@ public class SHttp {
 		
 		switch(browser(user_agent)) {
 			case "MSIE":
-				suffix = URLEncoder.encode(file_name, "UTF-8").replaceAll("\\+", "%20");
+				suffix = URLEncoder.encode(file_name, SCharset._S_UTF_8).replaceAll("\\+", "%20");
 				break;
 			case "Chrome":
 				StringBuffer sb = new StringBuffer();
 				for(int i = 0; i < file_name.length(); i++) {
 					char c = file_name.charAt(i);
 					if(c > '~') {
-						sb.append(URLEncoder.encode("" + c, "UTF-8"));
+						sb.append(URLEncoder.encode("" + c, SCharset._S_UTF_8));
 					} else {
 						sb.append(c);
 					}
@@ -87,7 +90,7 @@ public class SHttp {
 			case "Opera":
 			case "Firefox":
 			default:
-				suffix = "\"" + new String(file_name.getBytes("UTF-8"), "8859_1") +"\"";
+				suffix = "\"" + new String(file_name.getBytes(SCharset._S_UTF_8), "8859_1") +"\"";
 				break;
 		}
 		
@@ -125,5 +128,26 @@ public class SHttp {
 	public static String public_ip() throws InterruptedException, UnsupportedEncodingException {
 		return public_ip("http://public.restful.kr/ipv4");
 	}// end of public_ip
+	
+	public static String file_name(
+			Headers headers
+			) throws UnsupportedEncodingException {
+		
+		if(headers == null) {
+			return null;
+		}
+		
+		if(!headers.containsKey(SHttpHeader._S_CONTENT_DISPOSITION)) {
+			return null;
+		}
+		
+		String content_disposition = headers.get(SHttpHeader._S_CONTENT_DISPOSITION).get(0);
+		
+		if(!content_disposition.contains("filename=\"")) {
+			return null;
+		}
+		
+		return URLDecoder.decode(content_disposition.split("filename=\"")[1].split("\"")[0], SCharset._S_UTF_8);
+	}// end of file_name
 	
 }
