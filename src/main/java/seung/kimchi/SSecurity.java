@@ -39,8 +39,10 @@ public class SSecurity {
 	public static final String _S_SHA256 = "SHA-256";
 	public static final String _S_SHA512 = "SHA-512";
 	
+	public final static String _S_RSA = "RSA";
 	public final static String _S_AES = "AES";
 	
+	public final static String _S_RSA_ECB_OAEP_SHA256_MGF1PADDING = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
 	public final static String _S_AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
 	public final static String _S_SEED_CBC_PKCS5PADDING = "SEED/CBC/PKCS5Padding";
 	
