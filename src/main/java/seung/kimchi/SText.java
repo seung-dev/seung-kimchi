@@ -39,10 +39,13 @@ public class SText {
 		return item_no(random_size, prefix, new Date());
 	}
 	public static String item_no(int random_size) {
-		return item_no(random_size, "", new Date());
+		return item_no(random_size, "");
+	}
+	public static String item_no(String prefix) {
+		return item_no(5, prefix);
 	}
 	public static String item_no() {
-		return item_no(5, "I", new Date());
+		return item_no("I");
 	}
 	
 	public static int random(final int min, final int max) {
