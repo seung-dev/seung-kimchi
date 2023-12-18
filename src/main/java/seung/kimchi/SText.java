@@ -1,6 +1,10 @@
 package seung.kimchi;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -27,6 +31,13 @@ public class SText {
 	public static String concat(final String... data) {
 		return String.join("", data);
 	}// end of concat
+	
+	public static String throwable(final Throwable throwable) {
+		final StringWriter stringWriter = new StringWriter();
+		final PrintWriter printWriter = new PrintWriter(stringWriter, true);
+		throwable.printStackTrace(printWriter);
+		return stringWriter.getBuffer().toString();
+	}// end of throwable
 	
 	public static String uuid() {
 		return UUID.randomUUID().toString();
@@ -155,5 +166,26 @@ public class SText {
 		}
 		return script;
 	}// end of byte_array_java_script
+	
+	public static List<String> contains_list(final String value, final boolean contains) {
+		List<String> contains_list = new ArrayList<>();
+		if(value == null) {
+			return contains_list;
+		}
+		for(String item : value.split(" ")) {
+			if("".equals(item)) {
+				continue;
+			}
+			if(contains && !item.startsWith("-")) {
+				contains_list.add(item);
+				continue;
+			}
+			if(!contains && item.startsWith("-")) {
+				contains_list.add(item.substring(1));
+				continue;
+			}
+		}
+		return contains_list;
+	}// end of contains_list
 	
 }
