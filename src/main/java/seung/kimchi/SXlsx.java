@@ -26,7 +26,12 @@ import seung.kimchi.types.excel.SSheet;
 public class SXlsx {
 
 	public final static String _S_SHEETS = "sheets";
+	
 	public final static String _S_SHEET_NAME = "sheet_name";
+	
+	public final static String _S_ROW_NO_BEGIN = "row_no_begin";
+	
+	public final static String _S_ROWS = "rows";
 	
 	private static String cell_value(final Cell cell) {
 		
@@ -143,7 +148,7 @@ public class SXlsx {
 			, SLinkedHashMap sheet_data
 			) {
 		
-		int row_no = sheet_data.get_int("row_no");
+		int row_no = sheet_data.get_int(_S_ROW_NO_BEGIN);
 		int cell_no_max = read_sheet.getRow(row_no).getPhysicalNumberOfCells() - 1;
 		
 		// style
@@ -153,7 +158,7 @@ public class SXlsx {
 		// remove
 		read_sheet.removeRow(read_sheet.getRow(row_no));
 		
-		List<SLinkedHashMap> rows = sheet_data.get_list_slinkedhashmap("rows");
+		List<SLinkedHashMap> rows = sheet_data.get_list_slinkedhashmap(_S_ROWS);
 		if(rows == null) {
 			return false;
 		}
@@ -197,19 +202,19 @@ public class SXlsx {
 	}// end of write_sheet
 	
 	public static byte[] write(
-			final byte[] read_bytes
-			, final SLinkedHashMap excel_data
+			final byte[] template
+			, final SLinkedHashMap data
 			) throws IOException {
 		
 		byte[] excel = null;
 		
 		try (
-				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(read_bytes);
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(template);
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				XSSFWorkbook read_workbook = new XSSFWorkbook(byteArrayInputStream);
 				) {
 			
-			List<SLinkedHashMap> sheets = excel_data.get_list_slinkedhashmap(_S_SHEETS);
+			List<SLinkedHashMap> sheets = data.get_list_slinkedhashmap(_S_SHEETS);
 			
 			SLinkedHashMap sheet_data = null;
 			for(int sheet_no = 0; sheet_no < read_workbook.getNumberOfSheets(); sheet_no++) {
