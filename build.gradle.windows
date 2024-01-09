@@ -6,7 +6,8 @@ group = "seung"
 version = "23.09.20.00"
 
 java {
-	sourceCompatibility = "17"
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
