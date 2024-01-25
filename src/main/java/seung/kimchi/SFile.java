@@ -13,6 +13,14 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+
+import seung.kimchi.types.SMediaType;
 
 public class SFile {
 
@@ -148,5 +156,42 @@ public class SFile {
 		}// end of try
 		
 	}// end of write
+	
+	public static PutObjectResult s3_upload(
+			AmazonS3Client amazon_s3_client
+			, String bucket_name
+			, String key
+			, byte[] input
+			) throws IOException {
+		
+		PutObjectResult putObjectResult = null;
+		
+		try(
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(input);
+				) {
+			ObjectMetadata objectMetadata = new ObjectMetadata();
+			objectMetadata.setContentType(SMediaType._S_APPLICATION_OCTET_STREAM);
+			objectMetadata.setContentLength(input.length);
+			putObjectResult = amazon_s3_client.putObject(
+					bucket_name//bucketName
+					, key
+					, byteArrayInputStream//input
+					, objectMetadata//metadata
+					);
+		} catch (IOException e) {
+			throw e;
+		}
+		
+		return putObjectResult;
+	}// end of s3_upload
+	
+	public static byte[] s3_download(
+			AmazonS3Client amazon_s3_client
+			, String bucket_name
+			, String key
+			) throws IOException {
+		S3Object s3Object = amazon_s3_client.getObject(bucket_name, key);
+		return IOUtils.toByteArray(s3Object.getObjectContent());
+	}// end of s3_download
 	
 }

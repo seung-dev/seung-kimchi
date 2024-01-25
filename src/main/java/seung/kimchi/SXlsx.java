@@ -26,7 +26,14 @@ import seung.kimchi.types.excel.SSheet;
 public class SXlsx {
 
 	public final static String _S_SHEETS = "sheets";
+	
 	public final static String _S_SHEET_NAME = "sheet_name";
+	
+	public final static String _S_SHEET_NO_BEGIN = "sheet_no_begin";
+	
+	public final static String _S_ROWS = "rows";
+	
+	public final static String _S_ROW_NO_BEGIN = "row_no_begin";
 	
 	private static String cell_value(final Cell cell) {
 		
@@ -125,6 +132,19 @@ public class SXlsx {
 		return row_height;
 	}// end of row_height
 	
+	private static CellType[] cell_type(
+			final Sheet sheet
+			, final int row_no
+			, final int cell_no_max
+			) {
+		CellType[] cell_type = new CellType[cell_no_max + 1];
+		Row row = sheet.getRow(row_no);
+		for(int cell_no = 0; cell_no <= cell_no_max; cell_no++) {
+			cell_type[cell_no] = row.getCell(cell_no).getCellType();
+		}
+		return cell_type;
+	}// end of cell_type
+	
 	private static CellStyle[] cell_style(
 			final Sheet sheet
 			, final int row_no
@@ -137,42 +157,78 @@ public class SXlsx {
 		return cell_style;
 	}// end of cell_style
 	
+	private static void write_cell(
+			XSSFRow xssf_row
+			, int cell_no
+			, CellType cell_type
+			, CellStyle cell_style
+			, String cell_value
+			) {
+		
+		XSSFCell xssf_cell = xssf_row.createCell(cell_no);
+		
+		xssf_cell.setCellType(cell_type);
+		xssf_cell.setCellStyle(cell_style);
+		
+		while(true) {
+			
+			if("".equals(cell_value)) {
+				break;
+			}
+			
+			if(CellType.NUMERIC == cell_type) {
+				xssf_cell.setCellValue(Double.valueOf(cell_value));
+				break;
+			}
+			
+			xssf_cell.setCellValue(cell_value);
+			
+			break;
+		}// end of while
+		
+	}// end of write_cell
+	
 	private static boolean write_sheet_rows(
 			final XSSFWorkbook read_workbook
 			, final XSSFSheet read_sheet
 			, SLinkedHashMap sheet_data
 			) {
 		
-		int row_no = sheet_data.get_int("row_no");
+		int row_no = sheet_data.get_int(_S_ROW_NO_BEGIN);
 		int cell_no_max = read_sheet.getRow(row_no).getPhysicalNumberOfCells() - 1;
 		
 		// style
 		short read_row_height = read_sheet.getRow(row_no).getHeight();
+		CellType[] read_cell_type = cell_type(read_sheet, row_no, cell_no_max);
 		CellStyle[] read_cell_style = cell_style(read_sheet, row_no, cell_no_max);
 		
 		// remove
 		read_sheet.removeRow(read_sheet.getRow(row_no));
 		
-		List<SLinkedHashMap> rows = sheet_data.get_list_slinkedhashmap("rows");
+		List<SLinkedHashMap> rows = sheet_data.get_list_slinkedhashmap(_S_ROWS);
 		if(rows == null) {
 			return false;
 		}
 		
-		XSSFRow write_row = null;
+		XSSFRow xssf_row = null;
 		int cell_no = 0;
-		XSSFCell write_cell = null;
 		for(SLinkedHashMap row : rows) {
 			
-			write_row = read_sheet.createRow(row_no++);
+			xssf_row = read_sheet.createRow(row_no++);
 			
-			write_row.setHeight(read_row_height);
+			xssf_row.setHeight(read_row_height);
 			
 			cell_no = 0;
 			for(String field_name : row.keys()) {
 				
-				write_cell = write_row.createCell(cell_no);
-				write_cell.setCellValue(row.get_text(field_name));
-				write_cell.setCellStyle(read_cell_style[cell_no]);
+				write_cell(
+						xssf_row
+						, cell_no
+						, read_cell_type[cell_no]//cell_type
+						, read_cell_style[cell_no]//cell_style
+						, row.get_text(field_name, "")//value
+						);
+				
 				cell_no++;
 				
 			}// end of row
@@ -197,22 +253,28 @@ public class SXlsx {
 	}// end of write_sheet
 	
 	public static byte[] write(
-			final byte[] read_bytes
-			, final SLinkedHashMap excel_data
+			final byte[] template
+			, final SLinkedHashMap data
 			) throws IOException {
 		
 		byte[] excel = null;
 		
 		try (
-				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(read_bytes);
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(template);
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				XSSFWorkbook read_workbook = new XSSFWorkbook(byteArrayInputStream);
 				) {
 			
-			List<SLinkedHashMap> sheets = excel_data.get_list_slinkedhashmap(_S_SHEETS);
+			List<SLinkedHashMap> sheets = data.get_list_slinkedhashmap(_S_SHEETS);
+			int sheet_size = sheets.size();
+			int sheet_no_begin = data.get_int(_S_SHEET_NO_BEGIN, 0);
 			
 			SLinkedHashMap sheet_data = null;
-			for(int sheet_no = 0; sheet_no < read_workbook.getNumberOfSheets(); sheet_no++) {
+			for(int sheet_no = sheet_no_begin; sheet_no < read_workbook.getNumberOfSheets(); sheet_no++) {
+				
+				if(sheet_size < sheet_no + 1) {
+					break;
+				}
 				
 				if(sheets != null) {
 					sheet_data = sheets.get(sheet_no);
@@ -228,6 +290,8 @@ public class SXlsx {
 			}// end of sheet
 			
 			read_workbook.write(byteArrayOutputStream);
+			
+			excel = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
 			throw e;
