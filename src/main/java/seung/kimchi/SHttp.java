@@ -7,13 +7,12 @@ import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 
-import org.apache.http.HttpStatus;
-
 import kong.unirest.Headers;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SHttpHeader;
+import seung.kimchi.types.SHttpStatus;
 
 public class SHttp {
 
@@ -119,7 +118,7 @@ public class SHttp {
 				.asString()
 				;
 		
-		if(HttpStatus.SC_OK == httpResponse.getStatus() && httpResponse.getBody() != null) {
+		if(SHttpStatus._S_OK == httpResponse.getStatus() && httpResponse.getBody() != null) {
 			return httpResponse.getBody();
 		}
 		

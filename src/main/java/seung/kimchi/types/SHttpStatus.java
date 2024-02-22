@@ -21,4 +21,8 @@ public class SHttpStatus {
 	public static final int _S_SERVICE_UNAVAILABLE = 503;
 	public static final int _S_GATEWAY_TIMEOUT = 504;
 	
+	public static String error_code(int status_code) {
+		return "H" + status_code;
+	}// end of error_code
+	
 }

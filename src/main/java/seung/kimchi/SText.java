@@ -2,6 +2,7 @@ package seung.kimchi;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ public class SText {
 	public static final String _S_EMPTY = "";
 	public static final String _S_LF = "\n";
 	public static final String _S_CR = "\r";
+	public static final String _S_LINE_SEPARATOR = System.getProperty("line.separator");
 	
 	public static boolean is_empty(final String data) {
 		return data == null || data.length() == 0;
@@ -187,5 +189,16 @@ public class SText {
 		}
 		return contains_list;
 	}// end of contains_list
+	
+	public static String number_comma(final String value) {
+		if(is_empty(value)) {
+			return "";
+		}
+		try {
+			return NumberFormat.getInstance().format(Long.parseLong(value));
+		} catch (NumberFormatException e) {
+			return "";
+		}
+	}// end of number_comma
 	
 }
