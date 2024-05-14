@@ -78,7 +78,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 		}
 		Object value = get(key);
 		if(value instanceof String) {
-			return "" + value;
+			return String.valueOf(value);
 		}
 		if(value instanceof String[]) {
 			String[] items = (String[]) value;
@@ -91,7 +91,10 @@ public class SLinkedHashMap extends LinkedHashMap {
 			}
 			return "" + items.get(0);
 		}
-		return "" + get(key);
+		if(value instanceof BigDecimal) {
+			return ((BigDecimal) value).toPlainString();
+		}
+		return String.valueOf(value);
 	}
 	public String get_text(Object key) {
 		return get_text(key, null);
@@ -149,20 +152,6 @@ public class SLinkedHashMap extends LinkedHashMap {
 		return get_long(key, null);
 	}
 	
-	public BigInteger get_bigint(Object key, BigInteger default_value) {
-		if(is_empty(key)) {
-			return default_value;
-		}
-		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to BigInteger. value=%s", value));
-		}
-		return BigInteger.valueOf(get_long(key));
-	}
-	public BigInteger get_bigint(Object key) {
-		return get_bigint(key, null);
-	}
-	
 	public Double get_double(Object key, Double default_value) {
 		if(is_empty(key)) {
 			return default_value;
@@ -189,6 +178,37 @@ public class SLinkedHashMap extends LinkedHashMap {
 	}
 	public BigDecimal get_decimal(Object key) {
 		return get_decimal(key, null);
+	}
+	
+	public BigInteger get_bigint(Object key, BigInteger default_value) {
+		if(is_empty(key)) {
+			return default_value;
+		}
+		String value = get_text(key);
+		if(!Pattern.matches("[0-9+-]+", value)) {
+			throw new NumberFormatException(String.format("Failed to cast to BigInteger. value=%s", value));
+		}
+		return BigInteger.valueOf(get_long(key));
+	}
+	public BigInteger get_bigint(Object key) {
+		return get_bigint(key, null);
+	}
+	
+	public BigDecimal get_bigdecimal(Object key, BigDecimal default_value) {
+		if(is_empty(key)) {
+			return default_value;
+		}
+		String value = get_text(key);
+		if(!Pattern.matches("[0-9+-.]+", value)) {
+			throw new NumberFormatException(String.format("Failed to cast to BigDecimal. value=%s", value));
+		}
+		return new BigDecimal(value);
+	}
+	public BigDecimal get_bigdecimal(Object key, int default_value) {
+		return get_bigdecimal(key, new BigDecimal(default_value));
+	}
+	public BigDecimal get_bigdecimal(Object key) {
+		return get_bigdecimal(key, null);
 	}
 	
 	public Map get_map(Object key) {
