@@ -67,12 +67,11 @@ public class SHttp {
 			, final String file_name
 			) throws UnsupportedEncodingException {
 		
-		String prefix = "attachment; file_name=";
-		String suffix = "";
+		String filename = "";
 		
 		switch(browser(user_agent)) {
 			case "MSIE":
-				suffix = URLEncoder.encode(file_name, SCharset._S_UTF_8).replaceAll("\\+", "%20");
+				filename = URLEncoder.encode(file_name, SCharset._S_UTF_8).replaceAll("\\+", "%20");
 				break;
 			case "Chrome":
 				StringBuffer sb = new StringBuffer();
@@ -84,16 +83,16 @@ public class SHttp {
 						sb.append(c);
 					}
 				}
-				suffix = sb.toString();
+				filename = sb.toString();
 				break;
 			case "Opera":
 			case "Firefox":
 			default:
-				suffix = "\"" + new String(file_name.getBytes(SCharset._S_UTF_8), "8859_1") +"\"";
+				filename = new String(file_name.getBytes(SCharset._S_UTF_8), "8859_1");
 				break;
 		}
 		
-		return prefix.concat(suffix);
+		return String.format("attachment; filename=\"%s\"", filename);
 	}// end of content_disposition
 	
 	public static String browser(final String user_agent) {
@@ -128,7 +127,7 @@ public class SHttp {
 		return public_ip("http://public.restful.kr/ipv4");
 	}// end of public_ip
 	
-	public static String file_name(
+	public static String filename(
 			Headers headers
 			) throws UnsupportedEncodingException {
 		
@@ -142,11 +141,18 @@ public class SHttp {
 		
 		String content_disposition = headers.get(SHttpHeader._S_CONTENT_DISPOSITION).get(0);
 		
-		if(!content_disposition.contains("filename=\"")) {
+		if(!content_disposition.contains("filename") || !content_disposition.contains("=")) {
 			return null;
 		}
 		
-		return URLDecoder.decode(content_disposition.split("filename=\"")[1].split("\"")[0], SCharset._S_UTF_8);
+		String filename = content_disposition.split("filename")[1].split("=")[1];
+		if(filename.contains("\"")) {
+			filename = filename.split("\"")[1];
+		} else if(filename.contains("'")) {
+			filename = filename.split("'")[1];
+		}
+		
+		return URLDecoder.decode(SText.trim(filename), SCharset._S_UTF_8);
 	}// end of file_name
 	
 }
