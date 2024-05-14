@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "seung"
-version = "23.09.20.00"
+version = "24.05.14.00"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
