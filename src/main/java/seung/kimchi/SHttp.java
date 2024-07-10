@@ -153,6 +153,26 @@ public class SHttp {
 		}
 		
 		return URLDecoder.decode(SText.trim(filename), SCharset._S_UTF_8);
-	}// end of file_name
+	}// end of filename
+	
+	/**
+	 * 
+	 * <h1>Usage</h1>
+	 * <pre>
+	 * SHttp.filename(headers, SCharset._S_ISO_8859_1, SCharset._S_EUC_KR);
+	 * SHttp.filename(headers, SCharset._S_WINDOWS_1252, SCharset._S_EUC_KR);
+	 * </pre>
+	 * 
+	 * @param headers
+	 * @param encoded_charset
+	 * @param decoded_charset
+	 */
+	public static String filename(
+			Headers headers
+			, String encoded_charset
+			, String decoded_charset
+			) throws UnsupportedEncodingException {
+		return new String(filename(headers).getBytes(encoded_charset), decoded_charset);
+	}// end of filename
 	
 }

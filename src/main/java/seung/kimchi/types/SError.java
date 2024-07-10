@@ -3,7 +3,8 @@ package seung.kimchi.types;
 public enum SError {
 
 	SUCCESS("S000", "성공")
-	, BAD_SQL("F100", "org.springframework.jdbc.BadSqlGrammarException")
+	, BAD_SQL("F800", "org.springframework.jdbc.BadSqlGrammarException")
+	, RESULT_IS_EMPTY("F998", "결과를 확인할 수 없습니다.")
 	, FAIL("F999", "요청이 실패하였습니다. 관리자에게 문의하세요.")
 	, USERNAME_IS_NOT_AVAILABLE("A010", "사용할 수 없는 계정입니다.")
 	, ORGANIZATION_IS_NOT_AVAILABLE("A011", "사용할 수 없는 조직 도메인입니다.")

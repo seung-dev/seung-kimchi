@@ -2,8 +2,11 @@ package seung.kimchi;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.security.SecureRandom;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -19,8 +22,21 @@ public class SText {
 	public static final String _S_CR = "\r";
 	public static final String _S_LINE_SEPARATOR = System.getProperty("line.separator");
 	
-	public static boolean is_empty(final String data) {
-		return data == null || data.length() == 0;
+	public static boolean is_empty(final String value) {
+		if(value == null) {
+			return true;
+		}
+		if("".equals(value)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static String text(final String value, final String default_value) {
+		if(is_empty(value)) {
+			return default_value;
+		}
+		return is_empty(value) ? default_value : value;
 	}
 	
 	public static String trim(final String data) {
@@ -64,6 +80,57 @@ public class SText {
 	public static int random(final int min, final int max) {
 		return new Random().nextInt(max - min + 1) + min;
 	}// end of random
+	
+	private static final String _CHAR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String _CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+	private static final String _CHAR_DIGITS = "0123456789";
+	private static final String _CHAR_SPECIAL = "!@#_";
+	
+	public static String random_password(final int length, final String char_special) {
+		
+		if (length < 4) {
+			throw new IllegalArgumentException("Length must be greater than 0");
+		}
+		
+		String char_all = _CHAR_UPPER + _CHAR_LOWER + _CHAR_DIGITS + char_special;
+		
+		StringBuilder password = new StringBuilder();
+		
+		SecureRandom random = new SecureRandom();
+		
+		password.append(_CHAR_UPPER.charAt(random.nextInt(_CHAR_UPPER.length())));
+		password.append(_CHAR_LOWER.charAt(random.nextInt(_CHAR_LOWER.length())));
+		password.append(_CHAR_DIGITS.charAt(random.nextInt(_CHAR_DIGITS.length())));
+		password.append(char_special.charAt(random.nextInt(char_special.length())));
+		
+		for(int i = 4; i < length; i++) {
+			password.append(char_all.charAt(random.nextInt(char_all.length())));
+		}
+		
+		List<String> collection = Arrays.asList(password.toString().split(""));
+		
+		while(true) {
+			
+			Collections.shuffle(collection);
+			
+			if(_CHAR_UPPER.contains(collection.get(0))) {
+				break;
+			}
+			
+			if(_CHAR_LOWER.contains(collection.get(0))) {
+				break;
+			}
+			
+		}// end of while
+		
+		return String.join("", collection);
+	}// end of random_password
+	public static String random_password(final int length) {
+		return random_password(length, _CHAR_SPECIAL);
+	}// end of random_password
+	public static String random_password() {
+		return random_password(16);
+	}// end of random_password
 	
 	public static String pad_right(
 			final String data
