@@ -1,5 +1,6 @@
 # seung-kimchi
-Java Utilities
+
+[![](https://jitpack.io/v/seung-dev/seung-kimchi.svg)](https://jitpack.io/#seung-dev/seung-kimchi)
 
 ### Build
 
