@@ -5,6 +5,7 @@ public class SHttpStatus {
 	public static final int _S_OK = 200;
 	public static final int _S_CREATED = 201;
 	public static final int _S_ACCEPTED = 202;
+	public static final int _S_NO_CONTENT = 204;
 	public static final int _S_MOVED_PERMANENTLY = 301;
 	public static final int _S_TEMPORARY_REDIRECT = 302;
 	public static final int _S_NOT_MODIFIED = 304;
