@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "seung"
-version = "24.07.10.00"
+version = "24.07.19.00"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
@@ -43,10 +43,18 @@ dependencies {
 	
 	// http
 	api("com.konghq:unirest-java:3.14.5")
+	//api("com.konghq:unirest-java-core:4.4.0")
+	//api("com.konghq:unirest-modules-gson:4.4.0")
+	//api("com.konghq:unirest-modules-jackson:4.4.0")
 	
 	// bouncycastle
 	api("org.bouncycastle:bcprov-jdk18on:1.78.1")
 	api("org.bouncycastle:bcpkix-jdk18on:1.78.1")
+	
+	// jwt
+	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	
 	// unzip
 	api("net.lingala.zip4j:zip4j:2.11.5")

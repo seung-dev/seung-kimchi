@@ -6,6 +6,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import org.apache.commons.lang3.StringUtils;
 
 import kong.unirest.Headers;
 import kong.unirest.HttpResponse;
@@ -13,6 +18,7 @@ import kong.unirest.Unirest;
 import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SHttpHeader;
 import seung.kimchi.types.SHttpStatus;
+import seung.kimchi.types.SSamesite;
 
 public class SHttp {
 
@@ -174,5 +180,66 @@ public class SHttp {
 			) throws UnsupportedEncodingException {
 		return new String(filename(headers).getBytes(encoded_charset), decoded_charset);
 	}// end of filename
+	
+	public static String cookie(
+			String name
+			, String value
+			, String charset
+			, String domain
+			, String path
+			, TimeZone timezone
+			, Locale locale
+			, long max_age
+			, boolean http_only
+			, boolean secure
+			, SSamesite same_site
+			) throws UnsupportedEncodingException {
+		
+		StringBuilder cookie = new StringBuilder();
+		
+		cookie.append(name).append("=").append(URLEncoder.encode(value, charset));
+		
+		if(!StringUtils.isEmpty(domain)) {
+			cookie.append("; Domain=").append(domain);
+		}
+		
+		if(!StringUtils.isEmpty(path)) {
+			cookie.append("; Path=").append(path);
+		}
+		
+		if(max_age > 0) {
+			cookie.append("; Max-Age=").append(max_age / 1000);
+			long expires = System.currentTimeMillis() + max_age;
+			cookie.append("; Expires=").append(SDate.format("EEE, dd MMM yyyy HH:mm:ss zzz", new Date(expires), timezone, locale));
+		}
+		
+		if(http_only) {
+			cookie.append("; HttpOnly");
+		}
+		
+		if(secure) {
+			cookie.append("; Secure");
+		}
+		
+		if(same_site != null) {
+			cookie.append("; SameSite=").append(same_site.text());
+		}
+		
+		return cookie.toString();
+	}// end of cookie
+	public static String cookie(
+			String name
+			, String value
+			, String domain
+			, String path
+			, TimeZone timezone
+			, Locale locale
+			, long max_age
+			, boolean http_only
+			, boolean secure
+			, SSamesite same_site
+			) throws UnsupportedEncodingException {
+		return cookie(name, value, SCharset._S_UTF_8, domain, path, timezone, locale, max_age, http_only, secure, same_site);
+	}// end of cookie
 	
 }
