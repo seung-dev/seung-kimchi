@@ -39,12 +39,12 @@ public class SSecurity {
 	public static final String _S_SHA256 = "SHA-256";
 	public static final String _S_SHA512 = "SHA-512";
 	
-	public final static String _S_RSA = "RSA";
-	public final static String _S_AES = "AES";
+	public static final String _S_RSA = "RSA";
+	public static final String _S_AES = "AES";
 	
-	public final static String _S_RSA_ECB_OAEP_SHA256_MGF1PADDING = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
-	public final static String _S_AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
-	public final static String _S_SEED_CBC_PKCS5PADDING = "SEED/CBC/PKCS5Padding";
+	public static final String _S_RSA_ECB_OAEP_SHA256_MGF1PADDING = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
+	public static final String _S_AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
+	public static final String _S_SEED_CBC_PKCS5PADDING = "SEED/CBC/PKCS5Padding";
 	
 	private static final int _S_XXTEA_DELTA = 0x9E3779B9;
 	private static final int _S_XXTEA_BLOCK_SIZE = 8;
@@ -159,6 +159,15 @@ public class SSecurity {
 			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException {
 		return hmac(algorithm, provider, key.getBytes(charset), message.getBytes(charset));
 	}// end of hmac
+	
+	public static KeyPair key_pair(
+			String algorithm
+			, int key_size
+			) throws NoSuchAlgorithmException {
+		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
+		keyPairGenerator.initialize(key_size);
+		return keyPairGenerator.generateKeyPair();
+	}// end of key_pair
 	
 	public static byte[] encrypt(
 			final byte[] data

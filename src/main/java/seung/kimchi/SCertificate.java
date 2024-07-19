@@ -81,10 +81,8 @@ import seung.kimchi.types.SSignPriKey;
 
 public class SCertificate {
 
-	public final static String _S_RSA = "RSA";
-	public final static String _S_RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
-	public final static String _S_X509 = "X.509";
-	public final static String _S_DER = "DER";
+	public static final String _S_X509 = "X.509";
+	public static final String _S_DER = "DER";
 	
 	public static PublicKey public_key(
 			final byte[] encoded
@@ -115,7 +113,7 @@ public class SCertificate {
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 		return public_key(
 				encoded
-				, _S_RSA//algorithm
+				, SSecurity._S_RSA//algorithm
 				);
 	}// end of public_key
 	public static PublicKey public_key(
@@ -144,7 +142,7 @@ public class SCertificate {
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return public_key(
 				SConvert.decode_hex(encoded_hex)
-				, _S_RSA//algorithm
+				, SSecurity._S_RSA//algorithm
 				);
 	}// end of public_key
 	
@@ -177,7 +175,7 @@ public class SCertificate {
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 		return private_key(
 				encoded
-				, _S_RSA//algorithm
+				, SSecurity._S_RSA//algorithm
 				);
 	}// end of private_key
 	public static PrivateKey private_key(
@@ -206,7 +204,7 @@ public class SCertificate {
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return private_key(
 				SConvert.decode_hex(encoded_hex)
-				, _S_RSA//algorithm
+				, SSecurity._S_RSA//algorithm
 				);
 	}// end of private_key
 	
@@ -717,7 +715,7 @@ public class SCertificate {
 		
 		byte[] decrypted = decrypt_private_key(sign_pri_key, secret);
 		
-		KeyFactory keyFactory = KeyFactory.getInstance(_S_RSA);
+		KeyFactory keyFactory = KeyFactory.getInstance(SSecurity._S_RSA);
 		PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(decrypted));
 		
 		ContentSigner contentSigner = new JcaContentSignerBuilder(s_sign_cert_der.signiture_algorithm_name())
