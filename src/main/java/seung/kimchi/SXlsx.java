@@ -25,15 +25,15 @@ import seung.kimchi.types.excel.SSheet;
 
 public class SXlsx {
 
-	public final static String _S_SHEETS = "sheets";
+	public static final String _S_SHEETS = "sheets";
 	
-	public final static String _S_SHEET_NAME = "sheet_name";
+	public static final String _S_SHEET_NAME = "sheet_name";
 	
-	public final static String _S_SHEET_NO_BEGIN = "sheet_no_begin";
+	public static final String _S_SHEET_NO_BEGIN = "sheet_no_begin";
 	
-	public final static String _S_ROWS = "rows";
+	public static final String _S_ROWS = "rows";
 	
-	public final static String _S_ROW_NO_BEGIN = "row_no_begin";
+	public static final String _S_ROW_NO_BEGIN = "row_no_begin";
 	
 	private static String cell_value(final Cell cell) {
 		
