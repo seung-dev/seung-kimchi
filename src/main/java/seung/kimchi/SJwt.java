@@ -112,7 +112,7 @@ public class SJwt {
 			) throws UnsupportedEncodingException {
 		return SHttp.cookie(
 				name
-				, String.join(_JWT_COOKIE_PREFIX, jws)//value
+				, _JWT_COOKIE_PREFIX.concat(jws)//value
 				, domain
 				, path
 				, TimeZone.getTimeZone(ZoneId.of("GMT"))
@@ -130,7 +130,7 @@ public class SJwt {
 			) {
 		SError s_error = SError.TOKEN_IS_INVALID;
 		try {
-			Jwts.parser().verifyWith((PublicKey) key).build().parseSignedClaims(jws);
+			Jwts.parser().verifyWith((PublicKey) key).build().parseSignedClaims(jws.replaceAll(_JWT_COOKIE_PREFIX, ""));
 			s_error = SError.TOKEN_IS_VALID;
 		} catch (SecurityException e) {
 			s_error = SError.TOKEN_IS_NOT_SECURE;
@@ -150,7 +150,7 @@ public class SJwt {
 			PublicKey key
 			, String jws
 			) {
-		return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload();
+		return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws.replaceAll(_JWT_COOKIE_PREFIX, "")).getPayload();
 	}// end of claims
 	
 }
