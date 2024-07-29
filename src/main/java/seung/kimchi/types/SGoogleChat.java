@@ -57,7 +57,7 @@ public class SGoogleChat {
 		return widget;
 	}// end of card_widget
 	
-	public String stringify() throws JsonProcessingException {
+	public String build() throws JsonProcessingException {
 		
 		SLinkedHashMap json = new SLinkedHashMap();
 		
@@ -65,6 +65,10 @@ public class SGoogleChat {
 		
 		if(thread_key != null && !"".equals(thread_key)) {
 			json.add("thread", new SLinkedHashMap().add("threadKey", thread_key));
+		}
+		
+		if(card_sections.size() == 0) {
+			return json.stringify();
 		}
 		
 		List<SLinkedHashMap> sections = new ArrayList<>();
