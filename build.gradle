@@ -19,10 +19,6 @@ dependencies {
 	// test
 	testImplementation("junit:junit:4.13")
 	
-	// logger
-	implementation("org.slf4j:slf4j-api:2.0.9")
-	implementation("org.slf4j:slf4j-simple:2.0.9")
-	
 	// lombok
 	implementation("org.projectlombok:lombok:1.18.30")
 	annotationProcessor("org.projectlombok:lombok:1.18.30")
