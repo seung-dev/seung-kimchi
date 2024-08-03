@@ -140,14 +140,14 @@ public class SGoogleChat {
 	
 	public SGoogleChat add_row_in_card(
 			int section_no
-			, String text
+			, String... text
 			) {
-		section(section_no).add(text);
+		section(section_no).add(String.join(" ", text));
 		return this;
 	}// end of add_row_in_card
 	
 	public SGoogleChat add_row_in_card(
-			String text
+			String... text
 			) {
 		add_row_in_card(0, text);
 		return this;

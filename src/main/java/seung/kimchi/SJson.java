@@ -45,10 +45,10 @@ public class SJson {
 	
 	public static String stringify(
 			Object data
-			, boolean is_pretty
+			, boolean indent
 			) throws JsonProcessingException {
 		return object_mapper()
-				.configure(SerializationFeature.INDENT_OUTPUT, is_pretty)
+				.configure(SerializationFeature.INDENT_OUTPUT, indent)
 				.writeValueAsString(data)
 				;
 	}// end of stringify
