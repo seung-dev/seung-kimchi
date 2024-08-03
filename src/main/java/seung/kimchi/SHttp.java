@@ -12,12 +12,17 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import kong.unirest.GetRequest;
 import kong.unirest.Headers;
+import kong.unirest.HttpRequestWithBody;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SHttpHeader;
 import seung.kimchi.types.SHttpStatus;
+import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.SSamesite;
 
 public class SHttp {
@@ -241,5 +246,173 @@ public class SHttp {
 			) throws UnsupportedEncodingException {
 		return cookie(name, value, SCharset._S_UTF_8, domain, path, timezone, locale, max_age, http_only, secure, same_site);
 	}// end of cookie
+	
+	@SuppressWarnings("unchecked")
+	public static HttpResponse<byte[]> get(
+			final String url
+			, final String proxy_host
+			, final int proxy_port
+			, final int connection_timeout
+			, final int socker_timeout
+			, final SLinkedHashMap headers
+			, final SLinkedHashMap query
+			) {
+		
+		GetRequest getRequest = Unirest.get(url);
+		
+		if(!SText.is_empty(proxy_host)) {
+			getRequest = getRequest.proxy(proxy_host, proxy_port);
+		}
+		
+		getRequest = getRequest.connectTimeout(connection_timeout);
+		
+		getRequest = getRequest.socketTimeout(socker_timeout);
+		
+		if(headers != null) {
+			getRequest = getRequest.headers(headers);
+		}
+		
+		if(query != null) {
+			getRequest = getRequest.queryString(query);
+		}
+		
+		return getRequest.asBytes();
+	}// end of get
+	public static HttpResponse<byte[]> get(
+			final String url
+			, final SLinkedHashMap headers
+			, final SLinkedHashMap query
+			) {
+		return get(
+				url
+				, ""//proxy_host
+				, 0//proxy_port
+				, 1000 * 3//connection_timeout
+				, 1000 * 60//socker_timeout
+				, headers
+				, query
+				);
+	}// end of get
+	public static HttpResponse<byte[]> get(
+			final String url
+			, final SLinkedHashMap headers
+			) {
+		return get(
+				url
+				, headers
+				, null//query
+				);
+	}// end of get
+	public static HttpResponse<byte[]> get(
+			final String url
+			) {
+		return get(
+				url
+				, null//headers
+				, null//query
+				);
+	}// end of get
+	
+	@SuppressWarnings("unchecked")
+	public static HttpResponse<byte[]> post(
+			final String url
+			, final String proxy_host
+			, final int proxy_port
+			, final Integer connection_timeout
+			, final Integer socker_timeout
+			, final SLinkedHashMap headers
+			, final String body
+			) {
+		
+		HttpRequestWithBody httpRequestWithBody = Unirest.post(url);
+		
+		if(!SText.is_empty(proxy_host)) {
+			httpRequestWithBody = httpRequestWithBody.proxy(proxy_host, proxy_port);
+		}
+		
+		if(connection_timeout != null) {
+			httpRequestWithBody = httpRequestWithBody.connectTimeout(connection_timeout);
+		} else {
+			httpRequestWithBody = httpRequestWithBody.connectTimeout(1000 * 3);
+		}
+		
+		if(socker_timeout != null) {
+			httpRequestWithBody = httpRequestWithBody.socketTimeout(socker_timeout);
+		} else {
+			httpRequestWithBody = httpRequestWithBody.socketTimeout(0);
+		}
+		
+		if(headers != null) {
+			httpRequestWithBody = httpRequestWithBody.headers(headers);
+		}
+		
+		return httpRequestWithBody
+				.body(body)
+				.asBytes();
+	}// end of post
+	public static HttpResponse<byte[]> post(
+			final String url
+			, final String proxy_host
+			, final int proxy_port
+			, final Integer connection_timeout
+			, final Integer socker_timeout
+			, final SLinkedHashMap headers
+			, final SLinkedHashMap body
+			) throws JsonProcessingException {
+		return post(
+				url
+				, proxy_host
+				, proxy_port
+				, connection_timeout
+				, socker_timeout
+				, headers
+				, body == null ? "" : body.stringify()//body
+				);
+	}// end of post
+	public static HttpResponse<byte[]> post(
+			final String url
+			, final SLinkedHashMap headers
+			, final String body
+			) throws JsonProcessingException {
+		return post(
+				url
+				, ""//proxy_host
+				, 0//proxy_port
+				, 1000 * 3//connection_timeout
+				, 1000 * 60//socker_timeout
+				, headers
+				, body
+				);
+	}// end of post
+	public static HttpResponse<byte[]> post(
+			final String url
+			, final SLinkedHashMap headers
+			, final SLinkedHashMap body
+			) throws JsonProcessingException {
+		return post(
+				url
+				, headers
+				, body == null ? "" : body.stringify()//body
+				);
+	}// end of post
+	public static HttpResponse<byte[]> post(
+			final String url
+			, final String body
+			) throws JsonProcessingException {
+		return post(
+				url
+				, null//headers
+				, body
+				);
+	}// end of post
+	public static HttpResponse<byte[]> post(
+			final String url
+			, final SLinkedHashMap body
+			) throws JsonProcessingException {
+		return post(
+				url
+				, body == null ? "" : body.stringify()//body
+				);
+	}// end of post
 	
 }
