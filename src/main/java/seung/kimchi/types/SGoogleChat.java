@@ -57,7 +57,7 @@ public class SGoogleChat {
 		return widget;
 	}// end of card_widget
 	
-	public String build() throws JsonProcessingException {
+	public String stringify() throws JsonProcessingException {
 		
 		SLinkedHashMap json = new SLinkedHashMap();
 		
