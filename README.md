@@ -37,7 +37,7 @@ $ gradlew build
 - diff
 - add
 
-##### SConvert
+##### SFormat
 
 - encode_base64
 - decode_base64

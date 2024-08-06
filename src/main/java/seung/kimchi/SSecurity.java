@@ -9,14 +9,10 @@ import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.Provider;
 import java.security.SecureRandom;
-import java.security.Provider.Service;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.Security;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -28,48 +24,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import seung.kimchi.types.SLinkedHashMap;
+import seung.kimchi.types.SAlgorithm;
 
 public class SSecurity {
 
-	public static final String _S_MD2 = "MD2";
-	public static final String _S_MD4 = "MD4";
-	public static final String _S_MD5 = "MD5";
-	public static final String _S_SHA1 = "SHA-1";
-	public static final String _S_SHA256 = "SHA-256";
-	public static final String _S_SHA512 = "SHA-512";
-	
-	public static final String _S_RSA = "RSA";
-	public static final String _S_AES = "AES";
-	
-	public static final String _S_RSA_ECB_OAEP_SHA256_MGF1PADDING = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
-	public static final String _S_AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
-	public static final String _S_SEED_CBC_PKCS5PADDING = "SEED/CBC/PKCS5Padding";
-	
 	private static final int _S_XXTEA_DELTA = 0x9E3779B9;
 	private static final int _S_XXTEA_BLOCK_SIZE = 8;
-	
-	public static List<SLinkedHashMap> providers() {
-		List<SLinkedHashMap> providers = new ArrayList<>();
-		List<SLinkedHashMap> services = new ArrayList<>();
-		for(Provider provider : Security.getProviders()) {
-			services.clear();
-			for(Service service : provider.getServices()) {
-				services.add(new SLinkedHashMap()
-						.add("type", service.getType())
-						.add("algorithm", service.getAlgorithm())
-						.add("class", service.getClassName())
-						);
-			}// end of getServices
-			providers.add(new SLinkedHashMap()
-					.add("name", provider.getName())
-					.add("version", provider.getVersionStr())
-					.add("info", provider.getInfo())
-					.add("services", services)
-					);
-		}// end of getProviders
-		return providers;
-	}// end of providers
 	
 	public static byte[] digest(
 			final byte[] data
@@ -125,7 +85,7 @@ public class SSecurity {
 			) throws NoSuchAlgorithmException, NoSuchProviderException {
 		return digest(
 				data
-				, _S_SHA256//algorithm
+				, SAlgorithm._S_SHA256//algorithm
 				);
 	}// end of digest
 	
@@ -226,7 +186,7 @@ public class SSecurity {
 		return encrypt(
 				data
 				, key
-				, _S_AES_CBC_PKCS5PADDING//transformation
+				, SAlgorithm._S_AES_CBC_PKCS5PADDING//transformation
 				, null//algorithm_parameter_spec
 				, null//provider
 				);
@@ -289,7 +249,7 @@ public class SSecurity {
 		return decrypt(
 				data
 				, key
-				, _S_AES_CBC_PKCS5PADDING//transformation
+				, SAlgorithm._S_AES_CBC_PKCS5PADDING//transformation
 				, null//algorithm_parameter_spec
 				, null//provider
 				);
@@ -304,7 +264,7 @@ public class SSecurity {
 	public static SecretKeySpec secret_key_spec(
 			final byte[] key
 			) {
-		return new SecretKeySpec(key, _S_AES);
+		return new SecretKeySpec(key, SAlgorithm._S_AES);
 	}// end of secret_key_spec
 	
 	public static byte[] secure_random_iv(

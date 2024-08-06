@@ -76,6 +76,7 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.encoders.Hex;
 
+import seung.kimchi.types.SAlgorithm;
 import seung.kimchi.types.SSignCertDer;
 import seung.kimchi.types.SSignPriKey;
 
@@ -113,7 +114,7 @@ public class SCertificate {
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 		return public_key(
 				encoded
-				, SSecurity._S_RSA//algorithm
+				, SAlgorithm._S_RSA//algorithm
 				);
 	}// end of public_key
 	public static PublicKey public_key(
@@ -122,7 +123,7 @@ public class SCertificate {
 			, final String provider
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return public_key(
-				SConvert.decode_hex(encoded_hex)
+				SFormat.decode_hex(encoded_hex)
 				, algorithm
 				, provider
 				);
@@ -132,7 +133,7 @@ public class SCertificate {
 			, final String algorithm
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return public_key(
-				SConvert.decode_hex(encoded_hex)
+				SFormat.decode_hex(encoded_hex)
 				, algorithm
 				, BouncyCastleProvider.PROVIDER_NAME//provider
 				);
@@ -141,8 +142,8 @@ public class SCertificate {
 			final String encoded_hex
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return public_key(
-				SConvert.decode_hex(encoded_hex)
-				, SSecurity._S_RSA//algorithm
+				SFormat.decode_hex(encoded_hex)
+				, SAlgorithm._S_RSA//algorithm
 				);
 	}// end of public_key
 	
@@ -175,7 +176,7 @@ public class SCertificate {
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 		return private_key(
 				encoded
-				, SSecurity._S_RSA//algorithm
+				, SAlgorithm._S_RSA//algorithm
 				);
 	}// end of private_key
 	public static PrivateKey private_key(
@@ -184,7 +185,7 @@ public class SCertificate {
 			, final String provider
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return private_key(
-				SConvert.decode_hex(encoded_hex)
+				SFormat.decode_hex(encoded_hex)
 				, algorithm
 				, provider
 				);
@@ -194,7 +195,7 @@ public class SCertificate {
 			, final String algorithm
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return private_key(
-				SConvert.decode_hex(encoded_hex)
+				SFormat.decode_hex(encoded_hex)
 				, algorithm
 				, BouncyCastleProvider.PROVIDER_NAME//provider
 				);
@@ -203,8 +204,8 @@ public class SCertificate {
 			final String encoded_hex
 			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
 		return private_key(
-				SConvert.decode_hex(encoded_hex)
-				, SSecurity._S_RSA//algorithm
+				SFormat.decode_hex(encoded_hex)
+				, SAlgorithm._S_RSA//algorithm
 				);
 	}// end of private_key
 	
@@ -693,7 +694,7 @@ public class SCertificate {
 			break;
 		}// end of while
 		
-		Cipher cipher = Cipher.getInstance(SSecurity._S_SEED_CBC_PKCS5PADDING, BouncyCastleProvider.PROVIDER_NAME);
+		Cipher cipher = Cipher.getInstance(SAlgorithm._S_SEED_CBC_PKCS5PADDING, BouncyCastleProvider.PROVIDER_NAME);
 		cipher.init(
 				Cipher.DECRYPT_MODE//opmode
 				, secretKeySpec//key
@@ -715,7 +716,7 @@ public class SCertificate {
 		
 		byte[] decrypted = decrypt_private_key(sign_pri_key, secret);
 		
-		KeyFactory keyFactory = KeyFactory.getInstance(SSecurity._S_RSA);
+		KeyFactory keyFactory = KeyFactory.getInstance(SAlgorithm._S_RSA);
 		PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(decrypted));
 		
 		ContentSigner contentSigner = new JcaContentSignerBuilder(s_sign_cert_der.signiture_algorithm_name())
