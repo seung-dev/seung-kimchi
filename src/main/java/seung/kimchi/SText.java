@@ -86,28 +86,45 @@ public class SText {
 	private static final String _CHAR_DIGITS = "0123456789";
 	private static final String _CHAR_SPECIAL = "!@#_";
 	
+	public static String random_number(final int length) {
+		
+		if (length < 1) {
+			throw new IllegalArgumentException("Unexpected value.");
+		}
+		
+		StringBuilder random = new StringBuilder();
+		
+		SecureRandom secureRandom = new SecureRandom();
+		
+		for(int i = 0; i < length; i++) {
+			random.append(_CHAR_DIGITS.charAt(secureRandom.nextInt(_CHAR_DIGITS.length())));
+		}
+		
+		return random.toString();
+	}// end of random_number
+	
 	public static String random_password(final int length, final String char_special) {
 		
 		if (length < 4) {
-			throw new IllegalArgumentException("Length must be greater than 0");
+			throw new IllegalArgumentException("Unexpected value.");
 		}
 		
 		String char_all = _CHAR_UPPER + _CHAR_LOWER + _CHAR_DIGITS + char_special;
 		
-		StringBuilder password = new StringBuilder();
+		StringBuilder random = new StringBuilder();
 		
-		SecureRandom random = new SecureRandom();
+		SecureRandom secureRandom = new SecureRandom();
 		
-		password.append(_CHAR_UPPER.charAt(random.nextInt(_CHAR_UPPER.length())));
-		password.append(_CHAR_LOWER.charAt(random.nextInt(_CHAR_LOWER.length())));
-		password.append(_CHAR_DIGITS.charAt(random.nextInt(_CHAR_DIGITS.length())));
-		password.append(char_special.charAt(random.nextInt(char_special.length())));
+		random.append(_CHAR_UPPER.charAt(secureRandom.nextInt(_CHAR_UPPER.length())));
+		random.append(_CHAR_LOWER.charAt(secureRandom.nextInt(_CHAR_LOWER.length())));
+		random.append(_CHAR_DIGITS.charAt(secureRandom.nextInt(_CHAR_DIGITS.length())));
+		random.append(char_special.charAt(secureRandom.nextInt(char_special.length())));
 		
 		for(int i = 4; i < length; i++) {
-			password.append(char_all.charAt(random.nextInt(char_all.length())));
+			random.append(char_all.charAt(secureRandom.nextInt(char_all.length())));
 		}
 		
-		List<String> collection = Arrays.asList(password.toString().split(""));
+		List<String> collection = Arrays.asList(random.toString().split(""));
 		
 		while(true) {
 			
