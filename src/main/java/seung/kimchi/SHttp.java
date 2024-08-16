@@ -280,6 +280,21 @@ public class SHttp {
 	}// end of get
 	public static HttpResponse<byte[]> get(
 			final String url
+			, final String proxy_host
+			, final int proxy_port
+			) {
+		return get(
+				url
+				, proxy_host
+				, proxy_port
+				, 1000 * 3//connection_timeout
+				, 1000 * 60//socker_timeout
+				, null//headers
+				, null//query
+				);
+	}// end of get
+	public static HttpResponse<byte[]> get(
+			final String url
 			, final SLinkedHashMap headers
 			, final SLinkedHashMap query
 			) {

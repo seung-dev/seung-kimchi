@@ -100,6 +100,18 @@ public class SDate {
 		return format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", new Date(), TimeZone.getDefault());
 	}// end of format
 	
+	public static String format(
+			String pattern_post
+			, String pattern_prev
+			, String date
+			) {
+		return LocalDate.parse(
+				date//text
+				, DateTimeFormatter.ofPattern(pattern_prev)//formatter
+				)
+				.format(DateTimeFormatter.ofPattern(pattern_post));
+	}// end of format
+	
 	public static Date date(
 			final String date
 			, final String pattern

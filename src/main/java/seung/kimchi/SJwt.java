@@ -112,7 +112,7 @@ public class SJwt {
 			) throws UnsupportedEncodingException {
 		return SHttp.cookie(
 				name
-				, _JWT_COOKIE_PREFIX.concat(jws)//value
+				, SText.is_empty(jws) ? "" : _JWT_COOKIE_PREFIX.concat(jws)//value
 				, domain
 				, path
 				, TimeZone.getTimeZone(ZoneId.of("GMT"))
