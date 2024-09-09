@@ -85,9 +85,9 @@ public class SSignCertDer extends SType {
 			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 			x509_certificate = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (CertificateException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return x509_certificate;

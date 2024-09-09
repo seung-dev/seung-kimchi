@@ -61,9 +61,9 @@ public class SSecurity {
 			return digest;
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of digest
@@ -122,11 +122,11 @@ public class SSecurity {
 			return mac.doFinal(message);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeyException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of hmac
@@ -150,7 +150,7 @@ public class SSecurity {
 			keyPairGenerator.initialize(key_size);
 			return keyPairGenerator.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of key_pair
@@ -181,19 +181,19 @@ public class SSecurity {
 			return cipher.doFinal(data);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeyException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (BadPaddingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of encrypt
@@ -263,19 +263,19 @@ public class SSecurity {
 			return cipher.doFinal(data);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeyException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (BadPaddingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of decrypt
@@ -376,9 +376,9 @@ public class SSecurity {
 			return keyPairGenerator.generateKeyPair();
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of keypair

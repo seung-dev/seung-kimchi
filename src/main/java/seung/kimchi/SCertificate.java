@@ -105,11 +105,11 @@ public class SCertificate {
 			return keyFactory.generatePublic(encodedKeySpec);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeySpecException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of public_key
@@ -144,7 +144,7 @@ public class SCertificate {
 					, provider
 					);
 		} catch (DecoderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of public_key
@@ -160,7 +160,7 @@ public class SCertificate {
 					, BouncyCastleProvider.PROVIDER_NAME//provider
 					);
 		} catch (DecoderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of public_key
@@ -173,7 +173,7 @@ public class SCertificate {
 					, SAlgorithm._S_RSA//algorithm
 					);
 		} catch (DecoderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 	}// end of public_key
 	
@@ -196,11 +196,11 @@ public class SCertificate {
 			return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeySpecException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of private_key
@@ -235,7 +235,7 @@ public class SCertificate {
 					, provider
 					);
 		} catch (DecoderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of private_key
@@ -251,7 +251,7 @@ public class SCertificate {
 					, BouncyCastleProvider.PROVIDER_NAME//provider
 					);
 		} catch (DecoderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try 
 		
 	}// end of private_key
@@ -265,7 +265,7 @@ public class SCertificate {
 					, SAlgorithm._S_RSA//algorithm
 					);
 		} catch (DecoderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try 
 		
 	}// end of private_key
@@ -282,9 +282,9 @@ public class SCertificate {
 			CertificateFactory certificateFactory = CertificateFactory.getInstance(_S_X509);
 			x509_certificate = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (CertificateException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return x509_certificate;
@@ -601,7 +601,7 @@ public class SCertificate {
 		try {
 			return s_sign_cert_der(FileUtils.readFileToByteArray(file));
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of s_sign_cert_der
@@ -687,7 +687,7 @@ public class SCertificate {
 		try {
 			return s_sign_pri_key(FileUtils.readFileToByteArray(file));
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of s_sign_pri_key
@@ -786,21 +786,21 @@ public class SCertificate {
 			decrypted = cipher.doFinal(s_sign_pri_key.private_key());
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeyException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (BadPaddingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return decrypted;
@@ -880,17 +880,17 @@ public class SCertificate {
 			return cmsSignedData.getEncoded(_S_DER);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (InvalidKeySpecException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (OperatorCreationException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (CertificateEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (CMSException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of sign
@@ -909,7 +909,7 @@ public class SCertificate {
 					, message
 					);
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of sign
@@ -992,7 +992,7 @@ public class SCertificate {
 			return SSecurity.digest(digested, algorithm);
 			
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of generate_vid
@@ -1056,7 +1056,7 @@ public class SCertificate {
 					, rrn
 					);
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of verify_vid

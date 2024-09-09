@@ -59,7 +59,7 @@ public class SPdf {
 			pdf = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return pdf;
@@ -95,7 +95,7 @@ public class SPdf {
 		try {
 			return encrypt(FileUtils.readFileToByteArray(file), key);
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 	}// end of encrypt
 	
@@ -120,7 +120,7 @@ public class SPdf {
 			pdf = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return pdf;
