@@ -14,6 +14,8 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import com.ibm.icu.util.ChineseCalendar;
 
+import seung.kimchi.types.SException;
+
 public class SDate {
 
 	public static final String _S_MILLISECOND = "ms";
@@ -117,22 +119,28 @@ public class SDate {
 			, final String pattern
 			, final TimeZone time_zone
 			, final Locale locale
-			) throws ParseException {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, locale);
-		simpleDateFormat.setTimeZone(time_zone);
-		return simpleDateFormat.parse(date);
+			) throws SException {
+		
+		try {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, locale);
+			simpleDateFormat.setTimeZone(time_zone);
+			return simpleDateFormat.parse(date);
+		} catch (ParseException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of date
 	public static Date date(
 			final String date
 			, final String pattern
 			, final TimeZone time_zone
-			) throws ParseException {
+			) throws SException {
 		return date(date, pattern, time_zone, Locale.getDefault());
 	}// end of date
 	public static Date date(
 			final String date
 			, final String pattern
-			) throws ParseException {
+			) throws SException {
 		return date(date, pattern, TimeZone.getDefault(), Locale.getDefault());
 	}// end of date
 	

@@ -1,14 +1,12 @@
 package seung.kimchi;
 
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import seung.kimchi.types.SAlgorithm;
 import seung.kimchi.types.SCharset;
+import seung.kimchi.types.SException;
 import seung.kimchi.types.SHttpHeader;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.SMediaType;
@@ -27,7 +25,7 @@ public class SNcloud {
 			, String access_key
 			, byte[] secret_key
 			, byte[] message
-			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		
 		SLinkedHashMap request_header = new SLinkedHashMap();
 		
@@ -56,20 +54,28 @@ public class SNcloud {
 			, String charset
 			, String method
 			, String url
-			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, UnsupportedEncodingException {
-		return request_header(
-				timestamp
-				, access_key
-				, secret_key.getBytes(charset)//secret_key
-				, String.format("%s %s\n%d\n%s"
-						, method
-						, url
-						, timestamp
-						, access_key
-						)
-						.getBytes(charset)
-						//message
-				);
+			) throws SException {
+		
+		try {
+			
+			return request_header(
+					timestamp
+					, access_key
+					, secret_key.getBytes(charset)//secret_key
+					, String.format("%s %s\n%d\n%s"
+							, method
+							, url
+							, timestamp
+							, access_key
+							)
+							.getBytes(charset)
+							//message
+					);
+			
+		} catch (UnsupportedEncodingException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of request_header
 	
 }

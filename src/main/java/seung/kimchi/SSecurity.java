@@ -25,6 +25,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import seung.kimchi.types.SAlgorithm;
+import seung.kimchi.types.SException;
 
 public class SSecurity {
 
@@ -36,33 +37,41 @@ public class SSecurity {
 			, final String algorithm
 			, final String provider
 			, final int iteration
-			) throws NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		
-		byte[] digest = null;
-		
-		MessageDigest messageDigest = null;
-		if(provider == null) {
-			messageDigest = MessageDigest.getInstance(algorithm);
-		} else {
-			messageDigest = MessageDigest.getInstance(algorithm, provider);
-		}
-		
-		for(int i = 0; i < iteration; i++) {
-			if(digest == null) {
-				messageDigest.update(data);
+		try {
+			
+			MessageDigest messageDigest = null;
+			if(provider == null) {
+				messageDigest = MessageDigest.getInstance(algorithm);
 			} else {
-				messageDigest.update(digest);
+				messageDigest = MessageDigest.getInstance(algorithm, provider);
 			}
-			digest = messageDigest.digest();
-		}
+			
+			byte[] digest = null;
+			for(int i = 0; i < iteration; i++) {
+				if(digest == null) {
+					messageDigest.update(data);
+				} else {
+					messageDigest.update(digest);
+				}
+				digest = messageDigest.digest();
+			}
+			
+			return digest;
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		return digest;
 	}// end of digest
 	public static byte[] digest(
 			final byte[] data
 			, final String algorithm
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		return digest(
 				data
 				, algorithm
@@ -73,7 +82,7 @@ public class SSecurity {
 	public static byte[] digest(
 			final byte[] data
 			, final String algorithm
-			) throws NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		return digest(
 				data
 				, algorithm
@@ -82,7 +91,7 @@ public class SSecurity {
 	}// end of digest
 	public static byte[] digest(
 			final byte[] data
-			) throws NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		return digest(
 				data
 				, SAlgorithm._S_SHA256//algorithm
@@ -94,21 +103,32 @@ public class SSecurity {
 			, final String provider
 			, final byte[] key
 			, final byte[] message
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
+			) throws SException {
 		
-		Mac mac = null;
+		try {
+			
+			Mac mac = null;
+			
+			if(provider != null) {
+				mac = Mac.getInstance(algorithm, provider);
+			} else {
+				mac = Mac.getInstance(algorithm);
+			}
+			
+			SecretKeySpec secretKeySpec = new SecretKeySpec(key, algorithm);
+			
+			mac.init(secretKeySpec);
+			
+			return mac.doFinal(message);
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeyException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		if(provider != null) {
-			mac = Mac.getInstance(algorithm, provider);
-		} else {
-			mac = Mac.getInstance(algorithm);
-		}
-		
-		SecretKeySpec secretKeySpec = new SecretKeySpec(key, algorithm);
-		
-		mac.init(secretKeySpec);
-		
-		return mac.doFinal(message);
 	}// end of hmac
 	public static byte[] hmac(
 			final String algorithm
@@ -116,17 +136,23 @@ public class SSecurity {
 			, final String key
 			, final String message
 			, final Charset charset
-			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		return hmac(algorithm, provider, key.getBytes(charset), message.getBytes(charset));
 	}// end of hmac
 	
 	public static KeyPair key_pair(
 			String algorithm
 			, int key_size
-			) throws NoSuchAlgorithmException {
-		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
-		keyPairGenerator.initialize(key_size);
-		return keyPairGenerator.generateKeyPair();
+			) throws SException {
+		
+		try {
+			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
+			keyPairGenerator.initialize(key_size);
+			return keyPairGenerator.generateKeyPair();
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of key_pair
 	
 	public static byte[] encrypt(
@@ -135,29 +161,48 @@ public class SSecurity {
 			, final String transformation
 			, final AlgorithmParameterSpec algorithm_parameter_spec
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		
-		Cipher cipher = null;
-		if(provider == null) {
-			cipher = Cipher.getInstance(transformation);
-		} else {
-			cipher = Cipher.getInstance(transformation, provider);
-		}
+		try {
+			
+			Cipher cipher = null;
+			if(provider == null) {
+				cipher = Cipher.getInstance(transformation);
+			} else {
+				cipher = Cipher.getInstance(transformation, provider);
+			}
+			
+			if(algorithm_parameter_spec == null) {
+				cipher.init(Cipher.ENCRYPT_MODE, key);
+			} else {
+				cipher.init(Cipher.ENCRYPT_MODE, key, algorithm_parameter_spec);
+			}
+			
+			return cipher.doFinal(data);
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchPaddingException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeyException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidAlgorithmParameterException e) {
+			throw new SException("Something went wrong.");
+		} catch (IllegalBlockSizeException e) {
+			throw new SException("Something went wrong.");
+		} catch (BadPaddingException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		if(algorithm_parameter_spec == null) {
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-		} else {
-			cipher.init(Cipher.ENCRYPT_MODE, key, algorithm_parameter_spec);
-		}
-		
-		return cipher.doFinal(data);
 	}// end of encrypt
 	public static byte[] encrypt(
 			final byte[] data
 			, final Key key
 			, final String transformation
 			, final AlgorithmParameterSpec algorithm_parameter_spec
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		return encrypt(
 				data
 				, key
@@ -170,7 +215,7 @@ public class SSecurity {
 			final byte[] data
 			, final Key key
 			, final String transformation
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		return encrypt(
 				data
 				, key
@@ -182,7 +227,7 @@ public class SSecurity {
 	public static byte[] encrypt(
 			final byte[] data
 			, final Key key
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		return encrypt(
 				data
 				, key
@@ -198,29 +243,48 @@ public class SSecurity {
 			, final String transformation
 			, final AlgorithmParameterSpec algorithm_parameter_spec
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		
-		Cipher cipher = null;
-		if(provider == null) {
-			cipher = Cipher.getInstance(transformation);
-		} else {
-			cipher = Cipher.getInstance(transformation, provider);
-		}
+		try {
+			
+			Cipher cipher = null;
+			if(provider == null) {
+				cipher = Cipher.getInstance(transformation);
+			} else {
+				cipher = Cipher.getInstance(transformation, provider);
+			}
+			
+			if(algorithm_parameter_spec == null) {
+				cipher.init(Cipher.DECRYPT_MODE, key);
+			} else {
+				cipher.init(Cipher.DECRYPT_MODE, key, algorithm_parameter_spec);
+			}
+			
+			return cipher.doFinal(data);
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchPaddingException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeyException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidAlgorithmParameterException e) {
+			throw new SException("Something went wrong.");
+		} catch (IllegalBlockSizeException e) {
+			throw new SException("Something went wrong.");
+		} catch (BadPaddingException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		if(algorithm_parameter_spec == null) {
-			cipher.init(Cipher.DECRYPT_MODE, key);
-		} else {
-			cipher.init(Cipher.DECRYPT_MODE, key, algorithm_parameter_spec);
-		}
-		
-		return cipher.doFinal(data);
 	}// end of decrypt
 	public static byte[] decrypt(
 			final byte[] data
 			, final Key key
 			, final String transformation
 			, final AlgorithmParameterSpec algorithm_parameter_spec
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		return decrypt(
 				data
 				, key
@@ -233,7 +297,7 @@ public class SSecurity {
 			final byte[] data
 			, final Key key
 			, final String transformation
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		return decrypt(
 				data
 				, key
@@ -245,7 +309,7 @@ public class SSecurity {
 	public static byte[] decrypt(
 			final byte[] data
 			, final Key key
-			) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		return decrypt(
 				data
 				, key
@@ -289,25 +353,34 @@ public class SSecurity {
 			final String algorithm
 			, final String provider
 			, final int key_size
-			) throws NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		
-		KeyPairGenerator keyPairGenerator = null;
-		
-		if(provider == null) {
-			keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
-		} else {
-			keyPairGenerator = KeyPairGenerator.getInstance(
-					algorithm
-					, provider
+		try {
+			
+			KeyPairGenerator keyPairGenerator = null;
+			
+			if(provider == null) {
+				keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
+			} else {
+				keyPairGenerator = KeyPairGenerator.getInstance(
+						algorithm
+						, provider
+						);
+			}
+			
+			keyPairGenerator.initialize(
+					key_size
+					, new SecureRandom()
 					);
-		}
+			
+			return keyPairGenerator.generateKeyPair();
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		keyPairGenerator.initialize(
-				key_size
-				, new SecureRandom()
-				);
-		
-		return keyPairGenerator.generateKeyPair();
 	}// end of keypair
 	
 	public static int[] xxtea_int_array_bak(final String data) {

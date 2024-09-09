@@ -10,15 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import seung.kimchi.SJson;
 
 @SuppressWarnings("rawtypes")
 public class SLinkedHashMap extends LinkedHashMap {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8004935297956073280L;
 	
 	private static final List<String> _S_EXCLUDE_REFLECTION_FIELDS = Arrays.asList("log", "serialVersionUID");
 	
@@ -27,20 +24,20 @@ public class SLinkedHashMap extends LinkedHashMap {
 	public SLinkedHashMap(Map data) {
 		merge(data);
 	}
-	public SLinkedHashMap(String data) throws JsonMappingException, JsonProcessingException {
+	public SLinkedHashMap(String data) throws SException {
 		merge(data);
 	}
-	public SLinkedHashMap(Object data) throws IllegalArgumentException, IllegalAccessException {
+	public SLinkedHashMap(Object data) throws SException {
 		merge(data);
 	}
 	public SLinkedHashMap(List data) {
 		merge(data);
 	}
 	
-	public String stringify(boolean is_pretty) throws JsonProcessingException {
+	public String stringify(boolean is_pretty) throws SException {
 		return SJson.stringify(this, is_pretty);
 	}
-	public String stringify() throws JsonProcessingException {
+	public String stringify() throws SException {
 		return stringify(false);
 	}
 	
@@ -100,7 +97,10 @@ public class SLinkedHashMap extends LinkedHashMap {
 		return get_text(key, null);
 	}
 	
-	public Boolean get_bool(Object key, Boolean default_value) {
+	public Boolean get_bool(
+			Object key
+			, Boolean default_value
+			) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
@@ -118,100 +118,100 @@ public class SLinkedHashMap extends LinkedHashMap {
 			default:
 				break;
 		}
-		throw new ClassCastException("The value cannot be cast to Boolean.");
+		throw new SException("Invalid value.");
 	}
-	public Boolean get_bool(Object key) {
+	public Boolean get_bool(Object key) throws SException {
 		return get_bool(key, null);
 	}
 	
-	public Integer get_int(Object key, Integer default_value) {
+	public Integer get_int(Object key, Integer default_value) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
 		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to Integer. value=%s", value));
+		if(Pattern.matches("[0-9+-]+", value)) {
+			return Integer.parseInt(value);
 		}
-		return Integer.parseInt(value);
+		throw new SException("Invalid value.");
 	}
-	public Integer get_int(Object key) {
+	public Integer get_int(Object key) throws SException {
 		return get_int(key, null);
 	}
 	
-	public Long get_long(Object key, Long default_value) {
+	public Long get_long(Object key, Long default_value) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
 		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to Long. value=%s", value));
+		if(Pattern.matches("[0-9+-]+", value)) {
+			return Long.parseLong(value);
 		}
-		return Long.parseLong(value);
+		throw new SException("Invalid value.");
 	}
-	public Long get_long(Object key) {
+	public Long get_long(Object key) throws SException {
 		return get_long(key, null);
 	}
 	
-	public Double get_double(Object key, Double default_value) {
+	public Double get_double(Object key, Double default_value) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
 		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-.]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to Double. value=%s", value));
+		if(Pattern.matches("[0-9+-.]+", value)) {
+			return Double.parseDouble(value);
 		}
-		return Double.parseDouble(value);
+		throw new SException("Invalid value.");
 	}
-	public Double get_double(Object key) {
+	public Double get_double(Object key) throws SException {
 		return get_double(key, null);
 	}
 	
-	public BigDecimal get_decimal(Object key, BigDecimal default_value) {
+	public BigDecimal get_decimal(Object key, BigDecimal default_value) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
 		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-.]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to BigInteger. value=%s", value));
+		if(Pattern.matches("[0-9+-.]+", value)) {
+			return BigDecimal.valueOf(get_double(key));
 		}
-		return BigDecimal.valueOf(get_double(key));
+		throw new SException("Invalid value.");
 	}
-	public BigDecimal get_decimal(Object key) {
+	public BigDecimal get_decimal(Object key) throws SException {
 		return get_decimal(key, null);
 	}
 	
-	public BigInteger get_bigint(Object key, BigInteger default_value) {
+	public BigInteger get_bigint(Object key, BigInteger default_value) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
 		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to BigInteger. value=%s", value));
+		if(Pattern.matches("[0-9+-]+", value)) {
+			return BigInteger.valueOf(get_long(key));
 		}
-		return BigInteger.valueOf(get_long(key));
+		throw new SException("Invalid value.");
 	}
-	public BigInteger get_bigint(Object key) {
+	public BigInteger get_bigint(Object key) throws SException {
 		return get_bigint(key, null);
 	}
 	
-	public BigDecimal get_bigdecimal(Object key, BigDecimal default_value) {
+	public BigDecimal get_bigdecimal(Object key, BigDecimal default_value) throws SException {
 		if(is_empty(key)) {
 			return default_value;
 		}
 		String value = get_text(key);
-		if(!Pattern.matches("[0-9+-.]+", value)) {
-			throw new NumberFormatException(String.format("Failed to cast to BigDecimal. value=%s", value));
+		if(Pattern.matches("[0-9+-.]+", value)) {
+			return new BigDecimal(value);
 		}
-		return new BigDecimal(value);
+		throw new SException("Invalid value.");
 	}
-	public BigDecimal get_bigdecimal(Object key, int default_value) {
+	public BigDecimal get_bigdecimal(Object key, int default_value) throws SException {
 		return get_bigdecimal(key, new BigDecimal(default_value));
 	}
-	public BigDecimal get_bigdecimal(Object key) {
+	public BigDecimal get_bigdecimal(Object key) throws SException {
 		return get_bigdecimal(key, null);
 	}
 	
-	public Map get_map(Object key) {
+	public Map get_map(Object key) throws SException {
 		if(is_null(key)) {
 			return null;
 		}
@@ -219,10 +219,10 @@ public class SLinkedHashMap extends LinkedHashMap {
 		if(value instanceof Map) {
 			return (Map) value;
 		}
-		throw new ClassCastException("Failed to cast to Map.");
+		throw new SException("Invalid value.");
 	}
 	
-	public SLinkedHashMap get_slinkedhashmap(Object key) throws IllegalArgumentException, IllegalAccessException {
+	public SLinkedHashMap get_slinkedhashmap(Object key) throws SException {
 		if(is_null(key)) {
 			return null;
 		}
@@ -233,7 +233,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 		return new SLinkedHashMap(value);
 	}// end of get_slinkedhashmap
 	
-	public List get_list(Object key) {
+	public List get_list(Object key) throws SException {
 		if(is_null(key)) {
 			return null;
 		}
@@ -241,11 +241,11 @@ public class SLinkedHashMap extends LinkedHashMap {
 		if(value instanceof List) {
 			return (List) value;
 		}
-		throw new ClassCastException("Failed to cast to List.");
+		throw new SException("Invalid value.");
 	}// end of get_list
 	
 	@SuppressWarnings("unchecked")
-	public List<SLinkedHashMap> get_list_slinkedhashmap(Object key) {
+	public List<SLinkedHashMap> get_list_slinkedhashmap(Object key) throws SException {
 		if(is_null(key)) {
 			return null;
 		}
@@ -253,7 +253,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 		if(value instanceof List) {
 			return (List<SLinkedHashMap>) value;
 		}
-		throw new ClassCastException("Failed to cast to List<SLinkedHashMap>.");
+		throw new SException("Invalid value.");
 	}// end of get_list_slinkedhashmap
 	
 	@SuppressWarnings("unchecked")
@@ -389,28 +389,34 @@ public class SLinkedHashMap extends LinkedHashMap {
 		return this;
 	}// end of merge
 	@SuppressWarnings("unchecked")
-	public SLinkedHashMap merge(String data) throws JsonMappingException, JsonProcessingException {
+	public SLinkedHashMap merge(String data) throws SException {
 		this.putAll(SJson.to_slinkedhashmap(data));
 		return this;
 	}// end of merge
 	@SuppressWarnings("unchecked")
-	public SLinkedHashMap merge(Object data) throws IllegalArgumentException, IllegalAccessException {
+	public SLinkedHashMap merge(Object data) throws SException {
 		String field_name = "";
-		for(Field field : data.getClass().getSuperclass().getDeclaredFields()) {
-			field.setAccessible(true);
-			field_name = field.getName();
-			if(_S_EXCLUDE_REFLECTION_FIELDS.contains(field_name)) {
-				continue;
+		try {
+			for(Field field : data.getClass().getSuperclass().getDeclaredFields()) {
+				field.setAccessible(true);
+				field_name = field.getName();
+				if(_S_EXCLUDE_REFLECTION_FIELDS.contains(field_name)) {
+					continue;
+				}
+				this.put(field_name, field.get(data));
 			}
-			this.put(field_name, field.get(data));
-		}
-		for(Field field : data.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			field_name = field.getName();
-			if(_S_EXCLUDE_REFLECTION_FIELDS.contains(field_name)) {
-				continue;
+			for(Field field : data.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				field_name = field.getName();
+				if(_S_EXCLUDE_REFLECTION_FIELDS.contains(field_name)) {
+					continue;
+				}
+				this.put(field_name, field.get(data));
 			}
-			this.put(field_name, field.get(data));
+		} catch (IllegalArgumentException e) {
+			throw new SException(e, "Invalid value.");
+		} catch (IllegalAccessException e) {
+			throw new SException(e, "Invalid value.");
 		}
 		return this;
 	}// end of merge

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.introspect.DefaultAccessorNamingStrategy;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import seung.kimchi.types.SException;
 import seung.kimchi.types.SLinkedHashMap;
 
 public class SJson {
@@ -46,30 +47,52 @@ public class SJson {
 	public static String stringify(
 			Object data
 			, boolean indent
-			) throws JsonProcessingException {
-		return object_mapper()
-				.configure(SerializationFeature.INDENT_OUTPUT, indent)
-				.writeValueAsString(data)
-				;
+			) throws SException {
+		try {
+			return object_mapper()
+					.configure(SerializationFeature.INDENT_OUTPUT, indent)
+					.writeValueAsString(data)
+					;
+		} catch (JsonProcessingException e) {
+			throw new SException(e, "Invalid value.");
+		}
 	}// end of stringify
 	
-	public static <T> T parse(String data, Class<T> type) throws JsonMappingException, JsonProcessingException {
-		return object_mapper()
-				.readValue(data, type)
-				;
+	public static <T> T parse(
+			String data
+			, Class<T> type
+			) throws SException {
+		try {
+			return object_mapper()
+					.readValue(data, type)
+					;
+		} catch (JsonMappingException e) {
+			throw new SException(e, "Invalid value.");
+		} catch (JsonProcessingException e) {
+			throw new SException(e, "Invalid value.");
+		}
 	}// end of parse
 	
-	public static <T> T parse(String data, TypeReference<T> type) throws JsonMappingException, JsonProcessingException {
-		return object_mapper()
-				.readValue(data, type)
-				;
+	public static <T> T parse(
+			String data
+			, TypeReference<T> type
+			) throws SException {
+		try {
+			return object_mapper()
+					.readValue(data, type)
+					;
+		} catch (JsonMappingException e) {
+			throw new SException(e, "Invalid value.");
+		} catch (JsonProcessingException e) {
+			throw new SException(e, "Invalid value.");
+		}
 	}// end of parse
 	
-	public static SLinkedHashMap to_slinkedhashmap(String data) throws JsonMappingException, JsonProcessingException {
+	public static SLinkedHashMap to_slinkedhashmap(String data) throws SException {
 		return parse(data, SLinkedHashMap.class);
 	}// end of to_slinkedhashmap
 	
-	public static List<SLinkedHashMap> to_list_slinkedhashmap(String data) throws JsonMappingException, JsonProcessingException {
+	public static List<SLinkedHashMap> to_list_slinkedhashmap(String data) throws SException {
 		return parse(data, new TypeReference<List<SLinkedHashMap>>() {});
 	}// end of to_list_slinkedhashmap
 	

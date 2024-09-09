@@ -3,8 +3,6 @@ package seung.kimchi.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import lombok.Builder;
 import seung.kimchi.SText;
 
@@ -57,7 +55,7 @@ public class SGoogleChat {
 		return widget;
 	}// end of card_widget
 	
-	public String stringify() throws JsonProcessingException {
+	public String stringify() throws SException {
 		
 		SLinkedHashMap json = new SLinkedHashMap();
 		

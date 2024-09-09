@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import seung.kimchi.types.SException;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.excel.SCell;
 import seung.kimchi.types.excel.SExcel;
@@ -90,12 +91,11 @@ public class SXlsx {
 		return s_sheet;
 	}// end of read_sheet
 	
-	public static SExcel read(final byte[] file) throws IOException {
+	public static SExcel read(
+			final byte[] file
+			) throws SException {
 		
 		SExcel s_excel = null;
-		SExcel.builder()
-				.build()
-				;
 		
 		try (
 				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file);
@@ -114,7 +114,7 @@ public class SXlsx {
 			}// end of sheet
 			
 		} catch (IOException e) {
-			throw e;
+			throw new SException("Something went wrong.");
 		}// end of try
 		
 		return s_excel;
@@ -188,7 +188,7 @@ public class SXlsx {
 			final XSSFWorkbook read_workbook
 			, final XSSFSheet read_sheet
 			, SLinkedHashMap sheet_data
-			) {
+			) throws SException {
 		
 		int row_no = sheet_data.get_int(_S_ROW_NO_BEGIN);
 		int cell_no_max = read_sheet.getRow(row_no).getPhysicalNumberOfCells() - 1;
@@ -238,7 +238,7 @@ public class SXlsx {
 			final XSSFWorkbook read_workbook
 			, final XSSFSheet read_sheet
 			, SLinkedHashMap sheet_data
-			) {
+			) throws SException {
 		
 		if("1".equals(sheet_data.get_text("is_map", ""))) {
 //			write_sheet_cells(read_sheet, sheet_data);
@@ -251,7 +251,7 @@ public class SXlsx {
 	public static byte[] write(
 			final byte[] template
 			, final SLinkedHashMap data
-			) throws IOException {
+			) throws SException {
 		
 		byte[] excel = null;
 		
@@ -290,7 +290,7 @@ public class SXlsx {
 			excel = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
-			throw e;
+			throw new SException("Something went wrong.");
 		}// end of try
 		
 		return excel;
