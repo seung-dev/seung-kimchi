@@ -31,7 +31,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.io.FileUtils;
 import org.bouncycastle.asn1.ASN1BitString;
 import org.bouncycastle.asn1.ASN1Encodable;
@@ -136,45 +135,29 @@ public class SCertificate {
 			, final String algorithm
 			, final String provider
 			) throws SException {
-		
-		try {
-			return public_key(
-					SFormat.decode_hex(encoded_hex)
-					, algorithm
-					, provider
-					);
-		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try
-		
+		return public_key(
+				SFormat.decode_hex(encoded_hex)
+				, algorithm
+				, provider
+				);
 	}// end of public_key
 	public static PublicKey public_key(
 			final String encoded_hex
 			, final String algorithm
 			) throws SException {
-		
-		try {
-			return public_key(
-					SFormat.decode_hex(encoded_hex)
-					, algorithm
-					, BouncyCastleProvider.PROVIDER_NAME//provider
-					);
-		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try
-		
+		return public_key(
+				SFormat.decode_hex(encoded_hex)
+				, algorithm
+				, BouncyCastleProvider.PROVIDER_NAME//provider
+				);
 	}// end of public_key
 	public static PublicKey public_key(
 			final String encoded_hex
 			) throws SException {
-		try {
-			return public_key(
-					SFormat.decode_hex(encoded_hex)
-					, SAlgorithm._S_RSA//algorithm
-					);
-		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try
+		return public_key(
+				SFormat.decode_hex(encoded_hex)
+				, SAlgorithm._S_RSA//algorithm
+				);
 	}// end of public_key
 	
 	public static PrivateKey private_key(
@@ -227,47 +210,29 @@ public class SCertificate {
 			, final String algorithm
 			, final String provider
 			) throws SException {
-		
-		try {
-			return private_key(
-					SFormat.decode_hex(encoded_hex)
-					, algorithm
-					, provider
-					);
-		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try
-		
+		return private_key(
+				SFormat.decode_hex(encoded_hex)
+				, algorithm
+				, provider
+				);
 	}// end of private_key
 	public static PrivateKey private_key(
 			final String encoded_hex
 			, final String algorithm
 			) throws SException {
-		
-		try {
-			return private_key(
-					SFormat.decode_hex(encoded_hex)
-					, algorithm
-					, BouncyCastleProvider.PROVIDER_NAME//provider
-					);
-		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try 
-		
+		return private_key(
+				SFormat.decode_hex(encoded_hex)
+				, algorithm
+				, BouncyCastleProvider.PROVIDER_NAME//provider
+				);
 	}// end of private_key
 	public static PrivateKey private_key(
 			final String encoded_hex
 			) throws SException {
-		
-		try {
-			return private_key(
-					SFormat.decode_hex(encoded_hex)
-					, SAlgorithm._S_RSA//algorithm
-					);
-		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try 
-		
+		return private_key(
+				SFormat.decode_hex(encoded_hex)
+				, SAlgorithm._S_RSA//algorithm
+				);
 	}// end of private_key
 	
 	public static X509Certificate x509_certificate(
