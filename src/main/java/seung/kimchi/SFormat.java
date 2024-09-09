@@ -14,6 +14,8 @@ import java.util.zip.Inflater;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import seung.kimchi.types.SException;
+
 public class SFormat {
 
 	public static String throwable(final Throwable throwable) {
@@ -93,8 +95,14 @@ public class SFormat {
 		return encode_hex(data, true);
 	}// end of encode_hex
 	
-	public static byte[] decode_hex(final String data) throws DecoderException {
-		return Hex.decodeHex(data);
+	public static byte[] decode_hex(final String data) throws SException {
+		
+		try {
+			return Hex.decodeHex(data);
+		} catch (DecoderException e) {
+			throw new SException(e, "Something went wrong.");
+		}// end of try
+		
 	}// end of decode_hex
 	
 	public static byte[] compress(
