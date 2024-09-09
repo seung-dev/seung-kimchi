@@ -46,7 +46,7 @@ public class SHttp {
 					.replaceAll("\\%7E", "~")
 					;
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of encode_uri_component
@@ -67,7 +67,7 @@ public class SHttp {
 					.decode(data, charset)
 					;
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of decode_uri
@@ -107,7 +107,7 @@ public class SHttp {
 			return String.format("attachment; filename=\"%s\"", filename);
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of content_disposition
@@ -145,7 +145,7 @@ public class SHttp {
 			throw new SException("Something went wrong.");
 			
 		} catch (UnirestException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of public_ip
@@ -183,7 +183,7 @@ public class SHttp {
 			return URLDecoder.decode(SText.trim(filename), SCharset._S_UTF_8);
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of filename
@@ -210,7 +210,7 @@ public class SHttp {
 		try {
 			return new String(filename(headers).getBytes(encoded_charset), decoded_charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (SException e) {
 			throw e;
 		}// end of try
@@ -270,7 +270,7 @@ public class SHttp {
 			return cookie.toString();
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of cookie
@@ -331,7 +331,7 @@ public class SHttp {
 			return getRequest.asBytes();
 			
 		} catch (UnirestException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of get
@@ -427,7 +427,7 @@ public class SHttp {
 			return httpRequestWithBody.body(payload).asBytes();
 			
 		} catch (Exception e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of post

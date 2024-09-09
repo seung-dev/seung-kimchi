@@ -114,7 +114,7 @@ public class SXlsx {
 			}// end of sheet
 			
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return s_excel;
@@ -290,7 +290,7 @@ public class SXlsx {
 			excel = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e);
 		}// end of try
 		
 		return excel;

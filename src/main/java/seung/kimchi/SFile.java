@@ -39,9 +39,9 @@ public class SFile {
 				is_zip = true;
 			}
 		} catch (ZipException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return is_zip;
@@ -76,9 +76,9 @@ public class SFile {
 			zipOutputStream.closeEntry();
 			
 		} catch (FileNotFoundException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}
@@ -106,7 +106,7 @@ public class SFile {
 			zipOutputStream.flush();
 			
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return zip;
@@ -140,9 +140,9 @@ public class SFile {
 			zipOutputStream.flush();
 			
 		} catch (FileNotFoundException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return new File(zip_path).length();
@@ -165,9 +165,9 @@ public class SFile {
 			fileOutputStream.close();
 			
 		} catch (FileNotFoundException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of write
@@ -194,7 +194,7 @@ public class SFile {
 					, objectMetadata//metadata
 					);
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 		return putObjectResult;
@@ -210,7 +210,7 @@ public class SFile {
 			S3Object s3Object = amazon_s3_client.getObject(bucket_name, key);
 			return IOUtils.toByteArray(s3Object.getObjectContent());
 		} catch (IOException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of s3_download

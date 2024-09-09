@@ -12,7 +12,7 @@ public class SNetwork {
 		try {
 			return InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of hostname
@@ -28,7 +28,7 @@ public class SNetwork {
 			}
 			return "";
 		} catch (UnknownHostException e) {
-			throw new SException("Something went wrong.");
+			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
 	}// end of nslookup
