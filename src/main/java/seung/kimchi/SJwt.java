@@ -1,6 +1,5 @@
 package seung.kimchi;
 
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.PublicKey;
 import java.time.ZoneId;
@@ -16,6 +15,7 @@ import org.apache.commons.codec.binary.Hex;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -23,6 +23,7 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import io.jsonwebtoken.security.WeakKeyException;
 import seung.kimchi.types.SError;
+import seung.kimchi.types.SException;
 import seung.kimchi.types.SSamesite;
 
 public class SJwt {
@@ -31,8 +32,18 @@ public class SJwt {
 	
 	public static final String _JWT_COOKIE_PREFIX = "Bearer ";
 	
-	public static SecretKey hmac_key(final String hex) throws WeakKeyException, DecoderException {
-		return Keys.hmacShaKeyFor(Hex.decodeHex(hex));
+	public static SecretKey hmac_key(
+			final String hex
+			) throws SException {
+		
+		try {
+			return Keys.hmacShaKeyFor(Hex.decodeHex(hex));
+		} catch (WeakKeyException e) {
+			throw new SException("Something went wrong.");
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of hmac_key
 	
 	public static String jws(
@@ -45,21 +56,29 @@ public class SJwt {
 			, Date nbf
 			, Date exp
 			, Map<String, ?> claims
-			) {
-		return Jwts.builder()
-				.signWith(key)
-				.header()
+			) throws SException {
+		
+		try {
+			
+			return Jwts.builder()
+					.signWith(key)
+					.header()
 					.type(typ)
 					.and()
 //				.id(jti)
-				.issuer(iss)
-				.subject(sub)
-				.issuedAt(iat)
-				.notBefore(nbf)
-				.expiration(exp)
-				.claims(claims)
-				.compact()
-				;
+					.issuer(iss)
+					.subject(sub)
+					.issuedAt(iat)
+					.notBefore(nbf)
+					.expiration(exp)
+					.claims(claims)
+					.compact()
+					;
+			
+		} catch (JwtException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of jwt_token
 	public static String jws(
 			Key key
@@ -69,7 +88,7 @@ public class SJwt {
 			, long nbf
 			, long exp
 			, Map<String, ?> claims
-			) {
+			) throws SException {
 		return jws(
 				key
 				, _JWT_HEADER_TYPE
@@ -87,7 +106,7 @@ public class SJwt {
 			, String sub
 			, Map<String, ?> claims
 			, long duration
-			) {
+			) throws SException {
 		long now = System.currentTimeMillis();
 		return jws(
 				key
@@ -109,7 +128,7 @@ public class SJwt {
 			, boolean http_only
 			, boolean secure
 			, SSamesite same_site
-			) throws UnsupportedEncodingException {
+			) throws SException {
 		return SHttp.cookie(
 				name
 				, SText.is_empty(jws) ? "" : _JWT_COOKIE_PREFIX.concat(jws)//value
@@ -149,8 +168,16 @@ public class SJwt {
 	public static Claims payload(
 			PublicKey key
 			, String jws
-			) {
-		return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws.replaceAll(_JWT_COOKIE_PREFIX, "")).getPayload();
+			) throws SException {
+		
+		try {
+			return Jwts.parser().verifyWith(key).build()
+					.parseSignedClaims(jws.replaceAll(_JWT_COOKIE_PREFIX, ""))
+					.getPayload();
+		} catch (JwtException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of claims
 	
 }

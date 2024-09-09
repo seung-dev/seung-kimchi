@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -77,6 +78,7 @@ import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.encoders.Hex;
 
 import seung.kimchi.types.SAlgorithm;
+import seung.kimchi.types.SException;
 import seung.kimchi.types.SSignCertDer;
 import seung.kimchi.types.SSignPriKey;
 
@@ -89,20 +91,32 @@ public class SCertificate {
 			final byte[] encoded
 			, final String algorithm
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
-		EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(encoded);
-		if(provider != null) {
-			KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
-			return keyFactory.generatePublic(encodedKeySpec);
-		} else {
+			) throws SException {
+		
+		try {
+			
+			EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(encoded);
+			if(provider != null) {
+				KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
+				return keyFactory.generatePublic(encodedKeySpec);
+			}
+			
 			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 			return keyFactory.generatePublic(encodedKeySpec);
-		}
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeySpecException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of public_key
 	public static PublicKey public_key(
 			final byte[] encoded
 			, final String algorithm
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+			) throws SException {
 		return public_key(
 				encoded
 				, algorithm
@@ -111,7 +125,7 @@ public class SCertificate {
 	}// end of public_key
 	public static PublicKey public_key(
 			final byte[] encoded
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+			) throws SException {
 		return public_key(
 				encoded
 				, SAlgorithm._S_RSA//algorithm
@@ -121,50 +135,79 @@ public class SCertificate {
 			final String encoded_hex
 			, final String algorithm
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
-		return public_key(
-				SFormat.decode_hex(encoded_hex)
-				, algorithm
-				, provider
-				);
+			) throws SException {
+		
+		try {
+			return public_key(
+					SFormat.decode_hex(encoded_hex)
+					, algorithm
+					, provider
+					);
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of public_key
 	public static PublicKey public_key(
 			final String encoded_hex
 			, final String algorithm
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
-		return public_key(
-				SFormat.decode_hex(encoded_hex)
-				, algorithm
-				, BouncyCastleProvider.PROVIDER_NAME//provider
-				);
+			) throws SException {
+		
+		try {
+			return public_key(
+					SFormat.decode_hex(encoded_hex)
+					, algorithm
+					, BouncyCastleProvider.PROVIDER_NAME//provider
+					);
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of public_key
 	public static PublicKey public_key(
 			final String encoded_hex
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
-		return public_key(
-				SFormat.decode_hex(encoded_hex)
-				, SAlgorithm._S_RSA//algorithm
-				);
+			) throws SException {
+		try {
+			return public_key(
+					SFormat.decode_hex(encoded_hex)
+					, SAlgorithm._S_RSA//algorithm
+					);
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 	}// end of public_key
 	
 	public static PrivateKey private_key(
 			final byte[] encoded
 			, final String algorithm
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
-		PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(encoded);
-		if(provider != null) {
-			KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
-			return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
-		} else {
+			) throws SException {
+		
+		try {
+			
+			PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(encoded);
+			
+			if(provider != null) {
+				KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
+				return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+			}
+			
 			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 			return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
-		}
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeySpecException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of private_key
 	public static PrivateKey private_key(
 			final byte[] encoded
 			, final String algorithm
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+			) throws SException {
 		return private_key(
 				encoded
 				, algorithm
@@ -173,7 +216,7 @@ public class SCertificate {
 	}// end of private_key
 	public static PrivateKey private_key(
 			final byte[] encoded
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+			) throws SException {
 		return private_key(
 				encoded
 				, SAlgorithm._S_RSA//algorithm
@@ -183,46 +226,67 @@ public class SCertificate {
 			final String encoded_hex
 			, final String algorithm
 			, final String provider
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
-		return private_key(
-				SFormat.decode_hex(encoded_hex)
-				, algorithm
-				, provider
-				);
+			) throws SException {
+		
+		try {
+			return private_key(
+					SFormat.decode_hex(encoded_hex)
+					, algorithm
+					, provider
+					);
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of private_key
 	public static PrivateKey private_key(
 			final String encoded_hex
 			, final String algorithm
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
-		return private_key(
-				SFormat.decode_hex(encoded_hex)
-				, algorithm
-				, BouncyCastleProvider.PROVIDER_NAME//provider
-				);
+			) throws SException {
+		
+		try {
+			return private_key(
+					SFormat.decode_hex(encoded_hex)
+					, algorithm
+					, BouncyCastleProvider.PROVIDER_NAME//provider
+					);
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try 
+		
 	}// end of private_key
 	public static PrivateKey private_key(
 			final String encoded_hex
-			) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, DecoderException {
-		return private_key(
-				SFormat.decode_hex(encoded_hex)
-				, SAlgorithm._S_RSA//algorithm
-				);
+			) throws SException {
+		
+		try {
+			return private_key(
+					SFormat.decode_hex(encoded_hex)
+					, SAlgorithm._S_RSA//algorithm
+					);
+		} catch (DecoderException e) {
+			throw new SException("Something went wrong.");
+		}// end of try 
+		
 	}// end of private_key
 	
 	public static X509Certificate x509_certificate(
 			final byte[] encoded
-			) throws IOException, CertificateException {
+			) throws SException {
+		
 		X509Certificate x509_certificate = null;
+		
 		try(
 				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(encoded);
 				) {
 			CertificateFactory certificateFactory = CertificateFactory.getInstance(_S_X509);
 			x509_certificate = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
 		} catch (IOException e) {
-			throw e;
+			throw new SException("Something went wrong.");
 		} catch (CertificateException e) {
-			throw e;
-		}
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 		return x509_certificate;
 	}// end of x509_certificate
 	
@@ -487,11 +551,16 @@ public class SCertificate {
 	
 	public static SSignCertDer s_sign_cert_der(
 			final byte[] encoded
-			) throws CertificateException, IOException {
+			) throws SException {
+		
+		if(encoded == null) {
+			throw new IllegalArgumentException("Unexpected value.");
+		}
 		
 		X509Certificate x509_certificate = x509_certificate(encoded);
+		
 		if(x509_certificate == null) {
-			return null;
+			throw new IllegalArgumentException("Unexpected value.");
 		}
 		
 		String subject_alternative_name_oid = subject_alternative_name_oid(x509_certificate);
@@ -527,8 +596,14 @@ public class SCertificate {
 	}// end of s_sign_cert_der
 	public static SSignCertDer s_sign_cert_der(
 			final File file
-			) throws CertificateException, IOException {
-		return s_sign_cert_der(FileUtils.readFileToByteArray(file));
+			) throws SException {
+		
+		try {
+			return s_sign_cert_der(FileUtils.readFileToByteArray(file));
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of s_sign_cert_der
 	
 	public static SSignPriKey s_sign_pri_key(
@@ -607,100 +682,126 @@ public class SCertificate {
 	}// end of s_sign_pri_key
 	public static SSignPriKey s_sign_pri_key(
 			final File file
-			) throws IOException {
-		return s_sign_pri_key(FileUtils.readFileToByteArray(file));
+			) throws SException {
+		
+		try {
+			return s_sign_pri_key(FileUtils.readFileToByteArray(file));
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of s_sign_pri_key
 	
 	public static byte[] decrypt_private_key(
 			final byte[] encoded
 			, final String secret
-			) throws NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
 		
 		byte[] decrypted = null;
 		
-		SSignPriKey s_sign_pri_key = s_sign_pri_key(encoded);
-		
-		SecretKeySpec secretKeySpec = null;
-		IvParameterSpec ivParameterSpec = null;
-		while(true) {
+		try {
 			
-			// pkcs5PBES2
-			// https://www.rfc-editor.org/rfc/rfc8018
-			if("1.2.840.113549.1.5.13".equals(s_sign_pri_key.private_key_algorythm_oid())) {
-				
-				PBEParametersGenerator pbeParametersGenerator = new PKCS5S2ParametersGenerator();
-				pbeParametersGenerator.init(
-						PBEParametersGenerator.PKCS5PasswordToBytes(secret.toCharArray())//password
-						, s_sign_pri_key.salt()//salt
-						, s_sign_pri_key.iteration_count()//iterationCount
-						);
-				
-				int key_size = s_sign_pri_key.key_length();
-				if(key_size == 0) {
-					key_size = 256;
-				}
-				KeyParameter keyParameter = (KeyParameter) pbeParametersGenerator.generateDerivedParameters(
-						key_size//keySize
-						);
-				
-				secretKeySpec = new SecretKeySpec(keyParameter.getKey(), "SEED");
-				ivParameterSpec = new IvParameterSpec(s_sign_pri_key.iv());
-				
-				break;
-			}// end of 1.2.840.113549.1.5.13
+			SSignPriKey s_sign_pri_key = s_sign_pri_key(encoded);
 			
-			// seedCBCWithSHA1
-			// https://www.rfc-editor.org/rfc/rfc4269
-			if("1.2.410.200004.1.15".equals(s_sign_pri_key.private_key_algorythm_oid())) {
+			SecretKeySpec secretKeySpec = null;
+			IvParameterSpec ivParameterSpec = null;
+			while(true) {
 				
-				MessageDigest message_digest_0 = MessageDigest.getInstance("SHA-1");
-				message_digest_0.update(secret.getBytes("UTF-8"));
-				message_digest_0.update(s_sign_pri_key.salt());
-				
-				byte[] digested_0 = message_digest_0.digest();
-				for(int i = 1; i < s_sign_pri_key.iteration_count(); i++) {
-					digested_0 = message_digest_0.digest(digested_0);
-				}
-				
-				byte[] key = new byte[16];
-				System.arraycopy(digested_0, 0, key, 0, 16);
-				
-				secretKeySpec = new SecretKeySpec(key, "SEED");
-				
-				byte[] iv = null;
-				if("1.2.410.200004.1.4".equals(s_sign_pri_key.prf_algorithm_oid())) {
-					iv = "0123456789012345".getBytes("UTF-8");
-					ivParameterSpec = new IvParameterSpec(iv);
+				// pkcs5PBES2
+				// https://www.rfc-editor.org/rfc/rfc8018
+				if("1.2.840.113549.1.5.13".equals(s_sign_pri_key.private_key_algorythm_oid())) {
+					
+					PBEParametersGenerator pbeParametersGenerator = new PKCS5S2ParametersGenerator();
+					pbeParametersGenerator.init(
+							PBEParametersGenerator.PKCS5PasswordToBytes(secret.toCharArray())//password
+							, s_sign_pri_key.salt()//salt
+							, s_sign_pri_key.iteration_count()//iterationCount
+							);
+					
+					int key_size = s_sign_pri_key.key_length();
+					if(key_size == 0) {
+						key_size = 256;
+					}
+					KeyParameter keyParameter = (KeyParameter) pbeParametersGenerator.generateDerivedParameters(
+							key_size//keySize
+							);
+					
+					secretKeySpec = new SecretKeySpec(keyParameter.getKey(), "SEED");
+					ivParameterSpec = new IvParameterSpec(s_sign_pri_key.iv());
+					
 					break;
-				}
+				}// end of 1.2.840.113549.1.5.13
 				
-				byte[] digested_1 = new byte[4];
-				System.arraycopy(digested_0, 16, digested_1, 0, 4);
-				
-				MessageDigest message_digest_1 = MessageDigest.getInstance("SHA-1");
-				message_digest_1.reset();
-				message_digest_1.update(digested_1);
-				
-				byte[] digested_2 = message_digest_1.digest();
-				
-				iv = new byte[16];
-				System.arraycopy(digested_2, 0, iv, 0, 16);
-				
-				ivParameterSpec = new IvParameterSpec(iv);
+				// seedCBCWithSHA1
+				// https://www.rfc-editor.org/rfc/rfc4269
+				if("1.2.410.200004.1.15".equals(s_sign_pri_key.private_key_algorythm_oid())) {
+					
+					MessageDigest message_digest_0 = MessageDigest.getInstance("SHA-1");
+					message_digest_0.update(secret.getBytes("UTF-8"));
+					message_digest_0.update(s_sign_pri_key.salt());
+					
+					byte[] digested_0 = message_digest_0.digest();
+					for(int i = 1; i < s_sign_pri_key.iteration_count(); i++) {
+						digested_0 = message_digest_0.digest(digested_0);
+					}
+					
+					byte[] key = new byte[16];
+					System.arraycopy(digested_0, 0, key, 0, 16);
+					
+					secretKeySpec = new SecretKeySpec(key, "SEED");
+					
+					byte[] iv = null;
+					if("1.2.410.200004.1.4".equals(s_sign_pri_key.prf_algorithm_oid())) {
+						iv = "0123456789012345".getBytes("UTF-8");
+						ivParameterSpec = new IvParameterSpec(iv);
+						break;
+					}
+					
+					byte[] digested_1 = new byte[4];
+					System.arraycopy(digested_0, 16, digested_1, 0, 4);
+					
+					MessageDigest message_digest_1 = MessageDigest.getInstance("SHA-1");
+					message_digest_1.reset();
+					message_digest_1.update(digested_1);
+					
+					byte[] digested_2 = message_digest_1.digest();
+					
+					iv = new byte[16];
+					System.arraycopy(digested_2, 0, iv, 0, 16);
+					
+					ivParameterSpec = new IvParameterSpec(iv);
+					
+					break;
+				}// end of 1.2.410.200004.1.15
 				
 				break;
-			}// end of 1.2.410.200004.1.15
+			}// end of while
 			
-			break;
-		}// end of while
-		
-		Cipher cipher = Cipher.getInstance(SAlgorithm._S_SEED_CBC_PKCS5PADDING, BouncyCastleProvider.PROVIDER_NAME);
-		cipher.init(
-				Cipher.DECRYPT_MODE//opmode
-				, secretKeySpec//key
-				, ivParameterSpec//params
-				);
-		decrypted = cipher.doFinal(s_sign_pri_key.private_key());
+			Cipher cipher = Cipher.getInstance(SAlgorithm._S_SEED_CBC_PKCS5PADDING, BouncyCastleProvider.PROVIDER_NAME);
+			cipher.init(
+					Cipher.DECRYPT_MODE//opmode
+					, secretKeySpec//key
+					, ivParameterSpec//params
+					);
+			decrypted = cipher.doFinal(s_sign_pri_key.private_key());
+			
+		} catch (UnsupportedEncodingException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchProviderException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchPaddingException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeyException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidAlgorithmParameterException e) {
+			throw new SException("Something went wrong.");
+		} catch (IllegalBlockSizeException e) {
+			throw new SException("Something went wrong.");
+		} catch (BadPaddingException e) {
+			throw new SException("Something went wrong.");
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
 		return decrypted;
 	}// end of decrypt_private_key
@@ -710,65 +811,112 @@ public class SCertificate {
 			, final byte[] sign_pri_key
 			, final String secret
 			, final byte[] message
-			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, OperatorCreationException, CertificateException, IOException, CMSException {
+			) throws SException {
 		
-		SSignCertDer s_sign_cert_der = s_sign_cert_der(sign_cert_der);
-		
-		byte[] decrypted = decrypt_private_key(sign_pri_key, secret);
-		
-		KeyFactory keyFactory = KeyFactory.getInstance(SAlgorithm._S_RSA);
-		PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(decrypted));
-		
-		ContentSigner contentSigner = new JcaContentSignerBuilder(s_sign_cert_der.signiture_algorithm_name())
-				.setProvider(BouncyCastleProvider.PROVIDER_NAME)
-				.build(privateKey);
-		
-		JcaSignerInfoGeneratorBuilder jcaSignerInfoGeneratorBuilder = new JcaSignerInfoGeneratorBuilder(
-				new JcaDigestCalculatorProviderBuilder().setProvider(BouncyCastleProvider.PROVIDER_NAME).build()
-				);
-		SignerInfoGenerator infoGen = jcaSignerInfoGeneratorBuilder.build(contentSigner, s_sign_cert_der.x509_certificate());
-		final CMSAttributeTableGenerator cmsAttributeTableGenerator = infoGen.getSignedAttributeTableGenerator();
-		infoGen = new SignerInfoGenerator(
-				infoGen
-				, new DefaultAuthenticatedAttributeTableGenerator() {
-					@SuppressWarnings("rawtypes")
-					@Override
-					public AttributeTable getAttributes(Map parameters) {
-//							return super.getAttributes(parameters);
-						AttributeTable attributeTable = cmsAttributeTableGenerator.getAttributes(parameters);
-						return attributeTable.remove(CMSAttributes.cmsAlgorithmProtect);
+		try {
+			
+			if(sign_cert_der == null
+					|| sign_pri_key == null
+					|| secret == null
+					|| message == null
+					) {
+				throw new IllegalArgumentException("Unexpected value.");
+			}
+			
+
+			SSignCertDer s_sign_cert_der = s_sign_cert_der(sign_cert_der);
+			
+			if(s_sign_cert_der == null) {
+				throw new NullPointerException("Unexpected value.");
+			}
+			
+			byte[] decrypted = decrypt_private_key(sign_pri_key, secret);
+			
+			KeyFactory keyFactory = KeyFactory.getInstance(SAlgorithm._S_RSA);
+			PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(decrypted));
+			
+			String signiture_algorithm_name = s_sign_cert_der.signiture_algorithm_name();
+			if(signiture_algorithm_name == null) {
+				throw new NullPointerException("Value is empty.");
+			}
+			
+			ContentSigner contentSigner = new JcaContentSignerBuilder(signiture_algorithm_name)
+					.setProvider(BouncyCastleProvider.PROVIDER_NAME)
+					.build(privateKey);
+			
+			JcaSignerInfoGeneratorBuilder jcaSignerInfoGeneratorBuilder = new JcaSignerInfoGeneratorBuilder(
+					new JcaDigestCalculatorProviderBuilder().setProvider(BouncyCastleProvider.PROVIDER_NAME).build()
+					);
+			
+			X509Certificate x509_certificate = s_sign_cert_der.x509_certificate();
+			if(x509_certificate == null) {
+				throw new NullPointerException("Value is empty.");
+			}
+			
+			SignerInfoGenerator infoGen = jcaSignerInfoGeneratorBuilder.build(contentSigner, x509_certificate);
+			final CMSAttributeTableGenerator cmsAttributeTableGenerator = infoGen.getSignedAttributeTableGenerator();
+			infoGen = new SignerInfoGenerator(
+					infoGen
+					, new DefaultAuthenticatedAttributeTableGenerator() {
+						@SuppressWarnings("rawtypes")
+						@Override
+						public AttributeTable getAttributes(Map parameters) {
+//								return super.getAttributes(parameters);
+							AttributeTable attributeTable = cmsAttributeTableGenerator.getAttributes(parameters);
+							return attributeTable.remove(CMSAttributes.cmsAlgorithmProtect);
+						}
 					}
-				}
-				, infoGen.getUnsignedAttributeTableGenerator()
-				);
+					, infoGen.getUnsignedAttributeTableGenerator()
+					);
+			
+			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
+			cmsSignedDataGenerator.addCertificate(new X509CertificateHolder(s_sign_cert_der.encoded()));///////////////////
+			cmsSignedDataGenerator.addSignerInfoGenerator(infoGen);
+			
+			CMSTypedData cmsTypedData = new CMSProcessableByteArray(message);
+			
+			CMSSignedData cmsSignedData = cmsSignedDataGenerator.generate(cmsTypedData, true);
+			
+			return cmsSignedData.getEncoded(_S_DER);
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new SException("Something went wrong.");
+		} catch (InvalidKeySpecException e) {
+			throw new SException("Something went wrong.");
+		} catch (OperatorCreationException e) {
+			throw new SException("Something went wrong.");
+		} catch (CertificateEncodingException e) {
+			throw new SException("Something went wrong.");
+		} catch (CMSException e) {
+			throw new SException("Something went wrong.");
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
-		cmsSignedDataGenerator.addCertificate(new X509CertificateHolder(s_sign_cert_der.encoded()));
-		cmsSignedDataGenerator.addSignerInfoGenerator(infoGen);
-		
-		CMSTypedData cmsTypedData = new CMSProcessableByteArray(message);
-		
-		CMSSignedData cmsSignedData = cmsSignedDataGenerator.generate(cmsTypedData, true);
-		
-		return cmsSignedData.getEncoded(_S_DER);
 	}// end of sign
 	public static byte[] sign(
 			final File sign_cert_der
 			, final File sign_pri_key
 			, final String secret
 			, final byte[] message
-			) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, OperatorCreationException, CertificateException, IOException, CMSException {
-		return sign(
-				FileUtils.readFileToByteArray(sign_cert_der)//s_sign_cert_der
-				, FileUtils.readFileToByteArray(sign_pri_key)//s_sign_pri_key
-				, secret
-				, message
-				);
+			) throws SException {
+		
+		try {
+			return sign(
+					FileUtils.readFileToByteArray(sign_cert_der)//s_sign_cert_der
+					, FileUtils.readFileToByteArray(sign_pri_key)//s_sign_pri_key
+					, secret
+					, message
+					);
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of sign
 	
 	public static byte[] random_number(
 			final byte[] encoded
-			) throws IOException {
+			) {
 		
 		byte[] random_number = null;
 		
@@ -815,7 +963,7 @@ public class SCertificate {
 	public static byte[] random_number(
 			final SSignPriKey s_sign_pri_key
 			, final String secret
-			) throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
+			) throws SException {
 		return random_number(decrypt_private_key(s_sign_pri_key.encoded(), secret));
 	}// end of random_number
 	
@@ -823,15 +971,30 @@ public class SCertificate {
 			String rrn
 			, byte[] random_number
 			, String algorithm
-			) throws IOException, NoSuchAlgorithmException, NoSuchProviderException {
+			) throws SException {
 		
-		DERSequence derSequence = new DERSequence(new ASN1Encodable[] {
-				new DERPrintableString(rrn)
-				, new DERBitString(random_number)
-		});
+		try {
+			
+			if(rrn == null
+					|| random_number == null
+					|| algorithm == null
+					) {
+				throw new IllegalArgumentException("Unexpected value.");
+			}
+			
+			DERSequence derSequence = new DERSequence(new ASN1Encodable[] {
+					new DERPrintableString(rrn)
+					, new DERBitString(random_number)
+			});
+			
+			byte[] digested = SSecurity.digest(derSequence.getEncoded(), algorithm);
+			
+			return SSecurity.digest(digested, algorithm);
+			
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 		
-		byte[] digested = SSecurity.digest(derSequence.getEncoded(), algorithm);
-		return SSecurity.digest(digested, algorithm);
 	}// end of generate_vid
 	
 	public static int verify_vid(
@@ -839,12 +1002,28 @@ public class SCertificate {
 			, final byte[] sign_pri_key
 			, final String secret
 			, final String rrn
-			) throws CertificateException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+			) throws SException {
+		
+		if(sign_cert_der == null
+				|| sign_pri_key == null
+				|| secret == null
+				|| rrn == null
+				) {
+			throw new IllegalArgumentException("Unexpected value.");
+		}
 		
 		int verify_vid = 0;
 		
 		SSignCertDer s_sign_cert_der = s_sign_cert_der(sign_cert_der);
+		if(s_sign_cert_der == null) {
+			throw new NullPointerException("Value is empty.");
+		}
+		
 		SSignPriKey s_sign_pri_key = s_sign_pri_key(sign_pri_key);
+		if(s_sign_pri_key == null) {
+			throw new NullPointerException("Value is empty.");
+		}
+		
 		byte[] random_number = random_number(s_sign_pri_key, secret);
 		
 		String sign_cert_der_vid = s_sign_cert_der.vid();
@@ -867,13 +1046,19 @@ public class SCertificate {
 			, final File sign_pri_key
 			, final String secret
 			, final String rrn
-			) throws InvalidKeyException, CertificateException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
-		return verify_vid(
-				FileUtils.readFileToByteArray(sign_cert_der)//sign_cert_der
-				, FileUtils.readFileToByteArray(sign_pri_key)//sign_pri_key
-				, secret
-				, rrn
-				);
+			) throws SException {
+		
+		try {
+			return verify_vid(
+					FileUtils.readFileToByteArray(sign_cert_der)//sign_cert_der
+					, FileUtils.readFileToByteArray(sign_pri_key)//sign_pri_key
+					, secret
+					, rrn
+					);
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
+		
 	}// end of verify_vid
 	
 }

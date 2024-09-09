@@ -10,6 +10,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 
+import seung.kimchi.types.SException;
+
 public class SPdf {
 
 	public static byte[] encrypt(
@@ -20,7 +22,7 @@ public class SPdf {
 			, final boolean allowExtraction
 			, final boolean allowModifications
 			, final boolean readOnly
-			) throws IOException {
+			) throws SException {
 		
 		byte[] pdf = null;
 		
@@ -57,7 +59,7 @@ public class SPdf {
 			pdf = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
-			throw e;
+			throw new SException("Something went wrong.");
 		}// end of try
 		
 		return pdf;
@@ -69,7 +71,7 @@ public class SPdf {
 			, final boolean allowExtraction
 			, final boolean allowModifications
 			, final boolean readOnly
-			) throws IOException {
+			) throws SException {
 		return encrypt(
 				data
 				, key
@@ -83,20 +85,24 @@ public class SPdf {
 	public static byte[] encrypt(
 			final byte[] data
 			, final String key
-			) throws IOException {
+			) throws SException {
 		return encrypt(data, key, false, false, false, true);
 	}// end of encrypt
 	public static byte[] encrypt(
 			final File file
 			, final String key
-			) throws IOException {
-		return encrypt(FileUtils.readFileToByteArray(file), key);
+			) throws SException {
+		try {
+			return encrypt(FileUtils.readFileToByteArray(file), key);
+		} catch (IOException e) {
+			throw new SException("Something went wrong.");
+		}// end of try
 	}// end of encrypt
 	
 	public static byte[] decrypt(
 			final byte[] data
 			, final String password
-			) throws IOException {
+			) throws SException {
 		
 		byte[] pdf = null;
 		
@@ -114,8 +120,8 @@ public class SPdf {
 			pdf = byteArrayOutputStream.toByteArray();
 			
 		} catch (IOException e) {
-			throw e;
-		}
+			throw new SException("Something went wrong.");
+		}// end of try
 		
 		return pdf;
 	}// end of decrypt

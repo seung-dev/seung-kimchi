@@ -1,7 +1,5 @@
 package seung.kimchi;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.security.SecureRandom;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -50,13 +47,6 @@ public class SText {
 		return String.join("", data);
 	}// end of concat
 	
-	public static String throwable(final Throwable throwable) {
-		final StringWriter stringWriter = new StringWriter();
-		final PrintWriter printWriter = new PrintWriter(stringWriter, true);
-		throwable.printStackTrace(printWriter);
-		return stringWriter.getBuffer().toString();
-	}// end of throwable
-	
 	public static String uuid() {
 		return UUID.randomUUID().toString();
 	}// end of uuid
@@ -78,7 +68,7 @@ public class SText {
 	}
 	
 	public static int random(final int min, final int max) {
-		return new Random().nextInt(max - min + 1) + min;
+		return new SecureRandom().nextInt(max - min + 1) + min;
 	}// end of random
 	
 	private static final String _CHAR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

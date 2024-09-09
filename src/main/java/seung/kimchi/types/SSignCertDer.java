@@ -75,18 +75,21 @@ public class SSignCertDer extends SType {
 	@JsonProperty
 	private String crl_distribution_point;
 	
-	public X509Certificate x509_certificate() throws IOException, CertificateException {
+	public X509Certificate x509_certificate() throws SException {
+		
 		X509Certificate x509_certificate = null;
+		
 		try(
 				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(encoded);
 				) {
 			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 			x509_certificate = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
 		} catch (IOException e) {
-			throw e;
+			throw new SException("Something went wrong.");
 		} catch (CertificateException e) {
-			throw e;
+			throw new SException("Something went wrong.");
 		}// end of try
+		
 		return x509_certificate;
 	}// end of x509_certificate
 	

@@ -17,10 +17,17 @@ import org.apache.commons.codec.binary.Hex;
 public class SFormat {
 
 	public static String throwable(final Throwable throwable) {
-		final StringWriter stringWriter = new StringWriter();
-		final PrintWriter printWriter = new PrintWriter(stringWriter, true);
-		throwable.printStackTrace(printWriter);
-		return stringWriter.getBuffer().toString();
+		String message = null;
+		try (
+				StringWriter stringWriter = new StringWriter();
+				PrintWriter printWriter = new PrintWriter(stringWriter, true);
+				) {
+			throwable.printStackTrace(printWriter);
+			message = stringWriter.getBuffer().toString();
+		} catch (Exception e) {
+			message = "";
+		}
+		return message;
 	}// end of throwable
 	
 	public static long milliseconds(
