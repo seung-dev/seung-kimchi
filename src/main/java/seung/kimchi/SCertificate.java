@@ -701,7 +701,7 @@ public class SCertificate {
 				// https://www.rfc-editor.org/rfc/rfc4269
 				if("1.2.410.200004.1.15".equals(s_sign_pri_key.private_key_algorythm_oid())) {
 					
-					MessageDigest message_digest_0 = MessageDigest.getInstance("SHA-1");
+					MessageDigest message_digest_0 = MessageDigest.getInstance(SAlgorithm._S_SHA1);
 					message_digest_0.update(secret.getBytes("UTF-8"));
 					message_digest_0.update(s_sign_pri_key.salt());
 					
@@ -725,7 +725,7 @@ public class SCertificate {
 					byte[] digested_1 = new byte[4];
 					System.arraycopy(digested_0, 16, digested_1, 0, 4);
 					
-					MessageDigest message_digest_1 = MessageDigest.getInstance("SHA-1");
+					MessageDigest message_digest_1 = MessageDigest.getInstance(SAlgorithm._S_SHA1);
 					message_digest_1.reset();
 					message_digest_1.update(digested_1);
 					
