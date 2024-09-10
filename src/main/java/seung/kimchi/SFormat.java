@@ -26,7 +26,7 @@ public class SFormat {
 				) {
 			throwable.printStackTrace(printWriter);
 			message = stringWriter.getBuffer().toString();
-		} catch (Exception e) {
+		} catch (IOException e1) {
 			message = "";
 		}
 		return message;
