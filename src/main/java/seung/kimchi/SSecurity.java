@@ -1,5 +1,6 @@
 package seung.kimchi;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -25,7 +26,9 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import seung.kimchi.types.SAlgorithm;
+import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SException;
+import seung.kimchi.types.SLinkedHashMap;
 
 public class SSecurity {
 
@@ -95,6 +98,27 @@ public class SSecurity {
 		return digest(
 				data
 				, SAlgorithm._S_SHA256//algorithm
+				);
+	}// end of digest
+	public static byte[] digest(
+			final SLinkedHashMap data
+			, final String algorithm
+			) throws SException {
+		try {
+			return digest(
+					data.stringify().getBytes(SCharset._S_UTF_8)//data
+					, algorithm
+					);
+		} catch (UnsupportedEncodingException e) {
+			throw new SException(e, "Something went wrong.");
+		}// end of try
+	}// end of digest
+	public static byte[] digest(
+			final SLinkedHashMap data
+			) throws SException {
+		return digest(
+				data
+				, SAlgorithm._S_MD5//algorithm
 				);
 	}// end of digest
 	
