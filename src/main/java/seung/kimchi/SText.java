@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class SText {
 
@@ -46,6 +47,10 @@ public class SText {
 	public static String concat(final String... data) {
 		return String.join("", data);
 	}// end of concat
+	
+	public static String repeat(final String text, int count) {
+		return StringUtils.repeat(text, count);
+	}// end of repeat
 	
 	public static String uuid() {
 		return UUID.randomUUID().toString();
