@@ -52,6 +52,9 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	
+	// tika
+	api("org.apache.tika:tika-core:2.9.2")
+	
 	// unzip
 	api("net.lingala.zip4j:zip4j:2.11.5")
 	
