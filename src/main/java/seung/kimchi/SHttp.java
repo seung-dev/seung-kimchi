@@ -426,7 +426,7 @@ public class SHttp {
 			
 			return httpRequestWithBody.body(payload).asBytes();
 			
-		} catch (Exception e) {
+		} catch (UnirestException e) {
 			throw new SException(e, "Something went wrong.");
 		}// end of try
 		

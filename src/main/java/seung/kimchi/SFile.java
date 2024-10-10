@@ -3,9 +3,11 @@ package seung.kimchi;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -14,7 +16,12 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -214,5 +221,82 @@ public class SFile {
 		}// end of try
 		
 	}// end of s3_download
+	
+	
+	public static String extension(String name) {
+		return FilenameUtils.getExtension(name);
+	}// end of extension
+	public static String extension(File file) {
+		return extension(file.getName());
+	}// end of extension
+	
+	/**
+	 * <h1>Description</h1>
+	 * <pre>
+	 * response: extensions
+	 * 
+	 * image/png: png
+	 * image/jpeg: jpg
+	 * text/plain: txt, csv
+	 * application/pdf: pdf
+	 * application/x-tika-ooxml: ppt, xlsx
+	 * application/x-tika-msoffice: doc, hwp
+	 * </pre>
+	 * <h1>Request</h1>
+	 * <pre>
+	 * </pre>
+	 * <h1>Response</h1>
+	 * <pre>
+	 * </pre>
+	 * @param file
+	 * @return
+	 * @throws SException
+	 */
+	public static String content_type(
+			byte[] file
+			) throws SException {
+		
+		Metadata metadata = new Metadata();
+		
+		try (
+				InputStream inputStream = new ByteArrayInputStream(file);
+				TikaInputStream tikaInputStream = TikaInputStream.get(inputStream);
+				) {
+			
+			new Tika().parseToString(tikaInputStream, metadata);
+			
+		} catch (FileNotFoundException e) {
+			throw new SException(e, "Something went wrong.");
+		} catch (IOException e) {
+			throw new SException(e, "Something went wrong.");
+		} catch (TikaException e) {
+			throw new SException(e, "Something went wrong.");
+		}// end of try
+		
+		return metadata.get(Metadata.CONTENT_TYPE);
+	}// end of content_type
+	public static String content_type(
+			File file
+			) throws SException {
+		
+		Metadata metadata = new Metadata();
+		
+		try (
+				InputStream inputStream = new FileInputStream(file);
+				TikaInputStream tikaInputStream = TikaInputStream.get(inputStream);
+				) {
+			
+			new Tika().parseToString(tikaInputStream, metadata);
+			
+		} catch (FileNotFoundException e) {
+			throw new SException(e, "Something went wrong.");
+		} catch (IOException e) {
+			throw new SException(e, "Something went wrong.");
+		} catch (TikaException e) {
+			throw new SException(e, "Something went wrong.");
+		}// end of try
+		
+		return metadata.get(Metadata.CONTENT_TYPE);
+	}// end of content_type
 	
 }
