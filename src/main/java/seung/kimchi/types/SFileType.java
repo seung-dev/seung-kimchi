@@ -10,7 +10,7 @@ public enum SFileType {
 	, PNG(Arrays.asList("png"), Arrays.asList("image/jpeg"))
 	, GIF(Arrays.asList("gif"), Arrays.asList("image/gif"))
 	, PDF(Arrays.asList("pdf"), Arrays.asList("application/pdf"))
-	, CSV(Arrays.asList("csv"), Arrays.asList("text/plain"))
+	, CSV(Arrays.asList("csv"), Arrays.asList("text/plain", "text/csv", "application/octet-stream"))
 	, XLS(Arrays.asList("xls", "xlsx"), Arrays.asList("application/x-tika-ooxml"))
 	, PPT(Arrays.asList("ppt", "ppts"), Arrays.asList("application/x-tika-ooxml"))
 	, DOC(Arrays.asList("doc", "docx"), Arrays.asList("application/x-tika-msoffice"))
@@ -39,6 +39,7 @@ public enum SFileType {
 	}// end of tika
 	
 	public SFileType resolve(String value) {
+		System.out.println(value);
 		for(SFileType type : values()) {
 			for(String item : type.extensions) {
 				if(item.equals(value)) {
