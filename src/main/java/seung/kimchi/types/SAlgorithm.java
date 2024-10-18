@@ -12,8 +12,6 @@ import seung.kimchi.SText;
 public class SAlgorithm {
 
 	// MessageDigest
-	public static final String _S_MD2 = "MD2";
-	public static final String _S_MD4 = "MD4";
 	public static final String _S_MD5 = "MD5";
 	public static final String _S_SHA1 = "SHA-1";
 	public static final String _S_SHA256 = "SHA-256";
