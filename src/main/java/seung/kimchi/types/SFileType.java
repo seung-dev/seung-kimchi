@@ -11,10 +11,10 @@ public enum SFileType {
 	, GIF(Arrays.asList("gif"), Arrays.asList("image/gif"))
 	, PDF(Arrays.asList("pdf"), Arrays.asList("application/pdf"))
 	, CSV(Arrays.asList("csv"), Arrays.asList("text/plain", "text/csv", "application/octet-stream"))
-	, XLS(Arrays.asList("xls", "xlsx"), Arrays.asList("application/x-tika-ooxml"))
-	, PPT(Arrays.asList("ppt", "ppts"), Arrays.asList("application/x-tika-ooxml"))
-	, DOC(Arrays.asList("doc", "docx"), Arrays.asList("application/x-tika-msoffice"))
-	, HWP(Arrays.asList("hwp", "hwpx"), Arrays.asList("application/x-tika-msoffice"))
+	, XLS(Arrays.asList("xlsx", "xls"), Arrays.asList("application/x-tika-ooxml"))
+	, PPT(Arrays.asList("pptx", "ppt", "pptm"), Arrays.asList("application/x-tika-ooxml", "application/x-tika-msoffice"))
+	, DOC(Arrays.asList("docx", "doc"), Arrays.asList("application/x-tika-msoffice"))
+	, HWP(Arrays.asList("hwpx", "hwp"), Arrays.asList("application/x-tika-msoffice"))
 	, ZIP(Arrays.asList("zip"), Arrays.asList("application/zip"))
 	;
 	
