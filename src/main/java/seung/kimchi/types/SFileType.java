@@ -96,7 +96,7 @@ public enum SFileType {
 					, "application/x-tika-ooxml"
 					)
 			)
-	, DOCX(Arrays.asList("docx")
+	, DOCX(Arrays.asList("docx", "doc")
 			, Arrays.asList(
 					"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 					, "application/x-ms-owner"
