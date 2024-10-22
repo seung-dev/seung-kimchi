@@ -14,7 +14,7 @@ public enum SFileType {
 	, XLS(Arrays.asList("xlsx", "xls"), Arrays.asList("application/x-tika-ooxml"))
 	, PPT(Arrays.asList("pptx", "ppt", "pptm"), Arrays.asList("application/x-tika-ooxml", "application/x-tika-msoffice"))
 	, DOC(Arrays.asList("docx", "doc"), Arrays.asList("application/x-tika-msoffice"))
-	, HWP(Arrays.asList("hwpx", "hwp"), Arrays.asList("application/x-tika-msoffice"))
+	, HWP(Arrays.asList("hwpx", "hwp"), Arrays.asList("application/x-tika-msoffice", "application/zip"))
 	, ZIP(Arrays.asList("zip"), Arrays.asList("application/zip"))
 	;
 	
