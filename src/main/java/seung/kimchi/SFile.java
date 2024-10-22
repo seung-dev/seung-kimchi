@@ -3,7 +3,6 @@ package seung.kimchi;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +21,7 @@ import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -284,36 +284,46 @@ public class SFile {
 	public static String content_type(
 			File file
 			) throws SException {
+		try {
+			return content_type(FileUtils.readFileToByteArray(file));
+		} catch (IOException e) {
+			throw new SException(e, "Something went wrong.");
+		}
+	}// end of content_type
+	
+	public static String mime_type(
+			byte[] file
+			, String name
+			) throws SException {
 		
 		Metadata metadata = new Metadata();
+		metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, name);
 		
 		try (
-				InputStream inputStream = new FileInputStream(file);
+				InputStream inputStream = new ByteArrayInputStream(file);
 				TikaInputStream tikaInputStream = TikaInputStream.get(inputStream);
 				) {
 			
-			new Tika().parseToString(tikaInputStream, metadata);
+			return new Tika().detect(tikaInputStream, metadata);
 			
 		} catch (FileNotFoundException e) {
 			throw new SException(e, "Something went wrong.");
 		} catch (IOException e) {
 			throw new SException(e, "Something went wrong.");
-		} catch (TikaException e) {
-			throw new SException(e, "Something went wrong.");
 		}// end of try
 		
-		return metadata.get(Metadata.CONTENT_TYPE);
-	}// end of content_type
-	
+	}// end of mime_type
 	public static String mime_type(File file) throws SException {
 		try {
-			return new Tika().detect(file);
+			return mime_type(FileUtils.readFileToByteArray(file), file.getName());
 		} catch (IOException e) {
 			throw new SException(e, "Something went wrong.");
-		}// end of try
+		}
 	}// end of mime_type
 	
-	public static SFileMeta metadata(File file) throws SException {
+	public static SFileMeta metadata(
+			File file
+			) throws SException {
 		if(file == null) {
 			return null;
 		}
@@ -347,12 +357,65 @@ public class SFile {
 				.content_type(content_type(file))
 				.build();
 	}// end of metadata
+	public static SFileMeta metadata(
+			byte[] file
+			, String name
+			) throws SException {
+		if(file == null) {
+			return null;
+		}
+		long size = file.length;
+		if(size == 0) {
+			return SFileMeta.builder()
+					.name(name)
+					.size(size)
+					.type("f")
+					.extension(extension(name))
+					.build();
+		}
+		return SFileMeta.builder()
+				.name(name)
+				.size(size)
+				.type("f")
+				.extension(extension(name))
+				.mime_type(mime_type(file, name))
+				.content_type(content_type(file))
+				.build();
+	}// end of metadata
 	
-	public static boolean match(File file, SFileType[] allowed) throws SException {
+	public static boolean match(
+			File file
+			, SFileType[] allowed
+			) throws SException {
 		if(file == null || allowed == null) {
 			return false;
 		}
 		SFileMeta meta = metadata(file);
+		if(meta.size() == 0) {
+			return false;
+		}
+		if(meta.is_directory()) {
+			return false;
+		}
+		for(SFileType t : allowed) {
+			if(t.extensions().contains(meta.extension())
+					&& t.mime_types().contains(meta.mime_type())
+					&& t.content_types().contains(meta.content_type())
+					) {
+				return true;
+			}
+		}// end of allowed
+		return false;
+	}// end of allowed
+	public static boolean match(
+			byte[] file
+			, String name
+			, SFileType[] allowed
+			) throws SException {
+		if(file == null || allowed == null) {
+			return false;
+		}
+		SFileMeta meta = metadata(file, name);
 		if(meta.size() == 0) {
 			return false;
 		}

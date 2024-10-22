@@ -8,9 +8,11 @@ public enum SFileType {
 	TXT(Arrays.asList("txt")
 			, Arrays.asList(
 					"text/plain"
+					, "text/x-robots"
 					)
 			, Arrays.asList(
 					"text/plain"
+					, "text/x-robots"
 					)
 			)
 	, JPG(Arrays.asList("jpeg", "jpg")
@@ -49,9 +51,11 @@ public enum SFileType {
 	, ICO(Arrays.asList("ico")
 			, Arrays.asList(
 					"image/vnd.microsoft.icon"
+					, "text/html"
 					)
 			, Arrays.asList(
 					"image/vnd.microsoft.icon"
+					, "text/html"
 					)
 			)
 	, WEBP(Arrays.asList("webp")
@@ -153,7 +157,8 @@ public enum SFileType {
 					"text/html"
 					)
 			, Arrays.asList(
-					"text/plain"
+					"text/html"
+					, "text/plain"
 					)
 			)
 	, XML(Arrays.asList("xml")
@@ -172,12 +177,12 @@ public enum SFileType {
 					"text/plain"
 					)
 			)
-	, SQL(Arrays.asList("sql")
+	, TTF(Arrays.asList("ttf")
 			, Arrays.asList(
-					"text/x-sql"
+					"application/x-font-ttf"
 					)
 			, Arrays.asList(
-					"text/plain"
+					"application/x-font-ttf"
 					)
 			)
 	, SH(Arrays.asList("sh")
@@ -222,10 +227,16 @@ public enum SFileType {
 			)
 	, DMG(Arrays.asList("dmg")
 			, Arrays.asList(
-					"application/zlib"
+					"application/x-apple-diskimage"
+					, "application/zlib"
+					, "application/x-xz"
+					, "application/x-bzip2"
 					)
 			, Arrays.asList(
 					"application/zlib"
+					, "application/x-xz"
+					, "application/x-bzip2"
+					, "application/octet-stream"
 					)
 			)
 	, RDP(Arrays.asList("rdp")
