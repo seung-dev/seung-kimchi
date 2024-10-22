@@ -334,6 +334,7 @@ public class SFile {
 					.path(path)
 					.size(size)
 					.type("f")
+					.extension(extension(file))
 					.build();
 		}
 		return SFileMeta.builder()
@@ -341,8 +342,8 @@ public class SFile {
 				.path(path)
 				.size(size)
 				.type(file.isFile() ? "f" : "d")
-				.mime_type(mime_type(file))
 				.extension(extension(file))
+				.mime_type(mime_type(file))
 				.content_type(content_type(file))
 				.build();
 	}// end of metadata

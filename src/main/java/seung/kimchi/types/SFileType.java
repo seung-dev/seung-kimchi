@@ -54,6 +54,14 @@ public enum SFileType {
 					"image/vnd.microsoft.icon"
 					)
 			)
+	, WEBP(Arrays.asList("webp")
+			, Arrays.asList(
+					"image/webp"
+					)
+			, Arrays.asList(
+					"image/webp"
+					)
+			)
 	, PDF(Arrays.asList("pdf")
 			, Arrays.asList(
 					"application/pdf"
@@ -62,7 +70,7 @@ public enum SFileType {
 					"application/pdf"
 					)
 			)
-	, CSV(Arrays.asList("pdf")
+	, CSV(Arrays.asList("csv")
 			, Arrays.asList(
 					"text/csv"
 					)
