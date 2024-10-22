@@ -177,7 +177,7 @@ public enum SFileType {
 					"text/x-sql"
 					)
 			, Arrays.asList(
-					"application/octet-stream"
+					"text/plain"
 					)
 			)
 	, SH(Arrays.asList("sh")
