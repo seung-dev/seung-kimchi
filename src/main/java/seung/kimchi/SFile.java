@@ -29,6 +29,7 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 
 import seung.kimchi.types.SException;
+import seung.kimchi.types.SFileType;
 import seung.kimchi.types.SMediaType;
 
 public class SFile {
@@ -298,5 +299,21 @@ public class SFile {
 		
 		return metadata.get(Metadata.CONTENT_TYPE);
 	}// end of content_type
+	
+	public static String mime_type(File file) throws SException {
+		try {
+			return new Tika().detect(file);
+		} catch (IOException e) {
+			throw new SException(e, "Something went wrong.");
+		}// end of try
+	}// end of mime_type
+	
+	public static SFileType metadata(File file) throws SException {
+		return SFileType.builder()
+				.mime_type(mime_type(file))
+				.extension(extension(file))
+				.content_type(content_type(file))
+				.build();
+	}// end of metadata
 	
 }
