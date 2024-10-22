@@ -29,6 +29,7 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 
 import seung.kimchi.types.SException;
+import seung.kimchi.types.SFileMeta;
 import seung.kimchi.types.SFileType;
 import seung.kimchi.types.SMediaType;
 
@@ -225,7 +226,11 @@ public class SFile {
 	
 	
 	public static String extension(String name) {
-		return FilenameUtils.getExtension(name);
+		String ext = FilenameUtils.getExtension(name);
+		if(ext != null) {
+			return ext.toLowerCase();
+		}
+		return null;
 	}// end of extension
 	public static String extension(File file) {
 		return extension(file.getName());
@@ -308,12 +313,60 @@ public class SFile {
 		}// end of try
 	}// end of mime_type
 	
-	public static SFileType metadata(File file) throws SException {
-		return SFileType.builder()
+	public static SFileMeta metadata(File file) throws SException {
+		if(file == null) {
+			return null;
+		}
+		String name = file.getName();
+		String path = file.getParent();
+		long size = file.length();
+		if(file.isDirectory()) {
+			return SFileMeta.builder()
+					.name(name)
+					.path(path)
+					.size(size)
+					.type("d")
+					.build();
+		}
+		if(size == 0) {
+			return SFileMeta.builder()
+					.name(name)
+					.path(path)
+					.size(size)
+					.type("f")
+					.build();
+		}
+		return SFileMeta.builder()
+				.name(name)
+				.path(path)
+				.size(size)
+				.type(file.isFile() ? "f" : "d")
 				.mime_type(mime_type(file))
 				.extension(extension(file))
 				.content_type(content_type(file))
 				.build();
 	}// end of metadata
+	
+	public static boolean match(File file, SFileType[] allowed) throws SException {
+		if(file == null || allowed == null) {
+			return false;
+		}
+		SFileMeta meta = metadata(file);
+		if(meta.size() == 0) {
+			return false;
+		}
+		if(meta.is_directory()) {
+			return false;
+		}
+		for(SFileType t : allowed) {
+			if(t.extensions().contains(meta.extension())
+					&& t.mime_types().contains(meta.mime_type())
+					&& t.content_types().contains(meta.content_type())
+					) {
+				return true;
+			}
+		}// end of allowed
+		return false;
+	}// end of allowed
 	
 }
