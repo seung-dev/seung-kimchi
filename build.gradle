@@ -99,6 +99,7 @@ tasks.withType(Javadoc) {
 	}
 }
 
+/*
 task sourcesJar(type: Jar) {
 	archiveClassifier.set("sources")
 	from sourceSets.main.allSource
@@ -108,6 +109,7 @@ task javadocJar(type: Jar) {
 	archiveClassifier.set("javadoc")
 	from tasks.javadoc.destinationDir
 }
+*/
 
 signing {
 	useInMemoryPgpKeys(gpgPassphraseKey, gpgPassphrase)
