@@ -2,8 +2,6 @@ package seung.kimchi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Base64;
@@ -18,20 +16,6 @@ import seung.kimchi.types.SException;
 
 public class SFormat {
 
-	public static String throwable(final Throwable throwable) {
-		String message = null;
-		try (
-				StringWriter stringWriter = new StringWriter();
-				PrintWriter printWriter = new PrintWriter(stringWriter, true);
-				) {
-			throwable.printStackTrace(printWriter);
-			message = stringWriter.getBuffer().toString();
-		} catch (IOException e1) {
-			message = "";
-		}
-		return message;
-	}// end of throwable
-	
 	public static long milliseconds(
 			String value
 			, long default_value
