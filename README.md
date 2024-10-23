@@ -76,3 +76,39 @@ $ gradlew build
 
 - public_key
 - private_key
+
+### Publish
+
+```cmd
+winget install GnuPG.Gpg4win
+```
+
+```cmd
+gpg --version
+```
+
+```cmd
+gpg --full-generate-key
+```
+
+```cmd
+gpg --list-secret-keys --keyid-format=long
+```
+
+```cmd
+gpg --export --armor 79B325D975F5AF1C > seung.gpg.public.asc
+```
+
+```cmd
+gpg --export-secret-keys --armor 79B325D975F5AF1C > seung.gpg.private.asc
+```
+
+```cmd
+gpg --keyserver https://keys.openpgp.org --send-keys 79B325D975F5AF1C
+```
+
+```cmd
+curl https://keys.openpgp.org/vks/v1/by-keyid/79B325D975F5AF1C
+```
+
+
