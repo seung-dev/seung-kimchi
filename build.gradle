@@ -111,11 +111,6 @@ task javadocJar(type: Jar) {
 }
 */
 
-signing {
-	useInMemoryPgpKeys(gpgPassphraseKey, gpgPassphrase)
-	sign publishing.publications.mavenJava
-}
-
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
@@ -162,4 +157,9 @@ publishing {
 			}
 		}
 	}
+}
+
+signing {
+	useInMemoryPgpKeys(gpgPassphraseKey, gpgPassphrase)
+	sign publishing.publications.mavenJava
 }
