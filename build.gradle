@@ -6,7 +6,7 @@ plugins {
 
 def g = "io.github.seung-dev"
 def n = "seung-kimchi"
-def v = "1.0.0"
+def v = "0.0.1"
 
 def ossrhUsername = project.findProperty("ossrhUsername")
 def ossrhPassword = project.findProperty("ossrhPassword")
@@ -97,8 +97,6 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			from components.java
-			artifact sourcesJar
-			artifact javadocJar
 			
 			groupId = g
 			artifactId = n
