@@ -9,9 +9,9 @@
 ### 0-1. Maven Central Repository Namespace 추가하기
 
 > [!TIP]
-> 보유하고 있는 도메인이 없다면 Github 계정을 사용할 수 있습니다.
+> 보유하고 있는 도메인이 없다면 GitHub 계정을 사용할 수 있습니다.
 > 
-> 예: Github: https://github.com/seung-dev &rarr; Namespace: io.github.seung-dev
+> 예: GitHub: https://github.com/seung-dev &rarr; Namespace: io.github.seung-dev
 
 ### 0-2. Maven Central Repository 토큰 발급하기
 
@@ -32,7 +32,7 @@
 > 
 > 또는
 > 
-> Github &rarr; Repository &rarr; Settings &rarr; Secrets and variables &rarr; Actions &rarr; Secrets
+> GitHub &rarr; Repository &rarr; Settings &rarr; Secrets and variables &rarr; Actions &rarr; Secrets
 > 
 > 에 사용됩니다.
 
@@ -137,7 +137,7 @@ gpg --keyserver https://keys.openpgp.org --send-keys 0123456789ABCDEF
 
 ### 1-4. GPG 키 발행 확인하기
 
-[홈페이지](https://keys.openpgp.org/search)
+[홈페이지](https://keys.openpgp.org)
 
 또는
 
@@ -170,30 +170,6 @@ gradlew.bat wrapper --gradle-version latest
 
 [가이드](https://vanniktech.github.io/gradle-maven-publish-plugin/central/)
 
-gradle.properties
-
-```
-mavenCentralUsername=central.sonatype.org 에서 생성한 토큰 username
-mavenCentralPassword=central.sonatype.org 에서 생성한 토큰 password
-signingInMemoryKey=ASCII 형식으로 인코딩한 GPG 키. 예: lQdGBF4jUfwBEACblZV4uBViHcYLOb2280tEpr64iB9b6YRkWil3EODiiLd9JS3V...9pip+B1QLwEdLCEJA+3IIiw4qM5hnMw=
-signingInMemoryKeyPassword=GPG 키를 만들때 작성한 비밀번호
-```
-
-> [!CAUTION]
-> 인증정보를 gradle.properties 로 관리하려면 .gitignore 에 gradle.properties 를 꼭 추가하세요.
-
-> [!IMPORTANT]
-> signingInMemoryKey 에 설정한 키는 다음과 같은 명령어를 통해 ACSII 형식으로 인코딩합니다.
-> 
-> Windows:
->   ```
->   (gpg --export-secret-keys --armor 0123456789ABCDEF | Select-String -NotMatch '---|^=.' | Out-String) -replace '\s+', ''
->   ```
-> Linux:
->   ```
->   gpg --export-secret-keys --armor 0123456789ABCDEF | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
->   ```
-
 build.gradle
 
 ```
@@ -207,10 +183,10 @@ plugins {
 
 def charset = "UTF-8"
 
-group = "io.github.seung-dev"
+group = "central.sonatype.org 에서 생성한 Namespace"
 archivesBaseName = project.name
-version = "0.0.3"
-description = "seung Library"
+version = "버전"
+description = "설명"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -265,6 +241,33 @@ mavenPublishing {
 > [!IMPORTANT]
 > 만약 이 글을 보시고 https://central.sonatype.com/ 에 가입했다면 SonatypeHost.CENTRAL_PORTAL 로 설정해야 합니다.
 
+> [!NOTE]
+> GitHub Actions 를 통해 배포를 진행하신다면 3-0. GitHub 리퍼지토리 세팅하기로 이동하세요.
+
+gradle.properties
+
+```
+mavenCentralUsername=central.sonatype.org 에서 생성한 토큰 username
+mavenCentralPassword=central.sonatype.org 에서 생성한 토큰 password
+signingInMemoryKey=ASCII 형식으로 인코딩한 GPG 키. 예: lQdGBF4jUfwBEACblZV4uBViHcYLOb2280tEpr64iB9b6YRkWil3EODiiLd9JS3V...9pip+B1QLwEdLCEJA+3IIiw4qM5hnMw=
+signingInMemoryKeyPassword=GPG 키를 만들때 작성한 비밀번호
+```
+
+> [!CAUTION]
+> 인증정보를 gradle.properties 로 관리하려면 .gitignore 에 gradle.properties 를 꼭 추가하세요.
+
+> [!IMPORTANT]
+> signingInMemoryKey 에 설정한 키는 다음과 같은 명령어를 통해 ACSII 형식으로 인코딩합니다.
+> 
+> Windows:
+>   ```
+>   (gpg --export-secret-keys --armor 0123456789ABCDEF | Select-String -NotMatch '---|^=.' | Out-String) -replace '\s+', ''
+>   ```
+> Linux:
+>   ```
+>   gpg --export-secret-keys --armor 0123456789ABCDEF | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
+>   ```
+
 ### 2-2. Gradle 빌드 테스트하기
 
 ```powershell
@@ -276,6 +279,62 @@ gradlew.bat clean build --refresh-dependencies --stacktrace
 ```powershell
 gradlew.bat publishAndReleaseToMavenCentral
 ```
+
+### 3-0. GitHub 워크플로 작성하기
+
+.github/workflows/maven.yaml
+
+- name: 제목을 적습니다.
+- on: 다양한 옵션이 있으며 아래 예제는 직접 버튼을 클릭하여 배포하는 옵션입니다.
+- SONATYPE_NEXUS_USERNAME: https://central.sonatype.com 에서 생성한 토큰 `username` 입니다.
+- SONATYPE_NEXUS_PASSWORD: https://central.sonatype.com 에서 생성한 토큰 `password` 입니다.
+- SIGNING_PRIVATE_KEY: GPG 로 생성한 ACSII 형식으로 인코딩된 키입니다.
+- SIGNIN_PASSWORD: GPG 로 키를 생성할때 입력한 비밀번호 입니다.
+
+```
+name: Publish Java Library to the Maven Central Repository
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Publish
+        run: |
+          chmod +x ./gradlew
+          ./gradlew publish
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNIN_PASSWORD }}
+```
+
+### 3-1. GitHub Actions 환경변수 설정하기
+
+Actions &rarr; Secrets and variables &rarr; Actions &rarr; New repository secret
+
+### 3-2. GitHub Actions 실행하기
+
+Settings &rarr; maven.yaml 에서 작성한 제목(name) &rarr; Run workflow
+
+> [!NOTE]
+> 진행중에도 로그를 확인할 수 있습니다.
+
+### 4-0. Maven Central Repository 배포하기
+
+[Maven Central Repository](https://central.sonatype.org) &rarr; Publish 메뉴에서 GitHub Actions 를 통해 배포한 내용을 확인할 수 있습니다.
+
+Publish 버튼을 클릭하여 배포합니다.
 
 ### References
 
