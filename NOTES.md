@@ -8,6 +8,8 @@
 
 ### 0-1. Maven Central Repository Namespace 추가하기
 
+![image](images/maven_namespace.png)
+
 > [!TIP]
 > 보유하고 있는 도메인이 없다면 GitHub 계정을 사용할 수 있습니다.
 > 
@@ -16,6 +18,8 @@
 ### 0-2. Maven Central Repository 토큰 발급하기
 
 [로그인](https://central.sonatype.com/) &rarr; 우측상단 프로필 &rarr; View Account &rarr; Generate User Token
+
+![image](images/maven_generate_user_token.png)
 
 ```xml
 <server>
@@ -323,18 +327,28 @@ jobs:
 
 Actions &rarr; Secrets and variables &rarr; Actions &rarr; New repository secret
 
+![image](images/github_repository_secrets.png)
+
 ### 3-2. GitHub Actions 실행하기
 
 Settings &rarr; maven.yaml 에서 작성한 제목(name) &rarr; Run workflow
 
+![image](images/github_run_workflow.png)
+
+![image](images/github_workflow.png)
+
 > [!NOTE]
 > 진행중에도 로그를 확인할 수 있습니다.
+>
+> ![image](images/github_workflow_details.png)
 
 ### 4-0. Maven Central Repository 배포하기
 
 [Maven Central Repository](https://central.sonatype.org) &rarr; Publish 메뉴에서 GitHub Actions 를 통해 배포한 내용을 확인할 수 있습니다.
 
 Publish 버튼을 클릭하여 배포합니다.
+
+![image](images/maven_publish.png)
 
 ### References
 
