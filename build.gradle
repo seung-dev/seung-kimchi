@@ -1,20 +1,17 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
 	id "java-library"
-	id "maven-publish"
+	id "com.vanniktech.maven.publish" version "0.30.0"
 	id "signing"
 }
 
-def g = "io.github.seung-dev"
-def n = "seung-kimchi"
-def v = "0.0.1"
+def charset = "UTF-8"
 
-def ossrhUsername = project.findProperty("ossrhUsername")?.toString()
-def ossrhPassword = project.findProperty("ossrhPassword")?.toString()
-def gpgSecretKey = project.findProperty("gpgSecretKey")?.toString()
-def gpgPassphrase = project.findProperty("gpgPassphrase")?.toString()
-
-group = g
-version = v
+group = "io.github.seung-dev"
+archivesBaseName = project.name
+version = "0.0.4"
+description = "seung Library"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -80,66 +77,39 @@ dependencies {
 	
 }
 
-java {
-	withSourcesJar()
-	withJavadocJar()
-}
-
 compileJava {
-	options.encoding = "UTF-8"
+	options.encoding = charset
 }
 
 javadoc {
-	options.encoding = "UTF-8"
+	options.encoding = charset
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-			
-			groupId = g
-			artifactId = n
-			version = v
-			
-			pom {
-				name = "seung-kimchi"
-				description = "Java Library"
-				url = "https://github.com/seung-dev/seung-kimchi"
-				licenses {
-					license {
-						name = "The Apache License, Version 2.0"
-						url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-					}
-				}
-				developers {
-					developer {
-						id = "seung"
-						name = "Park Jong Seung"
-						email = "seung.dev@gmail.com"
-					}
-				}
-				scm {
-					connection = "scm:git:git://github.com/seung-dev/seung-kimchi.git"
-					developerConnection = "scm:git:ssh://github.com/seung-dev/seung-kimchi.git"
-					url = "https://github.com/seung-dev/seung-kimchi"
-				}
+mavenPublishing {
+	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+	signAllPublications()
+	coordinates(group, archivesBaseName, version)
+	pom {
+		name = archivesBaseName
+		description = project.description
+		url = "https://github.com/seung-dev/" + archivesBaseName
+		licenses {
+			license {
+				name = "The Apache License, Version 2.0"
+				url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
 			}
 		}
-	}
-	repositories {
-		maven {
-			name = "OSSRH"
-			url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-			credentials {
-				username = ossrhUsername
-				password = ossrhPassword
+		developers {
+			developer {
+				id = "seung"
+				name = "Park Jong Seung"
+				email = "seung.dev@gmail.com"
 			}
 		}
+		scm {
+			connection = "scm:git:git://github.com/seung-dev/seung-kimchi.git"
+			developerConnection = "scm:git:ssh://github.com/seung-dev/seung-kimchi.git"
+			url = "https://github.com/seung-dev/seung-kimchi"
+		}
 	}
-}
-
-signing {
-	useInMemoryPgpKeys(gpgSecretKey, gpgPassphrase)
-	sign publishing.publications.mavenJava
 }
