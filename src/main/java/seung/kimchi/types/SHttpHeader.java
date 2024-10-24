@@ -1,7 +1,9 @@
 package seung.kimchi.types;
 
 /**
- * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+ * HTTP headers
+ * 
+ * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">MDN Web Docs</a>
  */
 public class SHttpHeader {
 
