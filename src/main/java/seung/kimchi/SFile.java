@@ -236,28 +236,6 @@ public class SFile {
 		return extension(file.getName());
 	}// end of extension
 	
-	/**
-	 * <h1>Description</h1>
-	 * <pre>
-	 * response: extensions
-	 * 
-	 * image/png: png
-	 * image/jpeg: jpg
-	 * text/plain: txt, csv
-	 * application/pdf: pdf
-	 * application/x-tika-ooxml: ppt, xlsx
-	 * application/x-tika-msoffice: doc, hwp
-	 * </pre>
-	 * <h1>Request</h1>
-	 * <pre>
-	 * </pre>
-	 * <h1>Response</h1>
-	 * <pre>
-	 * </pre>
-	 * @param file
-	 * @return
-	 * @throws SException
-	 */
 	public static String content_type(
 			byte[] file
 			) throws SException {

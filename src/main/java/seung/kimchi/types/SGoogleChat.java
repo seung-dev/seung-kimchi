@@ -6,21 +6,6 @@ import java.util.List;
 import lombok.Builder;
 import seung.kimchi.SText;
 
-/**
- * <h1>Description</h1>
- * <pre>
- * Google Chat
- * </pre>
- * <h1>Request</h1>
- * <pre>
- * </pre>
- * <h1>Response</h1>
- * <pre>
- * </pre>
- * <h1>Usage</h1>
- * <pre>
- * </pre>
- */
 public class SGoogleChat {
 
 	private String text;

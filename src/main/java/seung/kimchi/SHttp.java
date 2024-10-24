@@ -188,19 +188,6 @@ public class SHttp {
 		
 	}// end of filename
 	
-	/**
-	 * 
-	 * <h1>Usage</h1>
-	 * <pre>
-	 * SHttp.filename(headers, SCharset._S_ISO_8859_1, SCharset._S_EUC_KR);
-	 * SHttp.filename(headers, SCharset._S_WINDOWS_1252, SCharset._S_EUC_KR);
-	 * </pre>
-	 * 
-	 * @param headers
-	 * @param encoded_charset
-	 * @param decoded_charset
-	 * @throws SException 
-	 */
 	public static String filename(
 			Headers headers
 			, String encoded_charset
