@@ -10,7 +10,7 @@ def v = "1.0.0"
 
 def ossrhUsername = project.findProperty("ossrhUsername")
 def ossrhPassword = project.findProperty("ossrhPassword")
-def gpgPassphraseKey = project.findProperty("gpgPassphraseKey")
+def gpgSecretKey = project.findProperty("gpgSecretKey")
 def gpgPassphrase = project.findProperty("gpgPassphrase")
 
 group = g
@@ -48,9 +48,6 @@ dependencies {
 	
 	// http
 	api("com.konghq:unirest-java:3.14.5")
-	//api("com.konghq:unirest-java-core:4.4.0")
-	//api("com.konghq:unirest-modules-gson:4.4.0")
-	//api("com.konghq:unirest-modules-jackson:4.4.0")
 	
 	// bouncycastle
 	api("org.bouncycastle:bcprov-jdk18on:1.78.1")
@@ -99,17 +96,10 @@ tasks.withType(Javadoc) {
 	}
 }
 
-/*
-task sourcesJar(type: Jar) {
-	archiveClassifier.set("sources")
-	from sourceSets.main.allSource
+signing {
+	useInMemoryPgpKeys(gpgPassphraseKey, gpgPassphrase)
+	sign publishing.publications.mavenJava
 }
-
-task javadocJar(type: Jar) {
-	archiveClassifier.set("javadoc")
-	from tasks.javadoc.destinationDir
-}
-*/
 
 publishing {
 	publications {
@@ -160,6 +150,6 @@ publishing {
 }
 
 signing {
-	useInMemoryPgpKeys(gpgPassphraseKey, gpgPassphrase)
+	useInMemoryPgpKeys(gpgSecretKey, gpgPassphrase)
 	sign publishing.publications.mavenJava
 }
