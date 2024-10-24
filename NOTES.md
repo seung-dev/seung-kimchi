@@ -2,21 +2,18 @@
 
 ## Java 오픈소스 시작하기
 
-### Maven Central Repository
+### 0-0. Maven Central Repository 가입하기
 
-##### 가입
+[이동](https://central.sonatype.org/register/central-portal/#create-an-account)
 
-[가이드](https://central.sonatype.org/register/central-portal/#create-an-account)
-
-##### Namespace 추가
+### 0-1. Maven Central Repository Namespace 추가하기
 
 > [!TIP]
 > 보유하고 있는 도메인이 없다면 Github 계정을 사용하세요.
-> 예:
->   Github: https://github.com/seung-dev
->   Namespace: io.github.seung-dev
+> 
+> 예: Github: https://github.com/seung-dev &rarr; Namespace: io.github.seung-dev
 
-##### 토큰 발급
+### 0-2. Maven Central Repository 토큰 발급하기
 
 [로그인](https://central.sonatype.com/) &rarr; 우측상단 프로필 &rarr; View Account &rarr; Generate User Token
 
@@ -30,14 +27,16 @@
 
 > [!NOTE]
 > 이 토큰의 username과 password는
+> 
 > gradle.properties 내 mavenCentralUsername과 mavenCentralPassword
+> 
 > 또는
+> 
 > Github &rarr; Repository &rarr; Settings &rarr; Secrets and variables &rarr; Actions &rarr; Secrets
+> 
 > 에 사용됩니다.
 
-### GNU Privacy Guard
-
-##### 설치 및 버전 확인
+### 1-0. GPG(GNU Privacy Guard) 설치 및 버전 확인하기
 
 ```powershell
 winget install GnuPG.Gpg4win
@@ -47,11 +46,7 @@ winget install GnuPG.Gpg4win
 gpg --version
 ```
 
-##### 키 생성 및 확인
-
-- kind: (1) RSA and RSA
-- size: 4096
-- expires: 0
+### 1-1. GPG 키 생성 및 확인하기
 
 ```powershell
 gpg --full-generate-key
@@ -63,17 +58,20 @@ gpg --list-secret-keys --keyid-format=long
 
 > [!NOTE]
 > 다음과 같은 결과에서 앞으로 사용하게될 아이디는 **0123456789ABCDEF** 입니다.
-> 
+>
+> ```
 > [keyboxd]
 > ---------
 > sec   rsa4096/**0123456789ABCDEF** 2024-10-23 [SC]
 >       0123456789012345678901234567890123456789
 > uid                 [ultimate] Park Jong Seung <seung.dev@gmail.com>
 > ssb   rsa4096/7120E2B2B5353938 2024-10-23 [E]
+> ```
 
 > [!TIP]
-> 테스트 중이시면 아래 제가 선택한 옵션을 참고하세요.
-> 
+> 참고용 옵션이에요.
+>
+> ```
 > Please select what kind of key you want:
 >    (1) RSA and RSA
 >    (2) DSA and Elgamal
@@ -101,8 +99,9 @@ gpg --list-secret-keys --keyid-format=long
 > Real name: 홍길동
 > Email address: seung@gmail.com
 > Comment: 예제
+> ```
 
-##### 키 내보내기
+### 1-2. GPG 키 내보내기
 
 ```powershell
 gpg --export --armor 0123456789ABCDEF > seung.gpg.public.asc
@@ -115,9 +114,9 @@ gpg --export-secret-keys --armor 0123456789ABCDEF > seung.gpg.private.asc
 > [!CAUTION]
 > 키가 분실될 경우를 대비해 백업하세요.
 
-##### 키 발행
+### 1-3. GPG 키 발행하기기
 
-키 서버 목록은 다음과 같으며 어디든 등록해도 됩니다. 저는 openpgp로 작성하였습니다.
+키 서버 목록은 다음과 같으며 원하는 곳을 사용하세요.
 
 - keyserver.ubuntu.com
 - keys.openpgp.org
@@ -129,13 +128,16 @@ gpg --keyserver https://keys.openpgp.org --send-keys 0123456789ABCDEF
 
 > [!WARNING]
 > 아래 내용과 같은 메일을 수신할 수 있습니다. 삭제 등 키 관리를 위해서 링크를 클릭하세요. 시간이 지나면 만료된 세션이라고 표시되면서 링크를 사용할 수 없습니다.
+> 
 > 만약 링크를 사용하지 못했으면 위에서 내보내기한 공개키를 선택하여 관리 하실 수 있습니다.
 > 
+> ```
 > OpenPGP key: 0123456789012345678901234567890123456789
 > This key was just uploaded for the first time, and is now published without identity information. If you want to allow others to find this key by e-mail address, please follow this link:
 > https://keys.openpgp.org/upload/...
+> ```
 
-##### 발행 확인
+##### 1-4. GPG 키 발행 확인하기
 
 [홈페이지](https://keys.openpgp.org/search)
 
