@@ -8,10 +8,10 @@ def g = "io.github.seung-dev"
 def n = "seung-kimchi"
 def v = "0.0.1"
 
-def ossrhUsername = project.findProperty("ossrhUsername")
-def ossrhPassword = project.findProperty("ossrhPassword")
-def gpgSecretKey = project.findProperty("gpgSecretKey")
-def gpgPassphrase = project.findProperty("gpgPassphrase")
+def ossrhUsername = project.findProperty("ossrhUsername")?.toString()
+def ossrhPassword = project.findProperty("ossrhPassword")?.toString()
+def gpgSecretKey = project.findProperty("gpgSecretKey")?.toString()
+def gpgPassphrase = project.findProperty("gpgPassphrase")?.toString()
 
 group = g
 version = v
