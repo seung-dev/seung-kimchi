@@ -15,6 +15,16 @@ public enum SFileType {
 					, "text/x-robots"
 					)
 			)
+	, LOG(Arrays.asList("log")
+			, Arrays.asList(
+					"text/plain"
+					, "text/x-log"
+					)
+			, Arrays.asList(
+					"text/plain"
+					, "text/x-log"
+					)
+			)
 	, JPG(Arrays.asList("jpeg", "jpg")
 			, Arrays.asList(
 					"image/jpeg"
@@ -66,6 +76,24 @@ public enum SFileType {
 					"image/webp"
 					)
 			)
+	, BMP(Arrays.asList("bmp")
+			, Arrays.asList(
+					"image/bmp"
+					)
+			, Arrays.asList(
+					"image/bmp"
+					)
+			)
+	, AI(Arrays.asList("ai", "eps")
+			, Arrays.asList(
+					"application/illustrator"
+					, "application/postscript"
+					)
+			, Arrays.asList(
+					"application/pdf"
+					, "application/postscript"
+					)
+			)
 	, PDF(Arrays.asList("pdf")
 			, Arrays.asList(
 					"application/pdf"
@@ -89,20 +117,26 @@ public enum SFileType {
 					, "application/vnd.ms-excel"
 					, "application/vnd.ms-excel.sheet.macroenabled.12"
 					, "application/x-tika-msoffice"
+					, "text/plain"
 					)
 			, Arrays.asList(
 					"application/zip"
+					, "application/vnd.ms-excel"
 					, "application/x-tika-msoffice"
 					, "application/x-tika-ooxml"
+					, "text/plain"
 					)
 			)
 	, DOCX(Arrays.asList("docx", "doc")
 			, Arrays.asList(
 					"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+					, "application/msword"
 					, "application/x-ms-owner"
 					)
 			, Arrays.asList(
-					"application/x-ms-owner"
+					"application/zip"
+					, "application/x-ms-owner"
+					, "application/x-tika-msoffice"
 					, "application/x-tika-ooxml"
 					)
 			)
@@ -121,11 +155,23 @@ public enum SFileType {
 	, HWPX(Arrays.asList("hwpx", "hwp")
 			, Arrays.asList(
 					"application/hwp+zip"
+					, "application/zip"
+					, "application/xml"
 					, "application/x-tika-msoffice"
 					)
 			, Arrays.asList(
 					"application/zip"
+					, "application/xml"
 					, "application/x-tika-msoffice"
+					)
+			)
+	, MP4(Arrays.asList("mp4")
+			, Arrays.asList(
+					"video/mp4"
+					)
+			, Arrays.asList(
+					"video/mp4"
+					, "video/quicktime"
 					)
 			)
 	, ZIP(Arrays.asList("zip")
@@ -245,6 +291,16 @@ public enum SFileType {
 					)
 			, Arrays.asList(
 					"text/plain"
+					)
+			)
+	, SPSS(Arrays.asList("sav", "spv")
+			, Arrays.asList(
+					"application/x-spss-sav"
+					, "application/zip"
+					)
+			, Arrays.asList(
+					"application/x-spss-sav"
+					, "application/zip"
 					)
 			)
 	;
