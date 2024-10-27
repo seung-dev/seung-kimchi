@@ -3,8 +3,6 @@ package seung.kimchi;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import seung.kimchi.types.SException;
-
 /**
  * 네트워크와 관련된 기능들을 제공합니다.
  * 다른 타입을 텍스트로 변환하는 기능들도 포함합니다.
