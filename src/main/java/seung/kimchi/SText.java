@@ -581,7 +581,7 @@ public class SText {
 	/**
 	 * 바이트 배열을 소스 코드로 변환합니다.
 	 * 
-	 * @param value 요청값
+	 * @param bytes 바이트 배열
 	 * @return 전각
 	 * @since 0.0.1
 	 */
