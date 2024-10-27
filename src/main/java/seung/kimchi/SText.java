@@ -351,7 +351,7 @@ public class SText {
 	 * <p>- 일시: 현재</p>
 	 * <p>- 접미사: 공백</p>
 	 * 
-	 * @see #item_no(int, String, String, Date)
+	 * @see #item_no(String, Date, int, String)
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @param random 랜덤 문자열의 길이 입니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
@@ -372,7 +372,7 @@ public class SText {
 	 * <p>- 랜덤 문자열 길이: 5</p>
 	 * <p>- 접미사: 공백</p>
 	 * 
-	 * @see #item_no(int, String, String, Date)
+	 * @see #item_no(String, Date, int, String)
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
 	 * @since 0.0.1
@@ -391,7 +391,7 @@ public class SText {
 	 * <p>- 랜덤 문자열 길이: 5</p>
 	 * <p>- 접미사: 공백</p>
 	 * 
-	 * @see #item_no(int, String, String, Date)
+	 * @see #item_no(String, Date, int, String)
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
 	 * @throws IllegalArgumentException 랜덤 문자열의 길이는 0 이하일 수 없습니다.
 	 * @since 0.0.1

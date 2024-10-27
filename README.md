@@ -1,7 +1,7 @@
 # seung-kimchi
 
-[![Maven Central](https://img.shields.io/badge/Maven_Central-v0.0.5-blue)](https://central.sonatype.com/artifact/io.github.seung-dev/seung-kimchi)
-[![javadoc](https://img.shields.io/badge/javadoc-v0.0.5-blue)](https://javadoc.io/doc/io.github.seung-dev/seung-kimchi/latest/index.html)
+[![Maven Central](https://img.shields.io/badge/Maven_Central-v1.0.0-blue)](https://central.sonatype.com/artifact/io.github.seung-dev/seung-kimchi)
+[![javadoc](https://img.shields.io/badge/javadoc-v1.0.0-blue)](https://javadoc.io/doc/io.github.seung-dev/seung-kimchi/latest/index.html)
 
 Java 를 사용하면서 자주 사용하게 되는 라이브러리를 모아 콜렉션 라이브러리를 만들었습니다.
 
@@ -13,7 +13,7 @@ Usage
 Gradle
 
 ```
-implementation group: 'io.github.seung-dev', name: 'seung-kimchi', version: '0.0.5'
+implementation group: 'io.github.seung-dev', name: 'seung-kimchi', version: '1.0.0'
 ```
 
 Maven
@@ -22,7 +22,7 @@ Maven
 <dependency>
     <groupId>io.github.seung-dev</groupId>
     <artifactId>seung-kimchi</artifactId>
-    <version>0.0.5</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
