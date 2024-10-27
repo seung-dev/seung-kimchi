@@ -13,8 +13,8 @@ archivesBaseName = project.name
 version = "0.0.5"
 description = "seung Library"
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = "17"
+targetCompatibility = "17"
 
 repositories {
 	mavenCentral()
@@ -26,8 +26,8 @@ dependencies {
 	testImplementation("junit:junit:4.13")
 	
 	// lombok
-	implementation("org.projectlombok:lombok:1.18.30")
-	annotationProcessor("org.projectlombok:lombok:1.18.30")
+	implementation("org.projectlombok:lombok:1.18.34")
+	annotationProcessor("org.projectlombok:lombok:1.18.34")
 	
 	// jakarta
 	implementation("jakarta.validation:jakarta.validation-api:2.0.2")
@@ -83,6 +83,11 @@ compileJava {
 
 javadoc {
 	options.encoding = charset
+	options.stylesheetFile = file("styles/javadoc.css")
+}
+
+tasks.build {
+	dependsOn tasks.javadoc
 }
 
 mavenPublishing {
