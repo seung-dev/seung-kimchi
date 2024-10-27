@@ -2,6 +2,7 @@ package seung.kimchi;
 
 import java.security.SecureRandom;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -34,6 +35,13 @@ public class SText {
 	 * @since 0.0.1
 	 */
 	public static final String _S_BLANK = "";
+	
+	/**
+	 * 하이픈({@value #_S_HYPHEN})
+	 * 
+	 * @since 0.0.1
+	 */
+	public static final String _S_HYPHEN = "-";
 	
 	/**
 	 * CR(Carriage Return): 캐리지 리턴({@value #_S_CR})
@@ -106,11 +114,11 @@ public class SText {
 	/**
 	 * 요청값이 널이거나 길이가 0이면 기본값을 반환합니다.
 	 * 
-	 * @see #is_empty(String)
-	 * @param value 요청값; {@code null}일 수 있습니다.
+	 * @param value         요청값; {@code null}일 수 있습니다.
 	 * @param default_value 기본값; {@code null}일 수 있습니다.
 	 * @return 널이거나 길이가 0이면 기본값을 반환합니다.
 	 * @since 0.0.1
+	 * @see #is_empty(String)
 	 */
 	public static String text(
 			final String value
@@ -169,11 +177,11 @@ public class SText {
 	/**
 	 * 요청값을 요청수 만큼 반복합니다.
 	 * 
-	 * @see StringUtils#repeat(String, int)
-	 * @param value 요청값; {@code null}일 수 있습니다.
+	 * @param value  요청값; {@code null}일 수 있습니다.
 	 * @param length 길이
 	 * @return {@code value}가 {@code null}인 경우 공백을 반환합니다.
 	 * @since 0.0.1
+	 * @see StringUtils#repeat(String, int)
 	 */
 	public static String repeat(
 			final String value
@@ -185,9 +193,9 @@ public class SText {
 	/**
 	 * UUID를 생성합니다.
 	 * 
-	 * @see UUID#randomUUID()
 	 * @return UUID
 	 * @since 0.0.1
+	 * @see UUID#randomUUID()
 	 */
 	public static String uuid() {
 		return UUID.randomUUID().toString();
@@ -196,13 +204,13 @@ public class SText {
 	/**
 	 * 랜덤 문자열을 생성합니다.
 	 * 
-	 * @see {@link RandomStringUtils#random(int, boolean, boolean)}
-	 * @param length 길이
+	 * @param length  길이
 	 * @param letters 문자포함여부
 	 * @param numbers 숫자포함여부
 	 * @return 랜덤 문자열
 	 * @throws IllegalArgumentException {@code length}는 0 보다 커야합니다.
 	 * @since 0.0.1
+	 * @see {@link RandomStringUtils#random(int, boolean, boolean)}
 	 */
 	public static String random(
 			final int length
@@ -246,7 +254,7 @@ public class SText {
 	/**
 	 * 비밀번호를 생성합니다.
 	 * 
-	 * @param length 길이
+	 * @param length  길이
 	 * @param symbols 포함할 특수문자; {@link #_S_PASSWORD_SYMBOLS}를 참고하세요.
 	 * @return 대문자, 소문자, 숫자, 특수문자가 최소 한개 이상 포함된 비밀번호
 	 * @throws IllegalArgumentException {@code length}는 8 이상이어야 합니다. {@code symbols}는 8 {@code null}이나 공백일 수 없습니다.
@@ -301,11 +309,11 @@ public class SText {
 	 * <p>기본값:</p>
 	 * <p>- 포함할 특수문자: {@link SText#_S_PASSWORD_SYMBOLS}</p>
 	 * 
-	 * @see {@link #random_password(int, String)}
 	 * @param length 길이
 	 * @return 대문자, 소문자, 숫자, 특수문자가 최소 한개 이상 포함된 비밀번호
 	 * @throws IllegalArgumentException {@code length}는 8 이상이어야 합니다.
 	 * @since 0.0.1
+	 * @see {@link #random_password(int, String)}
 	 */
 	public static String random_password(final int length) {
 		return random_password(length, _S_PASSWORD_SYMBOLS);
@@ -317,9 +325,9 @@ public class SText {
 	 * <p>- 길이: 16</p>
 	 * <p>- 기호: {@link #_S_PASSWORD_SYMBOLS}</p>
 	 * 
-	 * @see {@link #random_password(int, String)}
 	 * @return 대문자, 소문자, 숫자, 특수문자가 최소 한개 이상 포함된 비밀번호
 	 * @since 0.0.1
+	 * @see {@link #random_password(int, String)}
 	 */
 	public static String random_password() {
 		return random_password(16);
@@ -329,7 +337,7 @@ public class SText {
 	 * 아이템 번호를 생성합니다.
 	 * 
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
-	 * @param date 기준일시
+	 * @param date   기준일시
 	 * @param random 랜덤 문자열의 길이 입니다. 랜덤 문자열은 {@link #random(int, boolean, boolean)}를 사용합니다.
 	 * @param suffix 접미사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
@@ -351,12 +359,12 @@ public class SText {
 	 * <p>- 일시: 현재</p>
 	 * <p>- 접미사: 공백</p>
 	 * 
-	 * @see #item_no(String, Date, int, String)
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @param random 랜덤 문자열의 길이 입니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
 	 * @throws IllegalArgumentException {@code random}는 0 보다 커야합니다.
 	 * @since 0.0.1
+	 * @see #item_no(String, Date, int, String)
 	 */
 	public static String item_no(
 			final String prefix
@@ -372,10 +380,10 @@ public class SText {
 	 * <p>- 랜덤 문자열 길이: 5</p>
 	 * <p>- 접미사: 공백</p>
 	 * 
-	 * @see #item_no(String, Date, int, String)
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
 	 * @since 0.0.1
+	 * @see #item_no(String, Date, int, String)
 	 */
 	public static String item_no(
 			final String prefix
@@ -391,10 +399,10 @@ public class SText {
 	 * <p>- 랜덤 문자열 길이: 5</p>
 	 * <p>- 접미사: 공백</p>
 	 * 
-	 * @see #item_no(String, Date, int, String)
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
 	 * @throws IllegalArgumentException 랜덤 문자열의 길이는 0 이하일 수 없습니다.
 	 * @since 0.0.1
+	 * @see #item_no(String, Date, int, String)
 	 */
 	public static String item_no() {
 		return item_no("I");
@@ -413,9 +421,9 @@ public class SText {
 	 * SText.pad_left("abc", 2, "0")  = IllegalArgumentException
 	 * </pre>
 	 * 
-	 * @param value 기본값; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
+	 * @param value  기본값; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @param length 길이
-	 * @param fill 채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
+	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 왼쪽에 채워진 문자열
 	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
@@ -445,9 +453,9 @@ public class SText {
 	 * SText.pad_left(123, 2, "0")  = IllegalArgumentException
 	 * </pre>
 	 * 
-	 * @param value 기본값;
+	 * @param value  기본값
 	 * @param length 길이
-	 * @param fill 채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
+	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 왼쪽에 채워진 문자열
 	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
@@ -473,9 +481,9 @@ public class SText {
 	 * SText.pad_right("abc", 2, "0")  = IllegalArgumentException
 	 * </pre>
 	 * 
-	 * @param value 기본값; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
+	 * @param value  기본값; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @param length 길이
-	 * @param fill 채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
+	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 오른쪽에 채워진 문자열
 	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
@@ -505,9 +513,9 @@ public class SText {
 	 * SText.pad_right(123, 2, "0")  = IllegalArgumentException
 	 * </pre>
 	 * 
-	 * @param value 기본값;
+	 * @param value  기본값;
 	 * @param length 길이
-	 * @param fill 채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
+	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 오른쪽에 채워진 문자열
 	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
@@ -581,7 +589,7 @@ public class SText {
 	/**
 	 * 바이트 배열을 소스 코드로 변환합니다.
 	 * 
-	 * @param value 요청값
+	 * @param bytes 바이트 배열
 	 * @return 전각
 	 * @since 0.0.1
 	 */
@@ -627,30 +635,42 @@ public class SText {
 		}
 	}// end of number_format
 	
-//	public static List<String> contains_list(
-//			final String value
-//			, final boolean contains
-//			) {
-//		List<String> contains_list = new ArrayList<>();
-//		if(value == null) {
-//			return contains_list;
-//		}
-//		for(String item : value.split(" ")) {
-//			if(_S_BLANK.equals(item)) {
-//				continue;
-//			}
-//			if(contains && !item.startsWith("-")) {
-//				contains_list.add(item);
-//				continue;
-//			}
-//			if(!contains && item.startsWith("-")) {
-//				contains_list.add(item.substring(1));
-//				continue;
-//			}
-//		}
-//		return contains_list;
-//	}// end of contains_list
-//	
+	/**
+	 * 검색어를 분류합니다.
+	 * 
+	 * <p>검색어를 스페이스로 분리하여 하이픈으로 시작하는 항목은 미포함 항목으로 그 외는 포함 항목으로 분류합니다.</p>
+	 * 
+	 * @param value    검색어
+	 * @param contains 검색어 구분; {@code true}는 포함 항목만 반환합니다.
+	 * @return 분류된 검색 항목들을 반환합니다. 조건에 맞는 항목이 없으면 빈 리스트를 반환합니다.
+	 * @since 0.0.1
+	 */
+	public static List<String> search_values(
+			final String value
+			, final boolean contains
+			) {
+		List<String> values = new ArrayList<>();
+		
+		if(is_empty(value)) {
+			return values;
+		}
+		
+		for(String item : value.split(_S_SPACE)) {
+			if(is_empty(item)) {
+				continue;
+			}
+			if(contains && !item.startsWith(_S_HYPHEN)) {
+				values.add(item);
+				continue;
+			}
+			if(!contains && item.startsWith(_S_HYPHEN)) {
+				values.add(item.substring(1));
+				continue;
+			}
+		}
+		return values;
+	}// end of search_values
+	
 //	public static String pnu1111000(final String sido) {
 //		if(sido.contains("서울")) {
 //			return "1100000000";
