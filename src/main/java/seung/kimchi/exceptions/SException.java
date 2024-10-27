@@ -1,4 +1,6 @@
-package seung.kimchi.types;
+package seung.kimchi.exceptions;
+
+import seung.kimchi.types.SError;
 
 public class SException extends Exception {
 

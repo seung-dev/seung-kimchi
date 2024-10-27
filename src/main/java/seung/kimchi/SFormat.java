@@ -12,7 +12,7 @@ import java.util.zip.Inflater;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
-import seung.kimchi.types.SException;
+import seung.kimchi.exceptions.SException;
 
 public class SFormat {
 

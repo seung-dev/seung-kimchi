@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import seung.kimchi.exceptions.SException;
 
 @Builder
 @Accessors(fluent = true)

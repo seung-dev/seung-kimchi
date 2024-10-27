@@ -17,7 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import seung.kimchi.types.SException;
+import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.excel.SCell;
 import seung.kimchi.types.excel.SExcel;
