@@ -4,9 +4,9 @@ import java.io.UnsupportedEncodingException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SAlgorithm;
 import seung.kimchi.types.SCharset;
-import seung.kimchi.types.SException;
 import seung.kimchi.types.SHttpHeader;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.SMediaType;

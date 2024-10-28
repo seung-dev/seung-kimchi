@@ -28,7 +28,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 
-import seung.kimchi.types.SException;
+import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SFileMeta;
 import seung.kimchi.types.SFileType;
 import seung.kimchi.types.SMediaType;

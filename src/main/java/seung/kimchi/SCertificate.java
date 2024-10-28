@@ -76,8 +76,8 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.encoders.Hex;
 
+import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SAlgorithm;
-import seung.kimchi.types.SException;
 import seung.kimchi.types.SSignCertDer;
 import seung.kimchi.types.SSignPriKey;
 

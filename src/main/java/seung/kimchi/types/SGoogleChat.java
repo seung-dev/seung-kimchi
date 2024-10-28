@@ -5,6 +5,7 @@ import java.util.List;
 
 import lombok.Builder;
 import seung.kimchi.SText;
+import seung.kimchi.exceptions.SException;
 
 public class SGoogleChat {
 

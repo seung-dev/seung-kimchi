@@ -14,7 +14,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import com.ibm.icu.util.ChineseCalendar;
 
-import seung.kimchi.types.SException;
+import seung.kimchi.exceptions.SException;
 
 public class SDate {
 

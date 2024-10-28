@@ -25,9 +25,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SAlgorithm;
 import seung.kimchi.types.SCharset;
-import seung.kimchi.types.SException;
 import seung.kimchi.types.SLinkedHashMap;
 
 public class SSecurity {

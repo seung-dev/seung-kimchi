@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import seung.kimchi.SJson;
+import seung.kimchi.exceptions.SException;
 
 @SuppressWarnings("rawtypes")
 public class SLinkedHashMap extends LinkedHashMap {

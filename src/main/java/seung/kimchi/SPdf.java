@@ -10,7 +10,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 
-import seung.kimchi.types.SException;
+import seung.kimchi.exceptions.SException;
 
 public class SPdf {
 
