@@ -82,8 +82,11 @@ compileJava {
 }
 
 javadoc {
-	options.encoding = charset
-	options.stylesheetFile = file("styles/javadoc.css")
+	options {
+		encoding = charset
+		stylesheetFile = file("styles/javadoc.css")
+		links("https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/index.html")
+	}
 }
 
 tasks.build {

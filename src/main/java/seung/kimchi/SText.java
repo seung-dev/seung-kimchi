@@ -221,7 +221,7 @@ public class SText {
 			throw new IllegalArgumentException("Unexpected value.");
 		}
 		
-		return RandomStringUtils.random(length, letters, numbers);
+		return RandomStringUtils.secure().next(length, letters, numbers);
 	}// end of random
 	
 	/**

@@ -31,7 +31,7 @@ public class SJson {
 	/**
 	 * 기본 ObjectMapper를 생성합니다.
 	 * 
-	 * <p>맵:</p>
+	 * <p>디폴트 객체:</p>
 	 * <p>- {@link SLinkedHashMap}</p>
 	 * <p>비활성:</p>
 	 * <p>- {@link MapperFeature#AUTO_DETECT_CREATORS}</p>
@@ -42,10 +42,10 @@ public class SJson {
 	 * <p>설정:</p>
 	 * <p>- {@link SerializationFeature#FAIL_ON_EMPTY_BEANS} = {@code false}</p>
 	 * <p>- {@link SerializationFeature#WRITE_ENUMS_USING_TO_STRING} = {@code true}</p>
-	 * <p>- {@link SerializationFeature#FAIL_ON_NULL_FOR_PRIMITIVES} = {@code false}</p>
-	 * <p>- {@link SerializationFeature#USE_BIG_DECIMAL_FOR_FLOATS} = {@code true}</p>
-	 * <p>- {@link SerializationFeature#WRITE_BIGDECIMAL_AS_PLAIN} = {@code true}</p>
-	 * <p>- {@link SerializationFeature#STRIP_TRAILING_BIGDECIMAL_ZEROES} = {@code true}</p>
+	 * <p>- {@link DeserializationFeature#FAIL_ON_NULL_FOR_PRIMITIVES} = {@code false}</p>
+	 * <p>- {@link DeserializationFeature#USE_BIG_DECIMAL_FOR_FLOATS} = {@code true}</p>
+	 * <p>- {@link JsonGenerator.Feature#WRITE_BIGDECIMAL_AS_PLAIN} = {@code true}</p>
+	 * <p>- {@link JsonNodeFeature#STRIP_TRAILING_BIGDECIMAL_ZEROES} = {@code true}</p>
 	 * 
 	 * @return {@link ObjectMapper}
 	 * @since 0.0.1
@@ -107,12 +107,12 @@ public class SJson {
 	 * @see #object_mapper()
 	 */
 	public static <T> T parse(
-			final String data
+			final String value
 			, final TypeReference<T> type
 			) throws SException {
 		try {
 			return object_mapper()
-					.readValue(data, type)
+					.readValue(value, type)
 					;
 		} catch (JsonMappingException e) {
 			throw new SException(e, "Invalid value.");
