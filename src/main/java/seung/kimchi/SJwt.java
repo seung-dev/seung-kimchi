@@ -22,8 +22,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import io.jsonwebtoken.security.WeakKeyException;
+import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SError;
-import seung.kimchi.types.SException;
 import seung.kimchi.types.SSamesite;
 
 public class SJwt {
@@ -150,7 +150,7 @@ public class SJwt {
 		SError s_error = SError.TOKEN_IS_INVALID;
 		try {
 			Jwts.parser().verifyWith((PublicKey) key).build().parseSignedClaims(jws.replaceAll(_JWT_COOKIE_PREFIX, ""));
-			s_error = SError.TOKEN_IS_VALID;
+			s_error = SError.SUCCESS;
 		} catch (SecurityException e) {
 			s_error = SError.TOKEN_IS_NOT_SECURE;
 		} catch (MalformedJwtException e) {

@@ -49,6 +49,13 @@ public class SNumber {
 		return Double.parseDouble(value);
 	}// end of to_double
 	
+	/**
+	 * 랜덤 숫자를 생성합니다.
+	 * 
+	 * @param min 최소값
+	 * @param max 최대값
+	 * @return 랜덤 숫자
+	 */
 	public static int random(
 			final int min
 			, final int max
