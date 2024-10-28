@@ -26,54 +26,54 @@ dependencies {
 	testImplementation("junit:junit:4.13")
 	
 	// lombok
-	implementation("org.projectlombok:lombok:1.18.34")
-	annotationProcessor("org.projectlombok:lombok:1.18.34")
+	compileOnly group: "org.projectlombok", name: "lombok", version: "1.18.34"
+	annotationProcessor group: "org.projectlombok", name: "lombok", version: "1.18.34"
 	
 	// jakarta
-	implementation("jakarta.validation:jakarta.validation-api:2.0.2")
-	implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
+	implementation group: "jakarta.validation", name: "jakarta.validation-api", version: "3.1.0"
+	implementation group: "jakarta.annotation", name: "jakarta.annotation-api", version: "3.0.0"
 	
 	// apache commons
-	api("commons-io:commons-io:2.17.0")
-	api("org.apache.commons:commons-lang3:3.14.0")
-	api("commons-codec:commons-codec:1.17.0")
-	api("org.apache.commons:commons-text:1.12.0")
-	api("org.apache.commons:commons-compress:1.26.0")
+	api group: "org.apache.commons", name: "commons-lang3", version: "3.17.0"
+	api group: "org.apache.commons", name: "commons-text", version: "1.12.0"
+	api group: "commons-io", name: "commons-io", version: "2.17.0"
+	api group: "commons-codec", name: "commons-codec", version: "1.17.1"
+	api group: "org.apache.commons", name: "commons-compress", version: "1.27.1"
 	
 	// json
-	api("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+	api group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.18.0"
 	
 	// http
-	api("com.konghq:unirest-java:3.14.5")
+	api group: "com.konghq", name: "unirest-java", version: "3.14.5"
 	
 	// bouncycastle
-	api("org.bouncycastle:bcprov-jdk18on:1.78.1")
-	api("org.bouncycastle:bcpkix-jdk18on:1.78.1")
+	api group: "org.bouncycastle", name: "bcprov-jdk18on", version: "1.78.1"
+	api group: "org.bouncycastle", name: "bcpkix-jdk18on", version: "1.78.1"
 	
 	// jwt
-	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
-	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+	implementation group: "io.jsonwebtoken", name: "jjwt-api", version: "0.12.6"
+	runtimeOnly group: "io.jsonwebtoken", name: "jjwt-impl", version: "0.12.6"
+	runtimeOnly group: "io.jsonwebtoken", name: "jjwt-jackson", version: "0.12.6"
 	
 	// tika
-	api("org.apache.tika:tika-core:2.9.2")
+	api group: "org.apache.tika", name: "tika-core", version: "3.0.0"
 	
 	// unzip
-	api("net.lingala.zip4j:zip4j:2.11.5")
+	api group: "net.lingala.zip4j", name: "zip4j", version: "2.11.5"
 	
 	// poi
-	api("org.apache.poi:poi:5.2.5")
-	api("org.apache.poi:poi-ooxml:5.2.5")
+	api group: "org.apache.poi", name: "poi", version: "5.3.0"
+	api group: "org.apache.poi", name: "poi-ooxml", version: "5.3.0"
 	
 	// pdf
-	api("org.apache.pdfbox:pdfbox:3.0.2")
+	api group: "org.apache.pdfbox", name: "pdfbox", version: "3.0.3"
 	
 	// s3
-	api("javax.xml.bind:jaxb-api:2.3.0")
-	api("com.amazonaws:aws-java-sdk-s3:1.12.744")
+	api group: "javax.xml.bind", name: "jaxb-api", version: "2.3.1"
+	api group: "com.amazonaws", name: "aws-java-sdk-s3", version: "1.12.777"
 	
 	// calendar
-	api("com.ibm.icu:icu4j:75.1")
+	implementation group: "com.ibm.icu", name: "icu4j", version: "76.1"
 	
 }
 
@@ -88,6 +88,16 @@ javadoc {
 
 tasks.build {
 	dependsOn tasks.javadoc
+}
+
+task javadocJar(type: Jar) {
+	archiveClassifier.set("javadoc")
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	archiveClassifier.set("sources")
+	from sourceSets.main.allSource
 }
 
 mavenPublishing {
