@@ -1,7 +1,7 @@
 # seung-kimchi
 
-[![Maven Central](https://img.shields.io/badge/Maven_Central-v1.0.1-blue)](https://central.sonatype.com/artifact/io.github.seung-dev/seung-kimchi)
-[![javadoc](https://img.shields.io/badge/javadoc-v1.0.1-blue)](https://javadoc.io/doc/io.github.seung-dev/seung-kimchi/latest/index.html)
+[![Maven Central](https://img.shields.io/badge/Maven_Central-v1.0.2-blue)](https://central.sonatype.com/artifact/io.github.seung-dev/seung-kimchi)
+[![javadoc](https://img.shields.io/badge/javadoc-v1.0.2-blue)](https://javadoc.io/doc/io.github.seung-dev/seung-kimchi/latest/index.html)
 
 Java 를 사용하면서 자주 사용하게 되는 라이브러리를 모아 콜렉션 라이브러리를 만들었습니다.
 
@@ -13,7 +13,7 @@ Usage
 Gradle
 
 ```
-implementation group: 'io.github.seung-dev', name: 'seung-kimchi', version: '1.0.1'
+implementation group: 'io.github.seung-dev', name: 'seung-kimchi', version: '1.0.2'
 ```
 
 Maven
@@ -22,8 +22,33 @@ Maven
 <dependency>
     <groupId>io.github.seung-dev</groupId>
     <artifactId>seung-kimchi</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
+```
+
+Import Project
+--------------
+
+settings.gradle
+
+```
+rootProject.name = "..."
+
+include "seung-kimchi"
+project(":seung-kimchi").projectDir = new File(".../seung-kimchi")
+```
+
+build.gradle
+
+```
+...
+
+dependencies {
+    ...
+    implementation(project(path: ":seung-kimchi", configuration: "default"))
+}
+
+...
 ```
 
 Publish My Java Library to Maven Central

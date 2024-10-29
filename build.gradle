@@ -10,7 +10,7 @@ def charset = "UTF-8"
 
 group = "io.github.seung-dev"
 archivesBaseName = project.name
-version = "1.0.1"
+version = "1.0.2"
 description = "seung Library"
 
 sourceCompatibility = "17"
@@ -34,7 +34,7 @@ dependencies {
 	implementation group: "jakarta.annotation", name: "jakarta.annotation-api", version: "3.0.0"
 	
 	// apache commons
-	api group: "org.apache.commons", name: "commons-lang3", version: "3.17.0"
+	api group: "org.apache.commons", name: "commons-lang3", version: "3.14.0"
 	api group: "org.apache.commons", name: "commons-text", version: "1.12.0"
 	api group: "commons-io", name: "commons-io", version: "2.17.0"
 	api group: "commons-codec", name: "commons-codec", version: "1.17.1"
