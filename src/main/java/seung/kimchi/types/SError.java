@@ -88,4 +88,14 @@ public enum SError {
 		return null;
 	}// end of resolve
 	
+	/**
+	 * 요청값과 오류코드가 일치하는지 확인합니다.
+	 * 
+	 * @return 일치하면 {@code true}를 반환합니다.
+	 * @since 0.0.1
+	 */
+	public boolean equals(String error_code) {
+		return this.code.equals(error_code);
+	}// end of equals
+	
 }
