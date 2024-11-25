@@ -172,6 +172,14 @@ public class SXlsx {
 		
 		while(true) {
 			
+			if(cell_value == null) {
+				break;
+			}
+			
+			if("".equals(cell_value)) {
+				break;
+			}
+			
 			if(CellType.NUMERIC == cell_type) {
 				xssf_cell.setCellValue(Double.valueOf(cell_value));
 				break;
