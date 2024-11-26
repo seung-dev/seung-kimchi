@@ -20,6 +20,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -372,6 +373,25 @@ public class SSecurity {
 		}
 		return new IvParameterSpec(iv);
 	}// end of iv_parameter_spec
+	
+	public static GCMParameterSpec gcm_parameter_spec(
+			final int len
+			, final byte[] iv
+			) {
+		if(iv == null) {
+			return null;
+		}
+		return new GCMParameterSpec(len, iv);
+	}// end of gcm_parameter_spec
+	
+	public static GCMParameterSpec gcm_parameter_spec(
+			final byte[] iv
+			) {
+		return gcm_parameter_spec(
+				SAlgorithm._S_GCM_TAG_LEN
+				, iv
+				);
+	}// end of gcm_parameter_spec
 	
 	public static KeyPair keypair(
 			final String algorithm
