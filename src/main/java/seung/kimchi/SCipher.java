@@ -120,7 +120,6 @@ public class SCipher {
 		} catch (InvalidKeyException e) {
 			throw new SException("[InvalidKeyException] Failed to initialize cipher.");
 		} catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
 			throw new SException("[InvalidAlgorithmParameterException] Failed to initialize cipher.");
 		} catch (IllegalBlockSizeException e) {
 			throw new SException("[IllegalBlockSizeException] Failed to encrypt data.");
@@ -226,7 +225,6 @@ public class SCipher {
 		} catch (InvalidKeyException e) {
 			throw new SException("[InvalidKeyException] Failed to initialize cipher.");
 		} catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
 			throw new SException("[InvalidAlgorithmParameterException] Failed to initialize cipher.");
 		} catch (IllegalBlockSizeException e) {
 			throw new SException("[IllegalBlockSizeException] Failed to encrypt data.");
