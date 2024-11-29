@@ -191,6 +191,47 @@ public class SText {
 	}// end of repeat
 	
 	/**
+	 * 시작 문자열과 종료 문자열 사이의 값을 추출합니다.
+	 * 
+	 * @param value  요청값; {@code null}일 수 있습니다.
+	 * @param begin  시작 문자열; {@code null}일 수 있습니다. {@code null}이거나 공백 경우 처음부터 끝 문자열 사이의 값을 추출합니다.
+	 * @param end  끝 문자열; {@code null}일 수 있습니다. {@code null}이거나 공백 경우 시작 문자열 이후의 값을 추출합니다.
+	 * @return 시작 문자열과 종료 문자열이 모두 {@code null}이거나 공백 경우 공백응ㄹ 반환합니다.
+	 * @since 0.0.1
+	 * @see StringUtils#repeat(String, int)
+	 */
+	public static String split(
+			final String value
+			, final String begin
+			, final String end
+			) {
+		if(is_empty(value)) {
+			return "";
+		}
+		boolean begin_is_empty = is_empty(begin);
+		boolean end_is_empty = is_empty(end);
+		if(begin_is_empty && end_is_empty) {
+			return "";
+		}
+		if(begin_is_empty) {
+			if(!value.contains(end)) {
+				return "";
+			}
+			return value.split(end)[0];
+		}
+		if(is_empty(end)) {
+			if(!value.contains(begin)) {
+				return "";
+			}
+			return value.split(begin)[1];
+		}
+		if(!value.contains(begin) || !value.contains(end)) {
+			return "";
+		}
+		return value.split(begin)[1].split(end)[0];
+	}// end of split
+	
+	/**
 	 * UUID를 생성합니다.
 	 * 
 	 * @return UUID
