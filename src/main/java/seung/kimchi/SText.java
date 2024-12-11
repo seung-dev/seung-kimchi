@@ -200,7 +200,7 @@ public class SText {
 	 * @since 0.0.1
 	 * @see StringUtils#repeat(String, int)
 	 */
-	public static String split(
+	public static String substring(
 			final String value
 			, final String begin
 			, final String end
@@ -208,27 +208,20 @@ public class SText {
 		if(is_empty(value)) {
 			return "";
 		}
-		boolean begin_is_empty = is_empty(begin);
-		boolean end_is_empty = is_empty(end);
-		if(begin_is_empty && end_is_empty) {
+		int begin_index = is_empty(begin) ? -1 : value.indexOf(begin);
+		begin_index = begin_index > -1 ? begin_index + begin.length() : begin_index;
+		String part = begin_index > -1 ? value.substring(begin_index) : value;
+		int end_index = is_empty(end) ? -1 : part.indexOf(end);
+		if(begin_index == -1 && end_index == -1) {
 			return "";
 		}
-		if(begin_is_empty) {
-			if(!value.contains(end)) {
-				return "";
-			}
-			return value.split(end)[0];
+		if(begin_index == -1) {
+			return value.substring(0, end_index);
 		}
-		if(is_empty(end)) {
-			if(!value.contains(begin)) {
-				return "";
-			}
-			return value.split(begin)[1];
+		if(end_index == -1) {
+			return value.substring(begin_index);
 		}
-		if(!value.contains(begin) || !value.contains(end)) {
-			return "";
-		}
-		return value.split(begin)[1].split(end)[0];
+		return part.substring(0, end_index);
 	}// end of split
 	
 	/**
