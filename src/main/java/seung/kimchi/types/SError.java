@@ -9,6 +9,7 @@ package seung.kimchi.types;
 public enum SError {
 
 	SUCCESS                        ("S000", "성공")
+	, DATA_IS_EMPTY                ("S100", "조회된 결과가 없습니다.")
 	, RESULT_IS_EMPTY              ("F900", "결과를 확인할 수 없습니다.")
 	, VALUE_EXISTS                 ("F901", "이미 사용중입니다.")
 	, FAIL                         ("F999", "요청이 실패하였습니다. 관리자에게 문의하세요.")

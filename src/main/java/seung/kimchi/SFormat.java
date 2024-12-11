@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -166,5 +168,14 @@ public class SFormat {
 	public static byte[] decompress(final byte[] data) throws IOException, DataFormatException {
 		return decompress(data, true);
 	}// end of decompress
+	
+	public static boolean regex(
+			String expression
+			, String value
+			) {
+		Pattern pattern = Pattern.compile(expression);
+		Matcher matcher = pattern.matcher(value);
+		return matcher.matches();
+	}// end of regex
 	
 }
