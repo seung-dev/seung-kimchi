@@ -17,7 +17,7 @@ public class SSaxHandler extends DefaultHandler {
 	
 	private String tag_name;
 	
-	private String text;
+	private StringBuilder text;
 	
 	private boolean target;
 	
@@ -35,6 +35,7 @@ public class SSaxHandler extends DefaultHandler {
 	@Override
 	public void startDocument() throws SAXException {
 		this.target = false;
+		this.text = new StringBuilder();
 	}// end of startDocument
 	
 	@Override
@@ -48,6 +49,10 @@ public class SSaxHandler extends DefaultHandler {
 		if(qName.equals(tag_name)) {
 			this.row = new SLinkedHashMap();
 			this.target = true;
+		}
+		
+		if(this.target) {
+			this.text.setLength(0);
 		}
 		
 	}// end of startElement
@@ -65,7 +70,7 @@ public class SSaxHandler extends DefaultHandler {
 		}
 		
 		if(this.target) {
-			row.add(qName, SText.trim(this.text));
+			row.add(qName, SText.trim(this.text.toString()));
 		}
 		
 	}// end of endElement
@@ -76,7 +81,7 @@ public class SSaxHandler extends DefaultHandler {
 			, int start
 			, int length
 			) throws SAXException {
-		this.text = new String(ch, start, length);
+		this.text = this.text.append(new String(ch, start, length));
 	}// end of characters
 	
 }
