@@ -16,7 +16,7 @@ public class SValid {
 		if(SText.is_empty(value)) {
 			return Pair.of(false, "비밀번호가 올바르지 않습니다.");
 		}
-		  
+		
 		if(expressions != null) {
 			for(SRegex regex : expressions) {
 				if(!SFormat.regex(regex.expression(), value)) {
@@ -26,14 +26,14 @@ public class SValid {
 		}
 		
 		if(!SText.is_empty(email)) {
-			if(!value.contains("@")) {
+			if(!email.contains("@")) {
 				return Pair.of(false, "이메일 형식이 올바르지 않습니다.");
 			}
 			String domain = email.split("@")[1];
 			if(!domain.contains(".")) {
 				return Pair.of(false, "이메일 형식이 올바르지 않습니다.");
 			}
-			if(value.contains(domain.split(".")[0])) {
+			if(value.contains(domain.split("\\.")[0])) {
 				return Pair.of(false, "이메일 주소는 비밀번호에 포함될 수 없습니다.");
 			}
 			String address = email.split("@")[0];
