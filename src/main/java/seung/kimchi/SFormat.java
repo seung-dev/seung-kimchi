@@ -56,7 +56,7 @@ public class SFormat {
 		}
 		return value.getBytes(charset);
 	}// end of bytes
-	public static byte[] bytes(final String value) throws UnsupportedEncodingException, SException {
+	public static byte[] bytes(final String value) throws UnsupportedEncodingException {
 		return bytes(value, SCharset._S_UTF_8);
 	}// end of bytes
 	
