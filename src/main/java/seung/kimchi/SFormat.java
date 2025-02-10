@@ -2,6 +2,7 @@ package seung.kimchi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Base64;
@@ -15,6 +16,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import seung.kimchi.exceptions.SException;
+import seung.kimchi.types.SCharset;
 
 public class SFormat {
 
@@ -47,6 +49,16 @@ public class SFormat {
 				throw new IllegalArgumentException("Unexpected value.");
 		}
 	}// end of ms
+	
+	public static byte[] bytes(final String value, final String charset) throws UnsupportedEncodingException {
+		if(SText.is_empty(value)) {
+			throw new IllegalArgumentException("Unexpected value.");
+		}
+		return value.getBytes(charset);
+	}// end of bytes
+	public static byte[] bytes(final String value) throws UnsupportedEncodingException, SException {
+		return bytes(value, SCharset._S_UTF_8);
+	}// end of bytes
 	
 	public static byte[] encode_base64(final byte[] data) {
 		return Base64.getEncoder().encode(data);
