@@ -30,24 +30,24 @@ public class SCipher {
 		return new SecretKeySpec(key, algorithm);
 	}// end of secret_key_spec
 	
-	public static byte[] secure_random_iv(
-			final int iv_size
+	public static byte[] nonce(
+			final int nonce_size
 			) {
+		byte[] nonce = new byte[nonce_size];
 		SecureRandom secureRandom = new SecureRandom();
-		byte[] iv = new byte[iv_size];
-		secureRandom.nextBytes(iv);
-		return iv;
-	}// end of secure_random_iv
+		secureRandom.nextBytes(nonce);
+		return nonce;
+	}// end of nonce
 	
 	public static AlgorithmParameterSpec algorithm_parameter_spec(
 			final STransformation transformation
-			, final byte[] iv
+			, final byte[] nonce
 			) throws SException {
 		
 		String mode = transformation.mode();
 		
 		if("GCM".equals(mode)) {
-			return new GCMParameterSpec(transformation.tag_size() * 8, iv);
+			return new GCMParameterSpec(transformation.tag_size() * 8, nonce);
 		}
 		
 		throw new SException("Unsupported encryption mode.");
@@ -57,20 +57,20 @@ public class SCipher {
 			final STransformation transformation
 			, final String provider
 			, final byte[] key
-			, final byte[] iv
+			, final byte[] nonce
 			, final byte[] data
 			) throws SException {
 		
 		String algorithm = transformation.algorithm();
 		int block_size = transformation.block_size();
 		
-		ByteBuffer byteBuffer = ByteBuffer.allocate(data.length + iv.length + transformation.tag_size());
+		ByteBuffer byteBuffer = ByteBuffer.allocate(data.length + nonce.length + transformation.tag_size());
 		
 		try {
 			
 			Key secret_key = secret_key_spec(key, algorithm);
 			
-			AlgorithmParameterSpec algorithm_parameter_spec = algorithm_parameter_spec(transformation, iv);
+			AlgorithmParameterSpec algorithm_parameter_spec = algorithm_parameter_spec(transformation, nonce);
 			
 			Cipher cipher = null;
 			if(SText.is_empty(provider)) {
@@ -85,7 +85,7 @@ public class SCipher {
 				cipher.init(Cipher.ENCRYPT_MODE, secret_key, algorithm_parameter_spec);
 			}
 			
-			byteBuffer.put(iv);
+			byteBuffer.put(nonce);
 			
 			int offset = 0;
 			int len = 0;
@@ -133,14 +133,14 @@ public class SCipher {
 	public static byte[] encrypt(
 			final STransformation transformation
 			, final byte[] key
-			, final byte[] iv
+			, final byte[] nonce
 			, final byte[] data
 			) throws SException {
 		return encrypt(
 				transformation
 				, BouncyCastleProvider.PROVIDER_NAME//provider
 				, key
-				, iv
+				, nonce
 				, data
 				);
 	}// end of encrypt
@@ -154,7 +154,7 @@ public class SCipher {
 				transformation
 				, BouncyCastleProvider.PROVIDER_NAME//provider
 				, key
-				, secure_random_iv(transformation.iv_size())//iv
+				, nonce(transformation.nonce_size())//nonce
 				, data
 				);
 	}// end of encrypt
@@ -167,10 +167,10 @@ public class SCipher {
 			) throws SException {
 		
 		String algorithm = transformation.algorithm();
+		int nonce_size = transformation.nonce_size();
 		int block_size = transformation.block_size();
-		int iv_size = transformation.iv_size();
 		
-		ByteBuffer byteBuffer = ByteBuffer.allocate(data.length - iv_size - transformation.tag_size());
+		ByteBuffer byteBuffer = ByteBuffer.allocate(data.length - nonce_size - transformation.tag_size());
 		
 		try {
 			
@@ -178,10 +178,10 @@ public class SCipher {
 			
 			ByteBuffer encrypted = ByteBuffer.wrap(data);
 			
-			byte[] iv = new byte[iv_size];
-			encrypted.get(iv);
+			byte[] nonce = new byte[nonce_size];
+			encrypted.get(nonce);
 			
-			AlgorithmParameterSpec algorithm_parameter_spec = algorithm_parameter_spec(transformation, iv);
+			AlgorithmParameterSpec algorithm_parameter_spec = algorithm_parameter_spec(transformation, nonce);
 			
 			Cipher cipher = null;
 			if(SText.is_empty(provider)) {
