@@ -60,6 +60,13 @@ public class SFormat {
 		return bytes(value, SCharset._S_UTF_8);
 	}// end of bytes
 	
+	public static String text(final byte[] value, final String charset) throws UnsupportedEncodingException {
+		return new String(value, charset);
+	}// end of text
+	public static String text(final byte[] value) throws UnsupportedEncodingException {
+		return text(value, SCharset._S_UTF_8);
+	}// end of text
+	
 	public static byte[] encode_base64(final byte[] data) {
 		return Base64.getEncoder().encode(data);
 	}// end of encode_base64
