@@ -48,9 +48,9 @@ public class SFile {
 				is_zip = true;
 			}
 		} catch (ZipException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[ZipException] Failed to determine file type.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to determine file type.");
 		}// end of try
 		
 		return is_zip;
@@ -85,9 +85,9 @@ public class SFile {
 			zipOutputStream.closeEntry();
 			
 		} catch (FileNotFoundException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[FileNotFoundException] Failed to add file to zip.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to add file to zip.");
 		}// end of try
 		
 	}
@@ -115,7 +115,7 @@ public class SFile {
 			zipOutputStream.flush();
 			
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to zip files.");
 		}// end of try
 		
 		return zip;
@@ -149,9 +149,9 @@ public class SFile {
 			zipOutputStream.flush();
 			
 		} catch (FileNotFoundException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[FileNotFoundException] Failed to zip files.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to zip files.");
 		}// end of try
 		
 		return new File(zip_path).length();
@@ -174,9 +174,9 @@ public class SFile {
 			fileOutputStream.close();
 			
 		} catch (FileNotFoundException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[FileNotFoundException] Failed to unzip file.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to unzip file.");
 		}// end of try
 		
 	}// end of write
@@ -203,7 +203,7 @@ public class SFile {
 					, objectMetadata//metadata
 					);
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to upload file.");
 		}// end of try
 		
 		return putObjectResult;
@@ -219,7 +219,7 @@ public class SFile {
 			S3Object s3Object = amazon_s3_client.getObject(bucket_name, key);
 			return IOUtils.toByteArray(s3Object.getObjectContent());
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to download file.");
 		}// end of try
 		
 	}// end of s3_download
@@ -250,11 +250,11 @@ public class SFile {
 			new Tika().parseToString(tikaInputStream, metadata);
 			
 		} catch (FileNotFoundException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[FileNotFoundException] Failed to determine file type.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to determine file type.");
 		} catch (TikaException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[TikaException] Failed to determine file type.");
 		}// end of try
 		
 		return metadata.get(Metadata.CONTENT_TYPE);
@@ -265,7 +265,7 @@ public class SFile {
 		try {
 			return content_type(FileUtils.readFileToByteArray(file));
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to determine file type.");
 		}
 	}// end of content_type
 	
@@ -285,9 +285,9 @@ public class SFile {
 			return new Tika().detect(tikaInputStream, metadata);
 			
 		} catch (FileNotFoundException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[FileNotFoundException] Failed to determine mime type.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to determine mime type.");
 		}// end of try
 		
 	}// end of mime_type
@@ -295,7 +295,7 @@ public class SFile {
 		try {
 			return mime_type(FileUtils.readFileToByteArray(file), file.getName());
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to determine mime type.");
 		}
 	}// end of mime_type
 	

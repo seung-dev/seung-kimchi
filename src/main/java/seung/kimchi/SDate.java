@@ -126,7 +126,7 @@ public class SDate {
 			simpleDateFormat.setTimeZone(time_zone);
 			return simpleDateFormat.parse(date);
 		} catch (ParseException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[ParseException] Failed to convert to date.");
 		}// end of try
 		
 	}// end of date

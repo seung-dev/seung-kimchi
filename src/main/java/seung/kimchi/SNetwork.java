@@ -43,7 +43,7 @@ public class SNetwork {
 			}
 			return "";
 		} catch (UnknownHostException e) {
-			return "unknown";
+			return "";
 		}// end of try
 	}// end of nslookup
 	

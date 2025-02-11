@@ -46,7 +46,7 @@ public class SHttp {
 					.replaceAll("\\%7E", "~")
 					;
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to encode uri.");
 		}// end of try
 		
 	}// end of encode_uri_component
@@ -67,7 +67,7 @@ public class SHttp {
 					.decode(data, charset)
 					;
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to decode uri.");
 		}// end of try
 		
 	}// end of decode_uri
@@ -107,7 +107,7 @@ public class SHttp {
 			return String.format("attachment; filename=\"%s\"", filename);
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to encode content disposition.");
 		}// end of try
 		
 	}// end of content_disposition
@@ -142,12 +142,11 @@ public class SHttp {
 				return httpResponse.getBody();
 			}
 			
-			throw new SException("Something went wrong.");
-			
 		} catch (UnirestException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnirestException] Failed to get public ip.");
 		}// end of try
 		
+		return "";
 	}// end of public_ip
 	public static String public_ip() throws SException {
 		return public_ip("http://public.restful.kr/ipv4");
@@ -183,7 +182,7 @@ public class SHttp {
 			return URLDecoder.decode(SText.trim(filename), SCharset._S_UTF_8);
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to get file name.");
 		}// end of try
 		
 	}// end of filename
@@ -197,9 +196,7 @@ public class SHttp {
 		try {
 			return new String(filename(headers).getBytes(encoded_charset), decoded_charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
-		} catch (SException e) {
-			throw e;
+			throw new SException(e, "[UnsupportedEncodingException] Failed to get file name.");
 		}// end of try
 		
 	}// end of filename
@@ -257,7 +254,7 @@ public class SHttp {
 			return cookie.toString();
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to build cookie.");
 		}// end of try
 		
 	}// end of cookie
@@ -318,7 +315,7 @@ public class SHttp {
 			return getRequest.asBytes();
 			
 		} catch (UnirestException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnirestException] Failed to request.");
 		}// end of try
 		
 	}// end of get
@@ -414,7 +411,7 @@ public class SHttp {
 			return httpRequestWithBody.body(payload).asBytes();
 			
 		} catch (UnirestException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnirestException] Failed to request.");
 		}// end of try
 		
 	}// end of post

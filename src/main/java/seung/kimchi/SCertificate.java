@@ -95,20 +95,21 @@ public class SCertificate {
 		try {
 			
 			EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(encoded);
+			KeyFactory keyFactory = null;
 			if(provider != null) {
-				KeyFactory keyFactory = KeyFactory.getInstance(algorithm, provider);
-				return keyFactory.generatePublic(encodedKeySpec);
+				keyFactory = KeyFactory.getInstance(algorithm, provider);
+			} else {
+				keyFactory = KeyFactory.getInstance(algorithm);
 			}
 			
-			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 			return keyFactory.generatePublic(encodedKeySpec);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to get public key.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to get public key.");
 		} catch (InvalidKeySpecException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeySpecException] Failed to get public key.");
 		}// end of try
 		
 	}// end of public_key
@@ -179,11 +180,11 @@ public class SCertificate {
 			return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to get private key.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to get private key.");
 		} catch (InvalidKeySpecException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeySpecException] Failed to get private key.");
 		}// end of try
 		
 	}// end of private_key
@@ -247,9 +248,9 @@ public class SCertificate {
 			CertificateFactory certificateFactory = CertificateFactory.getInstance(_S_X509);
 			x509_certificate = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to read x509 certificate.");
 		} catch (CertificateException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[CertificateException] Failed to read x509 certificate.");
 		}// end of try
 		
 		return x509_certificate;
@@ -519,13 +520,13 @@ public class SCertificate {
 			) throws SException {
 		
 		if(encoded == null) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		X509Certificate x509_certificate = x509_certificate(encoded);
 		
 		if(x509_certificate == null) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		String subject_alternative_name_oid = subject_alternative_name_oid(x509_certificate);
@@ -566,7 +567,7 @@ public class SCertificate {
 		try {
 			return s_sign_cert_der(FileUtils.readFileToByteArray(file));
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to read cert der.");
 		}// end of try
 		
 	}// end of s_sign_cert_der
@@ -652,7 +653,7 @@ public class SCertificate {
 		try {
 			return s_sign_pri_key(FileUtils.readFileToByteArray(file));
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to read pri key.");
 		}// end of try
 		
 	}// end of s_sign_pri_key
@@ -751,21 +752,21 @@ public class SCertificate {
 			decrypted = cipher.doFinal(s_sign_pri_key.private_key());
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to decrypt private key.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to decrypt private key.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchPaddingException] Failed to decrypt private key.");
 		} catch (InvalidKeyException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeyException] Failed to decrypt private key.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidAlgorithmParameterException] Failed to decrypt private key.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IllegalBlockSizeException] Failed to decrypt private key.");
 		} catch (BadPaddingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[BadPaddingException] Failed to decrypt private key.");
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to decrypt private key.");
 		}// end of try
 		
 		return decrypted;
@@ -785,14 +786,14 @@ public class SCertificate {
 					|| secret == null
 					|| message == null
 					) {
-				throw new IllegalArgumentException("Unexpected value.");
+				throw new SException("[IllegalArgumentException] Invalid argument.");
 			}
 			
 
 			SSignCertDer s_sign_cert_der = s_sign_cert_der(sign_cert_der);
 			
 			if(s_sign_cert_der == null) {
-				throw new NullPointerException("Unexpected value.");
+				throw new SException("[IllegalArgumentException] Invalid argument.");
 			}
 			
 			byte[] decrypted = decrypt_private_key(sign_pri_key, secret);
@@ -802,7 +803,7 @@ public class SCertificate {
 			
 			String signiture_algorithm_name = s_sign_cert_der.signiture_algorithm_name();
 			if(signiture_algorithm_name == null) {
-				throw new NullPointerException("Value is empty.");
+				throw new SException("[NullPointerException] Invalid algorithm name.");
 			}
 			
 			ContentSigner contentSigner = new JcaContentSignerBuilder(signiture_algorithm_name)
@@ -815,7 +816,7 @@ public class SCertificate {
 			
 			X509Certificate x509_certificate = s_sign_cert_der.x509_certificate();
 			if(x509_certificate == null) {
-				throw new NullPointerException("Value is empty.");
+				throw new SException("[NullPointerException] Invalid x509 certificate.");
 			}
 			
 			SignerInfoGenerator infoGen = jcaSignerInfoGeneratorBuilder.build(contentSigner, x509_certificate);
@@ -845,17 +846,17 @@ public class SCertificate {
 			return cmsSignedData.getEncoded(_S_DER);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to create signature.");
 		} catch (InvalidKeySpecException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeySpecException] Failed to create signature.");
 		} catch (OperatorCreationException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[OperatorCreationException] Failed to create signature.");
 		} catch (CertificateEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[CertificateEncodingException] Failed to create signature.");
 		} catch (CMSException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[CMSException] Failed to create signature.");
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to create signature.");
 		}// end of try
 		
 	}// end of sign
@@ -874,7 +875,7 @@ public class SCertificate {
 					, message
 					);
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to create signature.");
 		}// end of try
 		
 	}// end of sign
@@ -944,7 +945,7 @@ public class SCertificate {
 					|| random_number == null
 					|| algorithm == null
 					) {
-				throw new IllegalArgumentException("Unexpected value.");
+				throw new SException("[IllegalArgumentException] Invalid arguments.");
 			}
 			
 			DERSequence derSequence = new DERSequence(new ASN1Encodable[] {
@@ -957,7 +958,7 @@ public class SCertificate {
 			return SSecurity.digest(digested, algorithm);
 			
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to generate vid.");
 		}// end of try
 		
 	}// end of generate_vid
@@ -974,19 +975,19 @@ public class SCertificate {
 				|| secret == null
 				|| rrn == null
 				) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		int verify_vid = 0;
 		
 		SSignCertDer s_sign_cert_der = s_sign_cert_der(sign_cert_der);
 		if(s_sign_cert_der == null) {
-			throw new NullPointerException("Value is empty.");
+			throw new SException("[NullPointerException] Invalid cert der.");
 		}
 		
 		SSignPriKey s_sign_pri_key = s_sign_pri_key(sign_pri_key);
 		if(s_sign_pri_key == null) {
-			throw new NullPointerException("Value is empty.");
+			throw new SException("[NullPointerException] Invalid pri key.");
 		}
 		
 		byte[] random_number = random_number(s_sign_pri_key, secret);
@@ -1021,7 +1022,7 @@ public class SCertificate {
 					, rrn
 					);
 		} catch (IOException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IOException] Failed to verify vid.");
 		}// end of try
 		
 	}// end of verify_vid
