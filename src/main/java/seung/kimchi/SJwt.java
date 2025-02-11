@@ -39,9 +39,9 @@ public class SJwt {
 		try {
 			return Keys.hmacShaKeyFor(Hex.decodeHex(hex));
 		} catch (WeakKeyException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[WeakKeyException] Failed to create key.");
 		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[DecoderException] Failed to create key.");
 		}// end of try
 		
 	}// end of hmac_key
@@ -76,7 +76,7 @@ public class SJwt {
 					;
 			
 		} catch (JwtException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[JwtException] Failed to build jws.");
 		}// end of try
 		
 	}// end of jwt_token
@@ -175,7 +175,7 @@ public class SJwt {
 					.parseSignedClaims(jws.replaceAll(_JWT_COOKIE_PREFIX, ""))
 					.getPayload();
 		} catch (JwtException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[JwtException] Failed to get payload.");
 		}// end of try
 		
 	}// end of claims

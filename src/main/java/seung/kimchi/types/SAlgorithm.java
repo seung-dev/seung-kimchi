@@ -30,10 +30,6 @@ public class SAlgorithm {
 	// SEED
 	public static final String _S_SEED_CBC_PKCS5PADDING = "SEED/CBC/PKCS5Padding";
 	
-	// GCM
-	public static final int _S_GCM_TAG_LEN = 128;
-	public static final int _S_GCM_IV_LEN = 16;
-	
 	public static List<String> providers() {
 		return Arrays.stream(Security.getProviders())
 				.map(provider -> provider.getName())

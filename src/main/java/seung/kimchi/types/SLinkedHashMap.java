@@ -141,7 +141,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 				break;
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to boolean.");
 	}
 	public Boolean get_bool(Object key) throws SException {
 		return get_bool(key, null);
@@ -162,7 +162,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return Integer.parseInt(value);
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to integer.");
 	}
 	public Integer get_int(Object key) throws SException {
 		return get_int(key, null);
@@ -183,7 +183,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return Long.parseLong(value);
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to long.");
 	}
 	public Long get_long(Object key) throws SException {
 		return get_long(key, null);
@@ -204,7 +204,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return Double.parseDouble(value);
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to double.");
 	}
 	public Double get_double(Object key) throws SException {
 		return get_double(key, null);
@@ -225,7 +225,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return BigDecimal.valueOf(get_double(key));
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to decimal.");
 	}
 	public BigDecimal get_decimal(Object key) throws SException {
 		return get_decimal(key, null);
@@ -246,7 +246,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return BigInteger.valueOf(get_long(key));
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to bigint.");
 	}
 	public BigInteger get_bigint(Object key) throws SException {
 		return get_bigint(key, null);
@@ -267,7 +267,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return new BigDecimal(value);
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to bigdecimal.");
 	}
 	public BigDecimal get_bigdecimal(
 			Object key
@@ -293,7 +293,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return (Map) value;
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to map.");
 	}
 	
 	public SLinkedHashMap get_slinkedhashmap(
@@ -327,7 +327,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return (List) value;
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to list.");
 	}// end of get_list
 	
 	@SuppressWarnings("unchecked")
@@ -345,7 +345,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return (List<SLinkedHashMap>) value;
 		}
 		
-		throw new SException("Something went wrong.");
+		throw new SException("Failed to convert to list of SLinkedHashMap.");
 	}// end of get_list_slinkedhashmap
 	
 	@SuppressWarnings("unchecked")
@@ -566,9 +566,9 @@ public class SLinkedHashMap extends LinkedHashMap {
 			}
 			
 		} catch (IllegalArgumentException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IllegalArgumentException] Failed to merge value.");
 		} catch (IllegalAccessException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IllegalAccessException] Failed to merge value.");
 		}
 		
 		return this;

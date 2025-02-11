@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import seung.kimchi.exceptions.SException;
+
 /**
  * 텍스트 처리와 관련된 기능들을 제공합니다.
  * 다른 타입을 텍스트로 변환하는 기능들도 포함합니다.
@@ -242,7 +244,7 @@ public class SText {
 	 * @param letters 문자포함여부
 	 * @param numbers 숫자포함여부
 	 * @return 랜덤 문자열
-	 * @throws IllegalArgumentException {@code length}는 0 보다 커야합니다.
+	 * @throws SException {@code length}는 0 보다 커야합니다.
 	 * @since 0.0.1
 	 * @see {@link RandomStringUtils#random(int, boolean, boolean)}
 	 */
@@ -250,9 +252,9 @@ public class SText {
 			final int length
 			, final boolean letters
 			, final boolean numbers
-			) {
+			) throws SException {
 		if (length < 1) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		return RandomStringUtils.random(length, letters, numbers);
@@ -263,15 +265,15 @@ public class SText {
 	 * 
 	 * @param length 길이
 	 * @return PIN번호
-	 * @throws IllegalArgumentException {@code length}는 0 보다 커야합니다.
+	 * @throws SException {@code length}는 0 보다 커야합니다.
 	 * @since 0.0.1
 	 */
 	public static String pin_number(
 			final int length
-			) {
+			) throws SException {
 		
 		if (length < 1) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		StringBuilder random = new StringBuilder();
@@ -291,17 +293,17 @@ public class SText {
 	 * @param length  길이
 	 * @param symbols 포함할 특수문자; {@link #_S_PASSWORD_SYMBOLS}를 참고하세요.
 	 * @return 대문자, 소문자, 숫자, 특수문자가 최소 한개 이상 포함된 비밀번호
-	 * @throws IllegalArgumentException {@code length}는 8 이상이어야 합니다. {@code symbols}는 8 {@code null}이나 공백일 수 없습니다.
+	 * @throws SException {@code length}는 8 이상이어야 합니다. {@code symbols}는 8 {@code null}이나 공백일 수 없습니다.
 	 * @since 0.0.1
 	 */
-	public static String random_password(final int length, final String symbols) {
+	public static String random_password(final int length, final String symbols) throws SException {
 		
 		if(length < 8) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		if(is_empty(symbols)) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		
 		String char_all = _S_UPPER_CHARACTERS + _S_LOWER_CHARACTERS + _S_NUMBER_CHARACTERS + symbols;
@@ -345,11 +347,11 @@ public class SText {
 	 * 
 	 * @param length 길이
 	 * @return 대문자, 소문자, 숫자, 특수문자가 최소 한개 이상 포함된 비밀번호
-	 * @throws IllegalArgumentException {@code length}는 8 이상이어야 합니다.
+	 * @throws SException {@code length}는 8 이상이어야 합니다. {@code symbols}는 8 {@code null}이나 공백일 수 없습니다.
 	 * @since 0.0.1
 	 * @see {@link #random_password(int, String)}
 	 */
-	public static String random_password(final int length) {
+	public static String random_password(final int length) throws SException {
 		return random_password(length, _S_PASSWORD_SYMBOLS);
 	}// end of random_password
 	/**
@@ -360,10 +362,11 @@ public class SText {
 	 * <p>- 기호: {@link #_S_PASSWORD_SYMBOLS}</p>
 	 * 
 	 * @return 대문자, 소문자, 숫자, 특수문자가 최소 한개 이상 포함된 비밀번호
+	 * @throws SException {@code length}는 8 이상이어야 합니다. {@code symbols}는 8 {@code null}이나 공백일 수 없습니다.
 	 * @since 0.0.1
 	 * @see {@link #random_password(int, String)}
 	 */
-	public static String random_password() {
+	public static String random_password() throws SException {
 		return random_password(16);
 	}// end of random_password
 	
@@ -375,16 +378,16 @@ public class SText {
 	 * @param random 랜덤 문자열의 길이 입니다. 랜덤 문자열은 {@link #random(int, boolean, boolean)}를 사용합니다.
 	 * @param suffix 접미사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
-	 * @throws IllegalArgumentException {@code random}는 0 보다 커야합니다.
+	 * @throws SException {@code random_size}는 0 보다 커야합니다.
 	 * @since 0.0.1
 	 */
 	public static String item_no(
 			final String prefix
 			, final Date date
-			, final int random
+			, final int random_size
 			, final String suffix
-			) {
-		return String.format("%s%d%s%s", text(prefix, ""), date.getTime() / 1000, random(random, true, true), text(suffix, ""));
+			) throws SException {
+		return String.format("%s%d%s%s", text(prefix, ""), date.getTime() / 1000, random(random_size, true, true), text(suffix, ""));
 	}// end of item_no
 	/**
 	 * 아이템 번호를 생성합니다.
@@ -396,15 +399,15 @@ public class SText {
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @param random 랜덤 문자열의 길이 입니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
-	 * @throws IllegalArgumentException {@code random}는 0 보다 커야합니다.
+	 * @throws SException {@code random_size}는 0 보다 커야합니다.
 	 * @since 0.0.1
 	 * @see #item_no(String, Date, int, String)
 	 */
 	public static String item_no(
 			final String prefix
-			, final int random
-			) {
-		return item_no(prefix, new Date(), random, "");
+			, final int random_size
+			) throws SException {
+		return item_no(prefix, new Date(), random_size, "");
 	}// end of item_no
 	/**
 	 * 아이템 번호를 생성합니다.
@@ -416,12 +419,13 @@ public class SText {
 	 * 
 	 * @param prefix 접두사; {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
+	 * @throws SException {@code random_size}는 0 보다 커야합니다.
 	 * @since 0.0.1
 	 * @see #item_no(String, Date, int, String)
 	 */
 	public static String item_no(
 			final String prefix
-			) {
+			) throws SException {
 		return item_no(prefix, 5);
 	}// end of item_no
 	/**
@@ -434,11 +438,11 @@ public class SText {
 	 * <p>- 접미사: 공백</p>
 	 * 
 	 * @return 아이템 번호 = 접두사 + 유닉스 시간(10자리) + 랜덤 문자열 + 접미사
-	 * @throws IllegalArgumentException 랜덤 문자열의 길이는 0 이하일 수 없습니다.
+	 * @throws SException {@code random_size}는 0 보다 커야합니다.
 	 * @since 0.0.1
 	 * @see #item_no(String, Date, int, String)
 	 */
-	public static String item_no() {
+	public static String item_no() throws SException {
 		return item_no("I");
 	}// end of item_no
 	
@@ -459,20 +463,20 @@ public class SText {
 	 * @param length 길이
 	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 왼쪽에 채워진 문자열
-	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
+	 * @throws SException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
 	 */
 	public static String pad_left(
 			final String value
 			, final int length
 			, final String fill
-			) {
+			) throws SException {
 		if(text(value, "").length() > length) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		String fill_safe = text(fill, " ");
 		if(text(fill_safe, "").length() > 1) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		return StringUtils.leftPad(value, length, fill_safe);
 	}// end of pad_left
@@ -491,14 +495,14 @@ public class SText {
 	 * @param length 길이
 	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 왼쪽에 채워진 문자열
-	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
+	 * @throws SException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
 	 */
 	public static String pad_left(
 			final int value
 			, final int length
 			, final String fill
-			) {
+			) throws SException {
 		return pad_left(Integer.toString(value), length, fill);
 	}// end of pad_left
 	
@@ -519,20 +523,20 @@ public class SText {
 	 * @param length 길이
 	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 오른쪽에 채워진 문자열
-	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
+	 * @throws SException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
 	 */
 	public static String pad_right(
 			final String value
 			, final int length
 			, final String fill
-			) {
+			) throws SException {
 		if(text(value, "").length() > length) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		String fill_safe = text(fill, " ");
 		if(text(fill_safe, "").length() > 1) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 		return StringUtils.rightPad(value, length, fill_safe);
 	}// end of pad_right
@@ -551,14 +555,14 @@ public class SText {
 	 * @param length 길이
 	 * @param fill   채울 글자; {@code null}일 수 있습니다. {@code null}인 경우 스페이스으로 처리합니다. 길이는 1을 초과할 수 없습니다.
 	 * @return 오른쪽에 채워진 문자열
-	 * @throws IllegalArgumentException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
+	 * @throws SException {@code null}일 수 있습니다. {@code null}인 경우 공백으로 처리합니다.
 	 * @since 0.0.1
 	 */
 	public static String pad_right(
 			final int value
 			, final int length
 			, final String fill
-			) {
+			) throws SException {
 		return pad_right(Integer.toString(value), length, fill);
 	}// end of pad_right
 	
@@ -704,44 +708,5 @@ public class SText {
 		}
 		return values;
 	}// end of search_values
-	
-//	public static String pnu1111000(final String sido) {
-//		if(sido.contains("서울")) {
-//			return "1100000000";
-//		} else if(sido.contains("부산")) {
-//			return "2600000000";
-//		} else if(sido.contains("대구")) {
-//			return "2700000000";
-//		} else if(sido.contains("인천")) {
-//			return "2800000000";
-//		} else if(sido.contains("광주")) {
-//			return "2900000000";
-//		} else if(sido.contains("대전")) {
-//			return "3000000000";
-//		} else if(sido.contains("울산")) {
-//			return "3100000000";
-//		} else if(sido.contains("세종")) {
-//			return "3611000000";
-//		} else if(sido.contains("경기")) {
-//			return "4100000000";
-//		} else if(sido.contains("충청북도") || sido.contains("충북")) {
-//			return "4300000000";
-//		} else if(sido.contains("충청남도") || sido.contains("충남")) {
-//			return "4400000000";
-//		} else if(sido.contains("전라남도") || sido.contains("전남")) {
-//			return "4600000000";
-//		} else if(sido.contains("경상북도") || sido.contains("경북")) {
-//			return "4700000000";
-//		} else if(sido.contains("경상남도") || sido.contains("경남")) {
-//			return "4800000000";
-//		} else if(sido.contains("제주")) {
-//			return "5000000000";
-//		} else if(sido.contains("강원")) {
-//			return "5100000000";
-//		} else if(sido.contains("전라북도") || sido.contains("전북")) {
-//			return "5200000000";
-//		}
-//		return _S_BLANK;
-//	}// end of sido_no
 	
 }

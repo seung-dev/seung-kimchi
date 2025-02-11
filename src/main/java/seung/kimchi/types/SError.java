@@ -10,8 +10,7 @@ public enum SError {
 
 	SUCCESS                        ("S000", "성공")
 	, DATA_IS_EMPTY                ("S100", "조회된 결과가 없습니다.")
-	, RESULT_IS_EMPTY              ("F900", "결과를 확인할 수 없습니다.")
-	, VALUE_EXISTS                 ("F901", "이미 사용중입니다.")
+	, UNEXPECTED_VALUE             ("F900", "기대한 결과와 다릅니다.")
 	, FAIL                         ("F999", "요청이 실패하였습니다. 관리자에게 문의하세요.")
 	, USERNAME_IS_NOT_AVAILABLE    ("A100", "사용할 수 없는 계정입니다.")
 	, OAUTH2_IS_NOT_AVAILABLE      ("A101", "사용할 수 없는 계정입니다.")

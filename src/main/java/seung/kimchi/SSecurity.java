@@ -20,7 +20,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -35,6 +34,12 @@ public class SSecurity {
 
 	private static final int _S_XXTEA_DELTA = 0x9E3779B9;
 	private static final int _S_XXTEA_BLOCK_SIZE = 8;
+	
+	public static void add_bouncy_castle_provider() {
+		if(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
+	}// end of add_bouncy_castle_provider
 	
 	public static byte[] digest(
 			final byte[] data
@@ -65,9 +70,9 @@ public class SSecurity {
 			return digest;
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to digest value.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to digest value.");
 		}// end of try
 		
 	}// end of digest
@@ -111,7 +116,7 @@ public class SSecurity {
 					, algorithm
 					);
 		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to digest value.");
 		}// end of try
 	}// end of digest
 	public static byte[] digest(
@@ -147,11 +152,11 @@ public class SSecurity {
 			return mac.doFinal(message);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to digest value.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to digest value.");
 		} catch (InvalidKeyException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeyException] Failed to digest value.");
 		}// end of try
 		
 	}// end of hmac
@@ -165,20 +170,50 @@ public class SSecurity {
 		return hmac(algorithm, provider, key.getBytes(charset), message.getBytes(charset));
 	}// end of hmac
 	
-	public static KeyPair key_pair(
-			String algorithm
-			, int key_size
+	public static KeyPair keypair(
+			final String algorithm
+			, final String provider
+			, final int key_size
 			) throws SException {
 		
 		try {
-			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
-			keyPairGenerator.initialize(key_size);
+			
+			KeyPairGenerator keyPairGenerator = null;
+			
+			if(provider == null) {
+				keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
+			} else {
+				keyPairGenerator = KeyPairGenerator.getInstance(
+						algorithm
+						, provider
+						);
+			}
+			
+			keyPairGenerator.initialize(
+					key_size
+					, new SecureRandom()
+					);
+			
 			return keyPairGenerator.generateKeyPair();
+			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to generate keypair.");
+		} catch (NoSuchProviderException e) {
+			throw new SException(e, "[NoSuchProviderException] Failed to generate keypair.");
 		}// end of try
 		
-	}// end of key_pair
+	}// end of keypair
+	public static KeyPair keypair(
+			String algorithm
+			, int key_size
+			) throws SException {
+		return keypair(algorithm, BouncyCastleProvider.PROVIDER_NAME, key_size);
+	}// end of keypair
+	public static KeyPair keypair(
+			int key_size
+			) throws SException {
+		return keypair(SAlgorithm._S_RSA, BouncyCastleProvider.PROVIDER_NAME, key_size);
+	}// end of keypair
 	
 	public static byte[] encrypt(
 			final byte[] data
@@ -206,19 +241,19 @@ public class SSecurity {
 			return cipher.doFinal(data);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to encrypt value.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchPaddingException] Failed to encrypt value.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to encrypt value.");
 		} catch (InvalidKeyException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeyException] Failed to encrypt value.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidAlgorithmParameterException] Failed to encrypt value.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IllegalBlockSizeException] Failed to encrypt value.");
 		} catch (BadPaddingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[BadPaddingException] Failed to encrypt value.");
 		}// end of try
 		
 	}// end of encrypt
@@ -288,19 +323,19 @@ public class SSecurity {
 			return cipher.doFinal(data);
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to decrypt value.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchPaddingException] Failed to decrypt value.");
 		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[NoSuchProviderException] Failed to decrypt value.");
 		} catch (InvalidKeyException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidKeyException] Failed to decrypt value.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[InvalidAlgorithmParameterException] Failed to decrypt value.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[IllegalBlockSizeException] Failed to decrypt value.");
 		} catch (BadPaddingException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[BadPaddingException] Failed to decrypt value.");
 		}// end of try
 		
 	}// end of decrypt
@@ -373,59 +408,6 @@ public class SSecurity {
 		}
 		return new IvParameterSpec(iv);
 	}// end of iv_parameter_spec
-	
-	public static GCMParameterSpec gcm_parameter_spec(
-			final int len
-			, final byte[] iv
-			) {
-		if(iv == null) {
-			return null;
-		}
-		return new GCMParameterSpec(len, iv);
-	}// end of gcm_parameter_spec
-	
-	public static GCMParameterSpec gcm_parameter_spec(
-			final byte[] iv
-			) {
-		return gcm_parameter_spec(
-				SAlgorithm._S_GCM_TAG_LEN
-				, iv
-				);
-	}// end of gcm_parameter_spec
-	
-	public static KeyPair keypair(
-			final String algorithm
-			, final String provider
-			, final int key_size
-			) throws SException {
-		
-		try {
-			
-			KeyPairGenerator keyPairGenerator = null;
-			
-			if(provider == null) {
-				keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
-			} else {
-				keyPairGenerator = KeyPairGenerator.getInstance(
-						algorithm
-						, provider
-						);
-			}
-			
-			keyPairGenerator.initialize(
-					key_size
-					, new SecureRandom()
-					);
-			
-			return keyPairGenerator.generateKeyPair();
-			
-		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "Something went wrong.");
-		} catch (NoSuchProviderException e) {
-			throw new SException(e, "Something went wrong.");
-		}// end of try
-		
-	}// end of keypair
 	
 	public static int[] xxtea_int_array_bak(final String data) {
 		int data_length = data.length();
@@ -542,11 +524,5 @@ public class SSecurity {
 						)
 				);
 	}// end of xxtea_decrypt
-	
-	public static void add_bouncy_castle_provider() {
-		if(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-			Security.addProvider(new BouncyCastleProvider());
-		}
-	}// end of add_bouncy_castle_provider
 	
 }
