@@ -112,19 +112,19 @@ public class SCipher {
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("[NoSuchAlgorithmException] Failed to declare cipher.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to encrypt value.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException("[NoSuchPaddingException] Failed to declare cipher.");
+			throw new SException(e, "[NoSuchPaddingException] Failed to encrypt value.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("[NoSuchProviderException] Failed to declare cipher.");
+			throw new SException(e, "[NoSuchProviderException] Failed to encrypt value.");
 		} catch (InvalidKeyException e) {
-			throw new SException("[InvalidKeyException] Failed to initialize cipher.");
+			throw new SException(e, "[InvalidKeyException] Failed to encrypt value.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException("[InvalidAlgorithmParameterException] Failed to initialize cipher.");
+			throw new SException(e, "[InvalidAlgorithmParameterException] Failed to encrypt value.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException("[IllegalBlockSizeException] Failed to encrypt data.");
+			throw new SException(e, "[IllegalBlockSizeException] Failed to encrypt value.");
 		} catch (BadPaddingException e) {
-			throw new SException("[BadPaddingException] Failed to encrypt data.");
+			throw new SException(e, "[BadPaddingException] Failed to encrypt value.");
 		}// end of try
 		
 		return byteBuffer.array();
@@ -217,19 +217,19 @@ public class SCipher {
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new SException("[NoSuchAlgorithmException] Failed to declare cipher.");
+			throw new SException(e, "[NoSuchAlgorithmException] Failed to decrypt value.");
 		} catch (NoSuchPaddingException e) {
-			throw new SException("[NoSuchPaddingException] Failed to declare cipher.");
+			throw new SException(e, "[NoSuchPaddingException] Failed to decrypt value.");
 		} catch (NoSuchProviderException e) {
-			throw new SException("[NoSuchProviderException] Failed to declare cipher.");
+			throw new SException(e, "[NoSuchProviderException] Failed to decrypt value.");
 		} catch (InvalidKeyException e) {
-			throw new SException("[InvalidKeyException] Failed to initialize cipher.");
+			throw new SException(e, "[InvalidKeyException] Failed to decrypt value.");
 		} catch (InvalidAlgorithmParameterException e) {
-			throw new SException("[InvalidAlgorithmParameterException] Failed to initialize cipher.");
+			throw new SException(e, "[InvalidAlgorithmParameterException] Failed to decrypt value.");
 		} catch (IllegalBlockSizeException e) {
-			throw new SException("[IllegalBlockSizeException] Failed to encrypt data.");
+			throw new SException(e, "[IllegalBlockSizeException] Failed to decrypt value.");
 		} catch (BadPaddingException e) {
-			throw new SException("[BadPaddingException] Failed to encrypt data.");
+			throw new SException(e, "[BadPaddingException] Failed to decrypt value.");
 		}// end of try
 		
 		return byteBuffer.array();

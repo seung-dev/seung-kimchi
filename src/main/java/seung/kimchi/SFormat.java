@@ -23,7 +23,7 @@ public class SFormat {
 	public static long milliseconds(
 			String value
 			, long default_value
-			) {
+			) throws SException {
 		if(SText.is_empty(value)) {
 			return default_value;
 		}
@@ -46,24 +46,32 @@ public class SFormat {
 			case "w":
 				return number * 1000 * 60 * 60 * 24 * 7;
 			default:
-				throw new IllegalArgumentException("Unexpected value.");
+				throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
 	}// end of ms
 	
-	public static byte[] bytes(final String value, final String charset) throws UnsupportedEncodingException {
+	public static byte[] bytes(final String value, final String charset) throws SException {
 		if(SText.is_empty(value)) {
-			throw new IllegalArgumentException("Unexpected value.");
+			throw new SException("[IllegalArgumentException] Invalid argument.");
 		}
-		return value.getBytes(charset);
+		try {
+			return value.getBytes(charset);
+		} catch (UnsupportedEncodingException e) {
+			throw new SException(e, "[UnsupportedEncodingException] Failed to convert to byte array.");
+		}
 	}// end of bytes
-	public static byte[] bytes(final String value) throws UnsupportedEncodingException {
+	public static byte[] bytes(final String value) throws SException {
 		return bytes(value, SCharset._S_UTF_8);
 	}// end of bytes
 	
-	public static String text(final byte[] value, final String charset) throws UnsupportedEncodingException {
-		return new String(value, charset);
+	public static String text(final byte[] value, final String charset) throws SException {
+		try {
+			return new String(value, charset);
+		} catch (UnsupportedEncodingException e) {
+			throw new SException(e, "[UnsupportedEncodingException] Failed to convert to text.");
+		}
 	}// end of text
-	public static String text(final byte[] value) throws UnsupportedEncodingException {
+	public static String text(final byte[] value) throws SException {
 		return text(value, SCharset._S_UTF_8);
 	}// end of text
 	
@@ -109,7 +117,7 @@ public class SFormat {
 		try {
 			return Hex.decodeHex(data);
 		} catch (DecoderException e) {
-			throw new SException(e, "Something went wrong.");
+			throw new SException(e, "[DecoderException] Failed to decode hex.");
 		}// end of try
 		
 	}// end of decode_hex
@@ -118,7 +126,7 @@ public class SFormat {
 			final byte[] data
 			, final int level
 			, final boolean nowrap
-			) throws IOException {
+			) throws SException {
 		
 		byte[] deflated = null;
 		
@@ -142,19 +150,19 @@ public class SFormat {
 			deflater.end();
 			
 		} catch (IOException e) {
-			throw e;
+			throw new SException(e, "[IOException] Failed to compress value.");
 		}// end of try
 		
 		return deflated;
 	}// end of compress
-	public static byte[] compress(final byte[] data) throws IOException {
+	public static byte[] compress(final byte[] data) throws SException {
 		return compress(data, Deflater.BEST_COMPRESSION, true);
 	}// end of compress
 	
 	public static byte[] decompress(
 			final byte[] data
 			, final boolean nowrap
-			) throws IOException, DataFormatException {
+			) throws SException {
 		
 		byte[] inflated = null;
 		
@@ -177,14 +185,14 @@ public class SFormat {
 			inflater.end();
 			
 		} catch (IOException e) {
-			throw e;
+			throw new SException(e, "[IOException] Failed to decompress value.");
 		} catch (DataFormatException e) {
-			throw e;
+			throw new SException(e, "[DataFormatException] Failed to decompress value.");
 		}// end of try
 		
 		return inflated;
 	}// end of decompress
-	public static byte[] decompress(final byte[] data) throws IOException, DataFormatException {
+	public static byte[] decompress(final byte[] data) throws SException {
 		return decompress(data, true);
 	}// end of decompress
 	

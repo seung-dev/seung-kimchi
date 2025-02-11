@@ -92,7 +92,7 @@ public class SJson {
 					.writeValueAsString(value)
 					;
 		} catch (JsonProcessingException e) {
-			throw new SException(e, "Invalid value.");
+			throw new SException(e, "[JsonProcessingException] Invalid argument.");
 		}
 	}// end of stringify
 	
@@ -115,9 +115,9 @@ public class SJson {
 					.readValue(value, type)
 					;
 		} catch (JsonMappingException e) {
-			throw new SException(e, "Invalid value.");
+			throw new SException(e, "[JsonMappingException] Invalid argument.");
 		} catch (JsonProcessingException e) {
-			throw new SException(e, "Invalid value.");
+			throw new SException(e, "[JsonProcessingException] Invalid argument.");
 		}
 	}// end of parse
 	

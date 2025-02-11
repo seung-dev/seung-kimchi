@@ -42,9 +42,7 @@ public class SNcloud {
 					);
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Failed to make signatrue.");
-		} catch (SException e) {
-			throw new SException("Failed to make signatrue.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to create signature.");
 		}// end of try
 		
 	}// end of signature
@@ -84,7 +82,7 @@ public class SNcloud {
 			}// end of while
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new SException("Failed to request ncloud.");
+			throw new SException(e, "[UnsupportedEncodingException] Failed to request.");
 		}// end of try
 		
 		return response_text;
