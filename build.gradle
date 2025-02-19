@@ -10,7 +10,7 @@ def charset = "UTF-8"
 
 group = "io.github.seung-dev"
 archivesBaseName = project.name
-version = "1.0.13"
+version = "1.0.14"
 description = "seung Library"
 
 sourceCompatibility = "17"
@@ -69,8 +69,7 @@ dependencies {
 	api group: "org.apache.pdfbox", name: "pdfbox", version: "3.0.3"
 	
 	// s3
-	api group: "javax.xml.bind", name: "jaxb-api", version: "2.3.1"
-	api group: "com.amazonaws", name: "aws-java-sdk-s3", version: "1.12.777"
+	api group: "software.amazon.awssdk", name: "s3", version: "2.30.22"
 	
 	// calendar
 	implementation group: "com.ibm.icu", name: "icu4j", version: "76.1"

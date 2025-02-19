@@ -16,22 +16,15 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-
 import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SFileMeta;
 import seung.kimchi.types.SFileType;
-import seung.kimchi.types.SMediaType;
 
 public class SFile {
 
@@ -180,50 +173,6 @@ public class SFile {
 		}// end of try
 		
 	}// end of write
-	
-	public static PutObjectResult s3_upload(
-			AmazonS3Client amazon_s3_client
-			, String bucket_name
-			, String key
-			, byte[] input
-			) throws SException {
-		
-		PutObjectResult putObjectResult = null;
-		
-		try(
-				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(input);
-				) {
-			ObjectMetadata objectMetadata = new ObjectMetadata();
-			objectMetadata.setContentType(SMediaType._S_APPLICATION_OCTET_STREAM);
-			objectMetadata.setContentLength(input.length);
-			putObjectResult = amazon_s3_client.putObject(
-					bucket_name//bucketName
-					, key
-					, byteArrayInputStream//input
-					, objectMetadata//metadata
-					);
-		} catch (IOException e) {
-			throw new SException(e, "[IOException] Failed to upload file.");
-		}// end of try
-		
-		return putObjectResult;
-	}// end of s3_upload
-	
-	public static byte[] s3_download(
-			AmazonS3Client amazon_s3_client
-			, String bucket_name
-			, String key
-			) throws SException {
-		
-		try {
-			S3Object s3Object = amazon_s3_client.getObject(bucket_name, key);
-			return IOUtils.toByteArray(s3Object.getObjectContent());
-		} catch (IOException e) {
-			throw new SException(e, "[IOException] Failed to download file.");
-		}// end of try
-		
-	}// end of s3_download
-	
 	
 	public static String extension(String name) {
 		String ext = FilenameUtils.getExtension(name);
