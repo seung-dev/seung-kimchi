@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +23,45 @@ import seung.kimchi.types.SCharset;
 
 public class SFormat {
 
+	public static String date(
+			final String format
+			, final Instant datetime
+			, final ZoneId zone
+			) {
+		return DateTimeFormatter
+				.ofPattern(format)
+				.withZone(zone)
+				.format(datetime)
+				;
+	}// end of date
+	public static String date(
+			final String format
+			, final long epoch
+			, final ZoneId zone
+			) {
+		return DateTimeFormatter
+				.ofPattern(format)
+				.withZone(zone)
+				.format(Instant.ofEpochMilli(epoch))
+				;
+	}// end of date
+	public static String date(
+			final String format
+			, final long epoch
+			) {
+		return date(format, epoch, ZoneId.systemDefault());
+	}// end of date
+	public static String date(
+			final String format
+			) {
+		return date(format, Instant.now(), ZoneId.systemDefault());
+	}// end of date
+	public static String date(
+			final long epoch
+			) {
+		return date("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", epoch, ZoneId.systemDefault());
+	}// end of date
+	
 	public static long milliseconds(
 			String value
 			, long default_value
