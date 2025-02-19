@@ -10,7 +10,7 @@ def charset = "UTF-8"
 
 group = "io.github.seung-dev"
 archivesBaseName = project.name
-version = "1.0.14"
+version = "1.0.15"
 description = "seung Library"
 
 sourceCompatibility = "17"
