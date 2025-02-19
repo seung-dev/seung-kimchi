@@ -72,7 +72,7 @@ public class SAWS {
 		return s3(access_key, secret_key, Region.AP_NORTHEAST_2, "");
 	}// end of s3
 	
-	public PutObjectResponse s3_upload(
+	public static SS3Object s3_upload(
 			final S3Client s3
 			, final String bucket
 			, final String key
@@ -89,7 +89,11 @@ public class SAWS {
 					.build()
 					;
 			
-			return s3.putObject(request, RequestBody.fromBytes(value));
+			PutObjectResponse response = s3.putObject(request, RequestBody.fromBytes(value));
+			
+			return SS3Object.builder()
+					.e_tag(response.eTag())
+					.build();
 			
 		} catch (InvalidRequestException e) {
 			throw new SException(e, "Failed to put object.");
@@ -111,7 +115,7 @@ public class SAWS {
 		
 	}// end of s3_upload
 	
-	public SS3Object s3_download(
+	public static SS3Object s3_download(
 			final S3Client s3
 			, final String bucket
 			, final String key
@@ -129,6 +133,7 @@ public class SAWS {
 			GetObjectResponse response = bytes.response();
 			
 			return SS3Object.builder()
+					.e_tag(response.eTag())
 					.bytes(bytes.asByteArray())
 					.content_length(response.contentLength())
 					.content_disposition(response.contentDisposition())

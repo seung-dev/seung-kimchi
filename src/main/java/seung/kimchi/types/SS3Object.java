@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -14,7 +13,9 @@ import lombok.experimental.Accessors;
 @Getter
 public class SS3Object extends SType {
 
-	@NotNull
+	@JsonProperty
+	private String e_tag;
+	
 	@JsonProperty
 	private byte[] bytes;
 	
@@ -29,5 +30,9 @@ public class SS3Object extends SType {
 	
 	@JsonProperty
 	private Map<String, String> metadata;
+	
+	public boolean success() {
+		return e_tag != null;
+	}// end of success
 	
 }
