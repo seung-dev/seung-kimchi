@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import seung.kimchi.exceptions.SException;
+import seung.kimchi.types.SAlgorithm;
 import seung.kimchi.types.aws.SS3Object;
 import seung.kimchi.types.aws.SS3ObjectVersion;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -87,16 +87,25 @@ public class SS3Client {
 			, final String key
 			, final Map<String, String> metadata
 			, final byte[] bytes
+			, final boolean diff
 			, final boolean closeable
 			) throws SException {
 		
 		try {
 			
+			String md5 = SFormat.encode_hex(SSecurity.digest(bytes, SAlgorithm._S_MD5));
+			
+			if(diff) {
+				SS3Object uploaded = metadata(s3, bucket, key, false);
+				if(uploaded != null && md5.equals(uploaded.md5())) {
+					return uploaded;
+				}
+			}
+			
 			PutObjectRequest request = PutObjectRequest.builder()
 					.bucket(bucket)
 					.key(key)
 					.metadata(metadata)
-					.ifNoneMatch("*")
 					.build()
 					;
 			
@@ -104,17 +113,27 @@ public class SS3Client {
 			
 			return metadata(s3, bucket, key, closeable);
 			
+		} catch (SdkClientException e) {
+			throw new SException(e, "Failed to put object.");
 		} catch (S3Exception e) {
 			if(e.statusCode() == 412) {
 				throw new SException(e, "Duplicate key is not allowed.");
 			} else {
 				throw new SException(e, "Failed to put object.");
 			}
-		} catch (SdkClientException | AwsServiceException e) {
-			throw new SException(e, "Failed to put object.");
 		}// end of try
 		
-	}// end of upload
+	}// end of put
+	public static SS3Object put(
+			final S3Client s3
+			, final String bucket
+			, final String key
+			, final Map<String, String> metadata
+			, final byte[] bytes
+			, final boolean diff
+			) throws SException {
+		return put(s3, bucket, key, metadata, bytes, diff, true);
+	}// end of put
 	public static SS3Object put(
 			final S3Client s3
 			, final String bucket
@@ -122,8 +141,8 @@ public class SS3Client {
 			, final Map<String, String> metadata
 			, final byte[] bytes
 			) throws SException {
-		return put(s3, bucket, key, metadata, bytes, true);
-	}// end of upload
+		return put(s3, bucket, key, metadata, bytes, true, true);
+	}// end of put
 	
 	public static List<SS3ObjectVersion> versions(
 			final S3Client s3
@@ -156,8 +175,10 @@ public class SS3Client {
 			
 			return items;
 			
-		} catch (SdkClientException | AwsServiceException e) {
-			throw new SException(e, "Failed to get metadata.");
+		} catch (SdkClientException e) {
+			throw new SException(e, "Failed to get versions.");
+		} catch (S3Exception e) {
+			throw new SException(e, "Failed to get versions.");
 		} finally {
 			if(closeable) {
 				s3.close();
@@ -191,6 +212,7 @@ public class SS3Client {
 			HeadObjectResponse response = s3.headObject(request);
 			
 			String content_type = response.contentType();
+			Map<String, String> metadata = response.metadata();
 			
 			return SS3Object.builder()
 					.key(key)
@@ -198,12 +220,17 @@ public class SS3Client {
 					.content_length(response.contentLength())
 					.content_type(content_type)
 					.last_modified(response.lastModified().toEpochMilli())
-					.md5(response.eTag().replaceAll("\"", ""))
+					.md5(metadata.get("md5"))
 					.version(response.versionId())
-					.misc(response.metadata())
+					.misc(metadata)
 					.build();
 			
-		} catch (SdkClientException | AwsServiceException e) {
+		} catch (SdkClientException e) {
+			throw new SException(e, "Failed to get metadata.");
+		} catch (S3Exception e) {
+			if(e.statusCode() == 404) {
+				return null;
+			}
 			throw new SException(e, "Failed to get metadata.");
 		} finally {
 			if(closeable) {
@@ -249,7 +276,9 @@ public class SS3Client {
 					.misc(response.metadata())
 					.build();
 			
-		} catch (SdkClientException | AwsServiceException e) {
+		} catch (SdkClientException e) {
+			throw new SException(e, "Failed to get object.");
+		} catch (S3Exception e) {
 			throw new SException(e, "Failed to get object.");
 		} finally {
 			if(closeable) {
@@ -306,7 +335,9 @@ public class SS3Client {
 			
 			return items;
 			
-		} catch (SdkClientException | AwsServiceException e) {
+		} catch (SdkClientException e) {
+			throw new SException(e, "Failed to list objects.");
+		} catch (S3Exception e) {
 			throw new SException(e, "Failed to list objects.");
 		} finally {
 			if(closeable) {
@@ -371,7 +402,9 @@ public class SS3Client {
 			
 			return deleted;
 			
-		} catch (SdkClientException | AwsServiceException e) {
+		} catch (SdkClientException e) {
+			throw new SException(e, "Failed to remove objects.");
+		} catch (S3Exception e) {
 			throw new SException(e, "Failed to remove objects.");
 		} finally {
 			if(closeable) {
