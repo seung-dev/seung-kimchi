@@ -102,6 +102,8 @@ public class SS3Client {
 				}
 			}
 			
+			metadata.put("md5", md5);
+			
 			PutObjectRequest request = PutObjectRequest.builder()
 					.bucket(bucket)
 					.key(key)
