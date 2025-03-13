@@ -2,6 +2,7 @@ package seung.kimchi;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,10 +103,16 @@ public class SS3Client {
 				}
 			}
 			
+			Map<String, String> misc = new HashMap<>();
+			misc.put("md5", md5);
+			if(metadata != null) {
+				misc.putAll(metadata);
+			}
+			
 			PutObjectRequest request = PutObjectRequest.builder()
 					.bucket(bucket)
 					.key(key)
-					.metadata(metadata)
+					.metadata(misc)
 					.build()
 					;
 			
