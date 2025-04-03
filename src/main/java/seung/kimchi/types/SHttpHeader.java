@@ -165,4 +165,10 @@ public class SHttpHeader {
 	 */
 	public static final String _S_SEC_FETCH_DEST = "Sec-Fetch-Dest";
 	
+	public static final String _S_NCLOUD_TIMESTAMP = "x-ncp-apigw-timestamp";
+	
+	public static final String _S_NCLOUD_ACCESS_KEY = "x-ncp-iam-access-key";
+	
+	public static final String _S_NCLOUD_SIGNATURE_V2 = "x-ncp-apigw-signature-v2";
+	
 }
