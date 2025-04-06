@@ -1,7 +1,6 @@
 package seung.kimchi;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -10,30 +9,87 @@ import seung.kimchi.exceptions.SException;
 import seung.kimchi.types.SAlgorithm;
 import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SHttpHeader;
-import seung.kimchi.types.SHttpStatus;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.SMediaType;
-import seung.kimchi.types.SNcloudMessage;
-import seung.kimchi.types.SNcloudMessageType;
+import seung.kimchi.types.ncloud.SNcloudMailTemplate;
+import seung.kimchi.types.ncloud.SNcloudMessageBody;
 
 public class SNcloud {
 
-	public final static String _S_MESSAGE_SMS = "SMS";
+	public final static String _S_NCLOUD_METHOD = "POST";
 	
-	public final static String _S_MESSAGE_LMS = "LMS";
+	public final static String _S_NCLOUD_MAIL_HOST = "https://mail.apigw.ntruss.com";
 	
-	public final static String _S_MESSAGE_MMS = "MMS";
+	public final static String _S_NCLOUD_MAIL_ENDPOINT = "/api/v1/mails";
 	
-	public final static String _S_MESSAGE_NCLOUD_COMM = "COMM";
+	public final static String _S_NCLOUD_MESSAGE_HOST = "https://sens.apigw.ntruss.com";
 	
-	public final static String _S_MESSAGE_NCLOUD_AD = "AD";
+	public final static String _S_NCLOUD_MESSAGE_ENDPOINT = "/sms/v2/services/%s/messages";
 	
-	public static SLinkedHashMap headers(
+	public static final String _S_NCLOUD_HEADER_TIMESTAMP = "x-ncp-apigw-timestamp";
+	
+	public static final String _S_NCLOUD_HEADER_ACCESS_KEY = "x-ncp-iam-access-key";
+	
+	public static final String _S_NCLOUD_HEADER_SIGNATURE_V2 = "x-ncp-apigw-signature-v2";
+	
+	public static final String _S_NCLOUD_HEADER_LANG = "x-ncp-lang";
+	
+	public static final String _S_NCLOUD_LANG_KR = "ko-KR";
+	
+	public final static String _S_NCLOUD_TYPE_RECIPIENT = "R";
+	
+	public final static String _S_NCLOUD_TYPE_CC = "C";
+	
+	public final static String _S_NCLOUD_TYPE_BCC = "B";
+	
+	public final static String _S_NCLOUD_TYPE_SMS = "SMS";
+	
+	public final static String _S_NCLOUD_TYPE_LMS = "LMS";
+	
+	public final static String _S_NCLOUD_TYPE_MMS = "MMS";
+	
+	public final static String _S_NCLOUD_CONTENT_COMM = "COMM";
+	
+	public final static String _S_NCLOUD_CONTENT_AD = "AD";
+	
+	public final static String _S_NCLOUD_COUNTRY_KR = "82";
+	
+	public static String mail_endpoint(
+			) {
+		return _S_NCLOUD_MAIL_ENDPOINT;
+	}//end of mail_endpoint
+	
+	public static String mail_uri(
+			final String endpoint
+			) {
+		return String.format("%s%s"
+				, _S_NCLOUD_MAIL_HOST
+				, endpoint
+				);
+	}//end of mail_uri
+	
+	public static String message_endpoint(
+			final String service_id
+			) {
+		return String.format(_S_NCLOUD_MESSAGE_ENDPOINT, service_id);
+	}//end of message_endpoint
+	
+	public static String message_uri(
+			final String endpoint
+			) {
+		return String.format("%s%s"
+				, _S_NCLOUD_MESSAGE_HOST
+				, endpoint
+				);
+	}//end of message_uri
+	
+	public static SLinkedHashMap header(
 			final long timestamp
 			, final String method
 			, final String endpoint
 			, final String access_key
 			, final String secret_key
+			, final String lang
 			, final String charset
 			) throws SException {
 		
@@ -58,183 +114,117 @@ public class SNcloud {
 			
 			return new SLinkedHashMap()
 					.add(SHttpHeader._S_CONTENT_TYPE, SMediaType._S_APPLICATION_JSON)
-					.add(SHttpHeader._S_NCLOUD_TIMESTAMP, Long.toString(timestamp))
-					.add(SHttpHeader._S_NCLOUD_ACCESS_KEY, access_key)
-					.add(SHttpHeader._S_NCLOUD_SIGNATURE_V2, signature)
+					.add(_S_NCLOUD_HEADER_TIMESTAMP, Long.toString(timestamp))
+					.add(_S_NCLOUD_HEADER_ACCESS_KEY, access_key)
+					.add(_S_NCLOUD_HEADER_SIGNATURE_V2, signature)
+					.add(_S_NCLOUD_HEADER_LANG, lang)
 					;
 			
 		} catch (UnsupportedEncodingException e) {
 			throw new SException(e, "[UnsupportedEncodingException] Failed to create signature.");
 		}// end of try
 		
-	}// end of signature
-	
-	public static String request(
-			final String url
-			, final SLinkedHashMap request_header
-			, final SLinkedHashMap request_body
-			) throws SException {
-		
-		String response_text = null;
-		
-		try {
-			
-			while(true) {
-				
-				HttpResponse<byte[]> httpResponse = SHttp.post(
-						url//url
-						, request_header//headers
-						, request_body.stringify()//payload
-						);
-				
-				int status_code = httpResponse.getStatus();
-				if(SHttpStatus._S_OK != status_code) {
-					throw new SException("Failed to request ncloud.");
-				}
-				
-				byte[] response_body = httpResponse.getBody();
-				
-				if(response_body == null) {
-					throw new SException("Failed to request ncloud.");
-				}
-				
-				response_text = new String(response_body, SCharset._S_UTF_8);
-				
-				break;
-			}// end of while
-			
-		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "[UnsupportedEncodingException] Failed to request.");
-		}// end of try
-		
-		return response_text;
-	}// end of request
-	
-	public static SLinkedHashMap build_message(
-			final SNcloudMessageType type
-			, final String country_code
-			, final String from
-			, final List<SNcloudMessage> messages
-			, final String reserve_time
-			, final String reserve_timezone
-			) throws SException {
-		
-		SLinkedHashMap message = new SLinkedHashMap();
-		
-		message.add("type", type.id());
-		message.add("contentType", type.type());
-		message.add("countryCode", country_code);
-		message.add("from", from);
-		message.add("subject", "");
-		message.add("content", messages.get(0).content());
-		message.add("messages", messages);
-		if(!SText.is_empty(reserve_time)) {
-			message.add("reserveTime", reserve_time);
-		}
-		if(!SText.is_empty(reserve_timezone)) {
-			message.add("reserveTimeZone", reserve_timezone);
-		}
-		
-		return message;
-	}// end of build_message
-	public static SLinkedHashMap build_message(
-			final SNcloudMessageType type
-			, final String from
-			, final String to
-			, final String subject
-			, final String content
-			, final String reserve_time
-			, final String reserve_timezone
-			) throws SException {
-		return build_message(
-				type
-				, "82"//country_code
-				, from
-				, List.of(SNcloudMessage.builder()
-						.to(to)
-						.subject(subject)
-						.content(content)
-						.build()
-						)
-				, reserve_time
-				, reserve_timezone
-				);
-	}// end of build_message
-	public static SLinkedHashMap build_message(
-			final SNcloudMessageType type
-			, final String from
-			, final String to
-			, final String content
-			) throws SException {
-		return build_message(
-				type
-				, from
-				, to
-				, ""//subject
-				, content
-				, ""//reserve_time
-				, ""//reserve_timezone
-				);
-	}// end of build_message
-	
-	public static String send_message(
-			final String service_id
+	}// end of header
+	public static SLinkedHashMap header(
+			final long timestamp
+			, final String method
+			, final String endpoint
 			, final String access_key
 			, final String secret_key
-			, final SLinkedHashMap body
+			) throws SException {
+		return header(
+				timestamp
+				, method
+				, endpoint
+				, access_key
+				, secret_key
+				, _S_NCLOUD_LANG_KR
+				, SCharset._S_UTF_8
+				);
+	}// end of header
+	
+	public static HttpResponse<byte[]> send_mail(
+			final String access_key
+			, final String secret_key
+			, boolean ad
+			, final String template_id
+			, final String from_address
+			, final String from_name
+			, final String title
+			, final String to_address
+			, final SLinkedHashMap parameters
 			) throws SException {
 		
-		String response_text = null;
+		String endpoint = mail_endpoint();
+		String uri = mail_uri(endpoint);
 		
-		try {
-			
-			long timestamp = System.currentTimeMillis();
-			String method = "POST";
-			String endpoint = String.format("/sms/v2/services/%s/messages", service_id);
-			String url = String.format("https://sens.apigw.ntruss.com%s", endpoint);
-			
-			SLinkedHashMap headers = SNcloud.headers(
-					timestamp
-					, method
-					, endpoint
-					, access_key
-					, secret_key
-					, SCharset._S_UTF_8//charset
-					);
-			
-			System.out.println(headers.stringify(true));
-			
-			while(true) {
-				
-				HttpResponse<byte[]> httpResponse = SHttp.post(
-						url
-						, headers
-						, body.stringify()//payload
-						);
-				
-				int status_code = httpResponse.getStatus();
-				System.out.println(status_code);
-				System.out.println(httpResponse.getStatusText());
-				if(SHttpStatus._S_ACCEPTED != status_code) {
-					throw new SException("Failed to request ncloud.");
-				}
-				
-				byte[] response_body = httpResponse.getBody();
-				
-				if(response_body == null) {
-					throw new SException("Failed to request ncloud.");
-				}
-				
-				response_text = new String(response_body, SCharset._S_UTF_8);
-				
-				break;
-			}// end of while
-			
-		} catch (UnsupportedEncodingException e) {
-			throw new SException(e, "[UnsupportedEncodingException] Failed to request.");
-		}// end of try
+		long timestamp = System.currentTimeMillis();
+		String method = "POST";
 		
-		return response_text;
-	}// end of request
+		SLinkedHashMap headers = SNcloud.header(
+				timestamp
+				, method
+				, endpoint
+				, access_key
+				, secret_key
+				);
+		
+		SNcloudMailTemplate body = SNcloudMailTemplate.builder()
+				.advertising(ad)
+				.templateSid(template_id)
+				.senderAddress(from_address)
+				.senderName(from_name)
+				.title(title)
+				.to(to_address, parameters)
+				.build()
+				;
+		
+		return SHttp.post(
+				uri
+				, headers
+				, body.stringify()//payload
+				);
+	}// end of send_message
+	
+	public static HttpResponse<byte[]> send_message(
+			final String access_key
+			, final String secret_key
+			, boolean ad
+			, final String service_id
+			, final String from
+			, final String content
+			, final String to
+			) throws SException {
+		
+		String endpoint = message_endpoint(service_id);
+		String uri = message_uri(endpoint);
+		
+		long timestamp = System.currentTimeMillis();
+		String method = "POST";
+		
+		SLinkedHashMap headers = SNcloud.header(
+				timestamp
+				, method
+				, endpoint
+				, access_key
+				, secret_key
+				);
+		
+		SNcloudMessageBody body = SNcloudMessageBody.builder()
+				.type(_S_NCLOUD_TYPE_SMS)
+				.contentType(ad ? _S_NCLOUD_CONTENT_AD : _S_NCLOUD_CONTENT_COMM)
+				.countryCode(_S_NCLOUD_COUNTRY_KR)
+				.from(from)
+				.content(content)
+				.to(to)
+				.build()
+				;
+		
+		return SHttp.post(
+				uri
+				, headers
+				, body.stringify()//payload
+				);
+	}// end of send_message
 	
 }
