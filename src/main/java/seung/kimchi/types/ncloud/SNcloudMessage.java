@@ -1,13 +1,11 @@
-package seung.kimchi.types;
+package seung.kimchi.types.ncloud;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
-@Accessors(fluent = true)
 @Builder
 @Getter
 public class SNcloudMessage {

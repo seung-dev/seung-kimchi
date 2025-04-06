@@ -399,7 +399,6 @@ public class SS3Client {
 			
 			List<SS3Object> deleted = new ArrayList<>();
 			for(DeletedObject item : response.deleted()) {
-				System.out.println(item.toString());
 				deleted.add(SS3Object.builder()
 					.key(item.key())
 					.version(item.deleteMarkerVersionId())
