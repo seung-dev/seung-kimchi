@@ -1,6 +1,8 @@
 package seung.kimchi;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -11,7 +13,9 @@ import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SHttpHeader;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.SMediaType;
+import seung.kimchi.types.ncloud.SNcloudMailRecipient;
 import seung.kimchi.types.ncloud.SNcloudMailTemplate;
+import seung.kimchi.types.ncloud.SNcloudMessage;
 import seung.kimchi.types.ncloud.SNcloudMessageBody;
 
 public class SNcloud {
@@ -151,8 +155,7 @@ public class SNcloud {
 			, final String from_address
 			, final String from_name
 			, final String title
-			, final String to_address
-			, final SLinkedHashMap parameters
+			, final List<SNcloudMailRecipient> recipients
 			) throws SException {
 		
 		String endpoint = mail_endpoint();
@@ -175,7 +178,7 @@ public class SNcloud {
 				.senderAddress(from_address)
 				.senderName(from_name)
 				.title(title)
-				.to(to_address, parameters)
+				.recipients(recipients)
 				.build()
 				;
 		
@@ -184,16 +187,45 @@ public class SNcloud {
 				, headers
 				, body.stringify()//payload
 				);
-	}// end of send_message
+	}// end of send_mail
+	public static HttpResponse<byte[]> send_mail(
+			final String access_key
+			, final String secret_key
+			, boolean ad
+			, final String template_id
+			, final String from_address
+			, final String from_name
+			, final String title
+			, final String to_address
+			, final SLinkedHashMap parameters
+			) throws SException {
+		
+		return send_mail(
+				access_key
+				, secret_key
+				, ad
+				, template_id
+				, from_address
+				, from_name
+				, title
+				, Arrays.asList(SNcloudMailRecipient.builder()
+						.type(_S_NCLOUD_TYPE_RECIPIENT)
+						.address(to_address)
+						.parameters(parameters)
+						.build()
+						)
+				);
+	}// end of send_mail
 	
 	public static HttpResponse<byte[]> send_message(
 			final String access_key
 			, final String secret_key
 			, boolean ad
 			, final String service_id
+			, final String type
 			, final String from
 			, final String content
-			, final String to
+			, final List<SNcloudMessage> messages
 			) throws SException {
 		
 		String endpoint = message_endpoint(service_id);
@@ -211,12 +243,12 @@ public class SNcloud {
 				);
 		
 		SNcloudMessageBody body = SNcloudMessageBody.builder()
-				.type(_S_NCLOUD_TYPE_SMS)
+				.type(type)
 				.contentType(ad ? _S_NCLOUD_CONTENT_AD : _S_NCLOUD_CONTENT_COMM)
 				.countryCode(_S_NCLOUD_COUNTRY_KR)
 				.from(from)
 				.content(content)
-				.to(to)
+				.messages(messages)
 				.build()
 				;
 		
@@ -224,6 +256,31 @@ public class SNcloud {
 				uri
 				, headers
 				, body.stringify()//payload
+				);
+	}// end of send_message
+	public static HttpResponse<byte[]> send_message(
+			final String access_key
+			, final String secret_key
+			, boolean ad
+			, final String service_id
+			, final String type
+			, final String from
+			, final String content
+			, final String to
+			) throws SException {
+		
+		return send_message(
+				access_key
+				, secret_key
+				, ad
+				, service_id
+				, type
+				, from
+				, content
+				, Arrays.asList(SNcloudMessage.builder()
+						.to(to)
+						.build()
+						)
 				);
 	}// end of send_message
 	
