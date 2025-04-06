@@ -10,7 +10,7 @@ def charset = "UTF-8"
 
 group = "io.github.seung-dev"
 archivesBaseName = project.name
-version = "1.0.18"
+version = "1.0.19"
 description = "seung Library"
 
 sourceCompatibility = "17"
@@ -26,8 +26,8 @@ dependencies {
 	testImplementation("junit:junit:4.13")
 	
 	// lombok
-	compileOnly group: "org.projectlombok", name: "lombok", version: "1.18.34"
-	annotationProcessor group: "org.projectlombok", name: "lombok", version: "1.18.34"
+	compileOnly group: "org.projectlombok", name: "lombok", version: "1.18.38"
+	annotationProcessor group: "org.projectlombok", name: "lombok", version: "1.18.38"
 	
 	// jakarta
 	implementation group: "jakarta.validation", name: "jakarta.validation-api", version: "3.1.0"
