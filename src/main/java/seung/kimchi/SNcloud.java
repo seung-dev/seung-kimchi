@@ -259,6 +259,44 @@ public class SNcloud {
 	}// end of send_mail
 	
 	public static HttpResponse<byte[]> send_message(
+			final String endpoint
+			, final String access_key
+			, final String secret_key
+			, final String type
+			, final String from
+			, final String content
+			, final boolean advertising
+			, final List<SNcloudMessage> messages
+			) throws SException {
+		
+		long timestamp = System.currentTimeMillis();
+		String method = "POST";
+		
+		SLinkedHashMap headers = SNcloud.header(
+				timestamp
+				, method
+				, endpoint
+				, access_key
+				, secret_key
+				);
+		
+		SNcloudMessageBody body = SNcloudMessageBody.builder()
+				.type(type)
+				.contentType(advertising ? _S_NCLOUD_CONTENT_AD : _S_NCLOUD_CONTENT_COMM)
+				.countryCode(_S_NCLOUD_COUNTRY_KR)
+				.from(from)
+				.content(content)
+				.messages(messages)
+				.build()
+				;
+		
+		return SHttp.post(
+				endpoint//uri
+				, headers
+				, body.stringify()//payload
+				);
+	}// end of send_message
+	public static HttpResponse<byte[]> send_message(
 			final String access_key
 			, final String secret_key
 			, boolean ad
@@ -302,7 +340,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_message(
 			final String access_key
 			, final String secret_key
-			, boolean ad
+			, final boolean ad
 			, final String service_id
 			, final String type
 			, final String from
