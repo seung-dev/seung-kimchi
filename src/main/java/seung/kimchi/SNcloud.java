@@ -13,6 +13,7 @@ import seung.kimchi.types.SCharset;
 import seung.kimchi.types.SHttpHeader;
 import seung.kimchi.types.SLinkedHashMap;
 import seung.kimchi.types.SMediaType;
+import seung.kimchi.types.ncloud.SNcloudMailBody;
 import seung.kimchi.types.ncloud.SNcloudMailRecipient;
 import seung.kimchi.types.ncloud.SNcloudMailTemplate;
 import seung.kimchi.types.ncloud.SNcloudMessage;
@@ -22,7 +23,7 @@ public class SNcloud {
 
 	public final static String _S_NCLOUD_METHOD = "POST";
 	
-	public final static String _S_NCLOUD_MAIL_HOST = "https://mail.apigw.ntruss.com";
+	public final static String _S_NCLOUD_MAIL_ORIGIN = "https://mail.apigw.ntruss.com";
 	
 	public final static String _S_NCLOUD_MAIL_ENDPOINT = "/api/v1/mails";
 	
@@ -67,7 +68,7 @@ public class SNcloud {
 			final String endpoint
 			) {
 		return String.format("%s%s"
-				, _S_NCLOUD_MAIL_HOST
+				, _S_NCLOUD_MAIL_ORIGIN
 				, endpoint
 				);
 	}//end of mail_uri
@@ -148,9 +149,49 @@ public class SNcloud {
 	}// end of header
 	
 	public static HttpResponse<byte[]> send_mail(
+			final String endpoint
+			, final String access_key
+			, final String secret_key
+			, final String from_address
+			, final String from_name
+			, final String title
+			, final String body
+			, final boolean advertising
+			, final List<SNcloudMailRecipient> recipients
+			) throws SException {
+		
+		long timestamp = System.currentTimeMillis();
+		String method = "POST";
+		
+		SLinkedHashMap headers = SNcloud.header(
+				timestamp
+				, method
+				, endpoint
+				, access_key
+				, secret_key
+				);
+		
+		String payload = SNcloudMailBody.builder()
+				.senderAddress(from_address)
+				.senderName(from_name)
+				.title(title)
+				.body(body)
+				.advertising(advertising)
+				.recipients(recipients)
+				.build()
+				.stringify()
+				;
+		
+		return SHttp.post(
+				endpoint//uri
+				, headers
+				, payload
+				);
+	}// end of send_mail
+	public static HttpResponse<byte[]> send_mail(
 			final String access_key
 			, final String secret_key
-			, boolean ad
+			, final boolean ad
 			, final String template_id
 			, final String from_address
 			, final String from_name
@@ -191,7 +232,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_mail(
 			final String access_key
 			, final String secret_key
-			, boolean ad
+			, final boolean ad
 			, final String template_id
 			, final String from_address
 			, final String from_name
