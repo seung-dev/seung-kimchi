@@ -261,7 +261,8 @@ public class SNcloud {
 	}// end of send_mail
 	
 	public static HttpResponse<byte[]> send_message(
-			final String endpoint
+			final String origin
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final String type
@@ -271,13 +272,14 @@ public class SNcloud {
 			, final List<SNcloudMessage> messages
 			) throws SException {
 		
+		String endpoint = String.format("%s%s", origin, path);
 		long timestamp = System.currentTimeMillis();
 		String method = "POST";
 		
 		SLinkedHashMap headers = SNcloud.header(
 				timestamp
 				, method
-				, endpoint
+				, path
 				, access_key
 				, secret_key
 				);
