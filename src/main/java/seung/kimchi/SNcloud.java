@@ -91,7 +91,7 @@ public class SNcloud {
 	public static SLinkedHashMap header(
 			final long timestamp
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final String lang
@@ -102,7 +102,7 @@ public class SNcloud {
 			
 			String message = String.format("%s %s\n%d\n%s"
 					, method
-					, endpoint
+					, path
 					, timestamp
 					, access_key
 					);
@@ -133,14 +133,14 @@ public class SNcloud {
 	public static SLinkedHashMap header(
 			final long timestamp
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			) throws SException {
 		return header(
 				timestamp
 				, method
-				, endpoint
+				, path
 				, access_key
 				, secret_key
 				, _S_NCLOUD_LANG_KR
@@ -149,7 +149,8 @@ public class SNcloud {
 	}// end of header
 	
 	public static HttpResponse<byte[]> send_mail(
-			final String endpoint
+			final String origin
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final String from_address
@@ -160,13 +161,14 @@ public class SNcloud {
 			, final List<SNcloudMailRecipient> recipients
 			) throws SException {
 		
+		String endpoint = String.format("%s%s", origin, path);
 		long timestamp = System.currentTimeMillis();
 		String method = "POST";
 		
 		SLinkedHashMap headers = SNcloud.header(
 				timestamp
 				, method
-				, endpoint
+				, path
 				, access_key
 				, secret_key
 				);
