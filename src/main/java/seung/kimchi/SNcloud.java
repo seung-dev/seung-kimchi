@@ -136,14 +136,14 @@ public class SNcloud {
 				);
 	}// end of header
 	
-	public static HttpResponse<byte[]> send_mail(
+	public static HttpResponse<byte[]> send_mail_html(
 			final String uri
 			, final SLinkedHashMap headers
-			, final String from_address
-			, final String from_name
+			, final boolean advertising
 			, final String title
 			, final String body
-			, final boolean advertising
+			, final String from_address
+			, final String from_name
 			, final List<SNcloudMailRecipient> recipients
 			) throws SException {
 		
@@ -163,18 +163,18 @@ public class SNcloud {
 				, headers
 				, payload
 				);
-	}// end of send_mail
-	public static HttpResponse<byte[]> send_mail(
+	}// end of send_mail_html
+	public static HttpResponse<byte[]> send_mail_html(
 			final String origin
 			, final String method
 			, final String endpoint
 			, final String access_key
 			, final String secret_key
-			, final String from_address
-			, final String from_name
+			, final boolean advertising
 			, final String title
 			, final String body
-			, final boolean advertising
+			, final String from_address
+			, final String from_name
 			, final List<SNcloudMailRecipient> recipients
 			) throws SException {
 		
@@ -193,28 +193,28 @@ public class SNcloud {
 				, secret_key
 				);
 		
-		return send_mail(
+		return send_mail_html(
 				uri
 				, headers
-				, from_address
-				, from_name
+				, advertising
 				, title
 				, body
-				, advertising
+				, from_address
+				, from_name
 				, recipients
 				);
-	}// end of send_mail
-	public static HttpResponse<byte[]> send_mail(
+	}// end of send_mail_html
+	public static HttpResponse<byte[]> send_mail_html(
 			final String origin
 			, final String method
 			, final String endpoint
 			, final String access_key
 			, final String secret_key
-			, final String from_address
-			, final String from_name
+			, final boolean advertising
 			, final String title
 			, final String body
-			, final boolean advertising
+			, final String from_address
+			, final String from_name
 			, final String to_address
 			) throws SException {
 		
@@ -240,28 +240,27 @@ public class SNcloud {
 				.build()
 				);
 		
-		return send_mail(
+		return send_mail_html(
 				uri
 				, headers
-				, from_address
-				, from_name
+				, advertising
 				, title
 				, body
-				, advertising
+				, from_address
+				, from_name
 				, recipients
 				);
-	}// end of send_mail
+	}// end of send_mail_html
 	
-	public static HttpResponse<byte[]> send_mail(
+	public static HttpResponse<byte[]> send_mail_template(
 			final String uri
 			, final SLinkedHashMap headers
-			, final String from_address
-			, final String from_name
+			, final boolean advertising
 			, final String title
 			, final String template_id
-			, final SLinkedHashMap parameters
-			, final boolean advertising
-			, final String to_address
+			, final String from_address
+			, final String from_name
+			, final List<SNcloudMailRecipient> recipients
 			) throws SException {
 		
 		String payload = SNcloudMailTemplate.builder()
@@ -270,12 +269,7 @@ public class SNcloud {
 				.title(title)
 				.templateSid(template_id)
 				.advertising(advertising)
-				.recipients(Arrays.asList(SNcloudMailRecipient.builder()
-						.type(_S_NCLOUD_TYPE_RECIPIENT)
-						.address(to_address)
-						.parameters(parameters)
-						.build()
-						))
+				.recipients(recipients)
 				.build()
 				.stringify()
 				;
@@ -285,20 +279,20 @@ public class SNcloud {
 				, headers
 				, payload
 				);
-	}// end of send_mail
-	public static HttpResponse<byte[]> send_mail(
+	}// end of send_mail_template
+	public static HttpResponse<byte[]> send_mail_template(
 			final String origin
 			, final String method
 			, final String endpoint
 			, final String access_key
 			, final String secret_key
-			, final String from_address
-			, final String from_name
+			, final boolean advertising
 			, final String title
 			, final String template_id
-			, final SLinkedHashMap parameters
-			, final boolean advertising
+			, final String from_address
+			, final String from_name
 			, final String to_address
+			, final SLinkedHashMap parameters
 			) throws SException {
 		
 		String uri = new StringBuilder()
@@ -316,18 +310,25 @@ public class SNcloud {
 				, secret_key
 				);
 		
-		return send_mail(
+		List<SNcloudMailRecipient> recipients = Arrays.asList(SNcloudMailRecipient.builder()
+				.type(SNcloud._S_NCLOUD_TYPE_RECIPIENT)
+				.address(to_address)
+				.name("")
+				.parameters(parameters)
+				.build()
+				);
+		
+		return send_mail_template(
 				uri
 				, headers
-				, from_address
-				, from_name
+				, advertising
 				, title
 				, template_id
-				, parameters
-				, advertising
-				, to_address
+				, from_address
+				, from_name
+				, recipients
 				);
-	}// end of send_mail
+	}// end of send_mail_template
 	
 	public static HttpResponse<byte[]> send_message(
 			final String uri
