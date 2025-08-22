@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 import seung.kimchi.types.SLinkedHashMap;
 
+@Jacksonized
 @Builder
 @AllArgsConstructor
 @Getter
