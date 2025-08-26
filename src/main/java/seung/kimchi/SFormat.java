@@ -164,6 +164,11 @@ public class SFormat {
 		
 	}// end of decode_hex
 	
+	public static String encode_32(final byte[] data) {
+		BigInteger bigInteger = new BigInteger(1, data);
+		return bigInteger.toString(32);
+	}// end of encode_hex
+	
 	public static byte[] compress(
 			final byte[] data
 			, final int level

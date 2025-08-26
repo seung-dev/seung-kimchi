@@ -10,7 +10,7 @@ def charset = "UTF-8"
 
 group = "io.github.seung-dev"
 archivesBaseName = project.name
-version = "1.0.26"
+version = "1.0.27"
 description = "seung Library"
 
 sourceCompatibility = "17"
@@ -70,7 +70,8 @@ dependencies {
 	
 	// s3
 	api group: "software.amazon.awssdk", name: "s3", version: "2.30.22"
-	
+	api group: "software.amazon.awssdk", name: "kms", version: "2.32.29"
+
 	// calendar
 	implementation group: "com.ibm.icu", name: "icu4j", version: "76.1"
 	
