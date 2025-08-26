@@ -70,7 +70,8 @@ dependencies {
 	
 	// s3
 	api group: "software.amazon.awssdk", name: "s3", version: "2.30.22"
-	
+	api group: "software.amazon.awssdk", name: "kms", version: "2.32.29"
+
 	// calendar
 	implementation group: "com.ibm.icu", name: "icu4j", version: "76.1"
 	
