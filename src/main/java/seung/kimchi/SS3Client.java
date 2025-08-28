@@ -67,8 +67,12 @@ public class SS3Client implements AutoCloseable {
 	}
 	
 	@Override
-	public void close() throws Exception {
-		client.close();
+	public void close() throws SException {
+		try {
+			client.close();
+		} catch (Exception e) {
+			throw new SException(e, "Failed to close SS3Client.");
+		}// end of try
 	}// end of close
 	
 	public SS3Object metadata(

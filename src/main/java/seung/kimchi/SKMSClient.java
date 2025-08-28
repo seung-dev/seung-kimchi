@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import lombok.Builder;
 import lombok.NonNull;
+import seung.kimchi.exceptions.SException;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
@@ -48,8 +49,12 @@ public class SKMSClient implements AutoCloseable {
 	}
 	
 	@Override
-	public void close() throws Exception {
-		client.close();
+	public void close() throws SException {
+		try {
+			client.close();
+		} catch (Exception e) {
+			throw new SException(e, "Failed to close SS3Client.");
+		}// end of try
 	}// end of close
 	
 	private void generate(DataKeySpec keySpec) {

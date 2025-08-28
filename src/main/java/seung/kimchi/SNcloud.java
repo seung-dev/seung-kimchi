@@ -50,14 +50,14 @@ public class SNcloud {
 	
 	public static String message(
 			final String method
-			, final String endpoint
+			, final String path
 			, final long timestamp
 			, final String access_key
 			) {
 		return new StringBuilder()
 				.append(method)
 				.append(" ")
-				.append(endpoint)
+				.append(path)
 				.append("\n")
 				.append(timestamp)
 				.append("\n")
@@ -111,7 +111,7 @@ public class SNcloud {
 	}// end of header
 	public static SLinkedHashMap headers(
 			final String method
-			, final String endpoint
+			, final String path
 			, final long timestamp
 			, final String access_key
 			, final String secret_key
@@ -119,7 +119,7 @@ public class SNcloud {
 		
 		String message = message(
 				method
-				, endpoint
+				, path
 				, timestamp
 				, access_key
 				);
@@ -167,7 +167,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_mail_html(
 			final String origin
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final boolean advertising
@@ -180,14 +180,14 @@ public class SNcloud {
 		
 		String uri = new StringBuilder()
 				.append(origin)
-				.append(endpoint)
+				.append(path)
 				.toString();
 		
 		long timestamp = System.currentTimeMillis();
 		
 		SLinkedHashMap headers = headers(
 				method
-				, endpoint
+				, path
 				, timestamp
 				, access_key
 				, secret_key
@@ -207,7 +207,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_mail_html(
 			final String origin
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final boolean advertising
@@ -220,14 +220,14 @@ public class SNcloud {
 		
 		String uri = new StringBuilder()
 				.append(origin)
-				.append(endpoint)
+				.append(path)
 				.toString();
 		
 		long timestamp = System.currentTimeMillis();
 		
 		SLinkedHashMap headers = headers(
 				method
-				, endpoint
+				, path
 				, timestamp
 				, access_key
 				, secret_key
@@ -283,7 +283,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_mail_template(
 			final String origin
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final boolean advertising
@@ -297,14 +297,14 @@ public class SNcloud {
 		
 		String uri = new StringBuilder()
 				.append(origin)
-				.append(endpoint)
+				.append(path)
 				.toString();
 		
 		long timestamp = System.currentTimeMillis();
 		
 		SLinkedHashMap headers = headers(
 				method
-				, endpoint
+				, path
 				, timestamp
 				, access_key
 				, secret_key
@@ -359,7 +359,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_message(
 			final String origin
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final String type
@@ -371,14 +371,14 @@ public class SNcloud {
 		
 		String uri = new StringBuilder()
 				.append(origin)
-				.append(endpoint)
+				.append(path)
 				.toString();
 		
 		long timestamp = System.currentTimeMillis();
 		
 		SLinkedHashMap headers = headers(
 				method
-				, endpoint
+				, path
 				, timestamp
 				, access_key
 				, secret_key
@@ -397,7 +397,7 @@ public class SNcloud {
 	public static HttpResponse<byte[]> send_message(
 			final String origin
 			, final String method
-			, final String endpoint
+			, final String path
 			, final String access_key
 			, final String secret_key
 			, final String type
@@ -409,14 +409,14 @@ public class SNcloud {
 		
 		String uri = new StringBuilder()
 				.append(origin)
-				.append(endpoint)
+				.append(path)
 				.toString();
 		
 		long timestamp = System.currentTimeMillis();
 		
 		SLinkedHashMap headers = headers(
 				method
-				, endpoint
+				, path
 				, timestamp
 				, access_key
 				, secret_key
