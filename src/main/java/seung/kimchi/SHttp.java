@@ -104,7 +104,11 @@ public class SHttp {
 					break;
 			}
 			
-			return String.format("attachment; filename=\"%s\"", filename);
+			return new StringBuilder()
+					.append("attachment; filename=\"")
+					.append(filename)
+					.append("\"")
+					.toString();
 			
 		} catch (UnsupportedEncodingException e) {
 			throw new SException(e, "[UnsupportedEncodingException] Failed to encode content disposition.");
