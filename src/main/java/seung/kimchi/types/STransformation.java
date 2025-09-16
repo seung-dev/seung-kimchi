@@ -2,7 +2,8 @@ package seung.kimchi.types;
 
 public enum STransformation {
 
-	AES_GCM_NOPADDING_A("AES", "GCM", "NoPadding", 32, 16, 12, 16)
+	AES_GCM_NOPADDING("AES", "GCM", "NoPadding", 32, 16, 12, 16)
+	, RSA_OAEP_SHA256("RSA", "ECB", "OAEPWithSHA-256AndMGF1Padding", 4, 0, 12, 0)
 	;
 	
 	private String algorithm;
@@ -44,7 +45,14 @@ public enum STransformation {
 	}
 	
 	public String transformation() {
-		return String.format("%s/%s/%s", this.algorithm, this.mode, this.padding);
+		return new StringBuilder()
+				.append(algorithm)
+				.append("/")
+				.append(mode)
+				.append("/")
+				.append(padding)
+				.append("/")
+				.toString();
 	}
 	
 	public int key_size() {

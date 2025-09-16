@@ -5,8 +5,6 @@ import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -169,51 +167,6 @@ public class SSecurity {
 			) throws SException {
 		return hmac(algorithm, provider, key.getBytes(charset), message.getBytes(charset));
 	}// end of hmac
-	
-	public static KeyPair keypair(
-			final String algorithm
-			, final String provider
-			, final int key_size
-			) throws SException {
-		
-		try {
-			
-			KeyPairGenerator keyPairGenerator = null;
-			
-			if(provider == null) {
-				keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
-			} else {
-				keyPairGenerator = KeyPairGenerator.getInstance(
-						algorithm
-						, provider
-						);
-			}
-			
-			keyPairGenerator.initialize(
-					key_size
-					, new SecureRandom()
-					);
-			
-			return keyPairGenerator.generateKeyPair();
-			
-		} catch (NoSuchAlgorithmException e) {
-			throw new SException(e, "[NoSuchAlgorithmException] Failed to generate keypair.");
-		} catch (NoSuchProviderException e) {
-			throw new SException(e, "[NoSuchProviderException] Failed to generate keypair.");
-		}// end of try
-		
-	}// end of keypair
-	public static KeyPair keypair(
-			String algorithm
-			, int key_size
-			) throws SException {
-		return keypair(algorithm, BouncyCastleProvider.PROVIDER_NAME, key_size);
-	}// end of keypair
-	public static KeyPair keypair(
-			int key_size
-			) throws SException {
-		return keypair(SAlgorithm._S_RSA, BouncyCastleProvider.PROVIDER_NAME, key_size);
-	}// end of keypair
 	
 	public static byte[] encrypt(
 			final byte[] data

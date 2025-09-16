@@ -18,6 +18,9 @@ public class SAlgorithm {
 	public static final String _S_SHA512 = "SHA-512";
 	public static final String _S_HMAC_SHA256 = "HmacSHA256";
 	
+	// MGF(Mask Generation Function)
+	public static final String _S_MGF1 = "MGF1";
+	
 	// RSA
 	public static final String _S_RSA = "RSA";
 	public static final String _S_RSA_ECB_OAEP_SHA256_MGF1PADDING = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
