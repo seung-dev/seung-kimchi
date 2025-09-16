@@ -67,18 +67,38 @@ public class SNcloud {
 	}// end of meessage
 	
 	public static String signature(
-			final String message
-			, final String secret_key
+			final byte[] message
+			, final byte[] secret_key
 			) throws SException {
 		
 		return SFormat.encode_base64(
 				SSecurity.hmac(
 						SAlgorithm._S_HMAC_SHA256
 						, BouncyCastleProvider.PROVIDER_NAME
-						, SFormat.bytes(secret_key)//key
-						, SFormat.bytes(message)//message
+						, secret_key//key
+						, message
 						)
 				, SCharset._S_UTF_8//charset
+				);
+	}// end of signature
+	public static String signature(
+			final String message
+			, final byte[] secret_key
+			) throws SException {
+		
+		return signature(
+				SFormat.bytes(message)
+				, secret_key
+				);
+	}// end of signature
+	public static String signature(
+			final String message
+			, final String secret_key
+			) throws SException {
+		
+		return signature(
+				SFormat.bytes(message)//message
+				, SFormat.bytes(secret_key)//key
 				);
 	}// end of signature
 	

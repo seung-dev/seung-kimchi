@@ -12,9 +12,9 @@ import lombok.experimental.Accessors;
 public class SSort {
 
 	@JsonProperty
-	private String field;
+	private String name;
 	
 	@JsonProperty
-	private String order;
+	private String direction;
 	
 }

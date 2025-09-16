@@ -8,8 +8,9 @@ package seung.kimchi.types;
  */
 public enum SError {
 
-	SUCCESS                        ("S000", "성공")
+	SUCCESS                        ("S000", "")
 	, DATA_IS_EMPTY                ("S100", "조회된 결과가 없습니다.")
+	, REQUEST_IS_IGNORED           ("S110", "처리 대상에서 제외되었습니다.")
 	, UNEXPECTED_VALUE             ("F900", "기대한 결과와 다릅니다.")
 	, FAIL                         ("F999", "요청이 실패하였습니다. 관리자에게 문의하세요.")
 	, USERNAME_IS_NOT_AVAILABLE    ("A100", "사용할 수 없는 계정입니다.")

@@ -387,7 +387,12 @@ public class SText {
 			, final int random_size
 			, final String suffix
 			) throws SException {
-		return String.format("%s%d%s%s", text(prefix, ""), date.getTime() / 1000, random(random_size, true, true), text(suffix, ""));
+		return new StringBuilder()
+				.append(text(prefix, ""))
+				.append(date.getTime() / 1000)
+				.append(random(random_size, true, true))
+				.append(text(suffix, ""))
+				.toString();
 	}// end of item_no
 	/**
 	 * 아이템 번호를 생성합니다.
