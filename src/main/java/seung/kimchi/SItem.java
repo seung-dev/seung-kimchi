@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import seung.kimchi.core.SJson;
+import seung.kimchi.core.SSecurity;
 import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SAlgorithm;
 import seung.kimchi.core.types.SException;
 import seung.kimchi.core.types.SLinkedHashMap;
 
@@ -107,10 +109,15 @@ public class SItem {
 			i.put(key, item.get(key));
 		}// end of keys
 		
-		return SJson.stringify(
+		String data = SJson.stringify(
 				i//value
 				, false//indent
 				);
+		
+		return SFormat.encode_hex(SSecurity.digest(
+				SFormat.bytes(data)//data
+				, SAlgorithm._S_MD5//algorithm
+				));
 	}// end of item_hash
 	public static String item_hash(
 			SLinkedHashMap item

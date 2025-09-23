@@ -40,7 +40,7 @@ public class SSecurity {
 	}// end of add_bouncy_castle_provider
 	
 	public static byte[] digest(
-			final byte[] data
+			final byte[] input
 			, final String algorithm
 			, final String provider
 			, final int iteration
@@ -58,7 +58,7 @@ public class SSecurity {
 			byte[] digest = null;
 			for(int i = 0; i < iteration; i++) {
 				if(digest == null) {
-					messageDigest.update(data);
+					messageDigest.update(input);
 				} else {
 					messageDigest.update(digest);
 				}
@@ -75,33 +75,33 @@ public class SSecurity {
 		
 	}// end of digest
 	public static byte[] digest(
-			final byte[] data
+			final byte[] input
 			, final String algorithm
 			, final String provider
 			) throws SException {
 		return digest(
-				data
+				input
 				, algorithm
 				, provider
 				, 1//iteration
 				);
 	}// end of digest
 	public static byte[] digest(
-			final byte[] data
+			final byte[] input
 			, final String algorithm
 			) throws SException {
 		return digest(
-				data
+				input
 				, algorithm
 				, null//provider
 				);
 	}// end of digest
 	public static byte[] digest(
-			final byte[] data
+			final byte[] input
 			) throws SException {
 		return digest(
-				data
-				, SAlgorithm._S_SHA256//algorithm
+				input
+				, SAlgorithm._S_MD5//algorithm
 				);
 	}// end of digest
 	public static byte[] digest(
@@ -110,7 +110,7 @@ public class SSecurity {
 			) throws SException {
 		try {
 			return digest(
-					data.stringify().getBytes(SCharset._S_UTF_8)//data
+					data.stringify().getBytes(SCharset._S_UTF_8)//input
 					, algorithm
 					);
 		} catch (UnsupportedEncodingException e) {
