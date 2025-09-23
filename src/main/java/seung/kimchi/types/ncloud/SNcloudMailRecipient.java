@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import seung.kimchi.types.SLinkedHashMap;
+import seung.kimchi.core.types.SLinkedHashMap;
 
 @Jacksonized
 @Builder
