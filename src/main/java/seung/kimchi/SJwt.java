@@ -22,9 +22,10 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import io.jsonwebtoken.security.WeakKeyException;
-import seung.kimchi.exceptions.SException;
-import seung.kimchi.types.SError;
-import seung.kimchi.types.SSamesite;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SError;
+import seung.kimchi.core.types.SException;
+import seung.kimchi.core.types.SSamesite;
 
 public class SJwt {
 

@@ -18,12 +18,14 @@ import kong.unirest.HttpRequestWithBody;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
-import seung.kimchi.exceptions.SException;
-import seung.kimchi.types.SCharset;
-import seung.kimchi.types.SHttpHeader;
-import seung.kimchi.types.SHttpStatus;
-import seung.kimchi.types.SLinkedHashMap;
-import seung.kimchi.types.SSamesite;
+import seung.kimchi.core.SDate;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SCharset;
+import seung.kimchi.core.types.SException;
+import seung.kimchi.core.types.SHttpHeader;
+import seung.kimchi.core.types.SHttpStatus;
+import seung.kimchi.core.types.SLinkedHashMap;
+import seung.kimchi.core.types.SSamesite;
 
 public class SHttp {
 

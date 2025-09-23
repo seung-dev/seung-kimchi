@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Builder;
-import seung.kimchi.SText;
-import seung.kimchi.exceptions.SException;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SException;
+import seung.kimchi.core.types.SLinkedHashMap;
 
 public class SGoogleChat {
 
