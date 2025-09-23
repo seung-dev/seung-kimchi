@@ -25,9 +25,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import seung.kimchi.exceptions.SException;
-import seung.kimchi.types.SAlgorithm;
-import seung.kimchi.types.STransformation;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SAlgorithm;
+import seung.kimchi.core.types.SException;
+import seung.kimchi.core.types.STransformation;
 
 public class SCipher {
 

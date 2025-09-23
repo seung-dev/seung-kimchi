@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import seung.kimchi.SNcloud;
-import seung.kimchi.types.SLinkedHashMap;
+import seung.kimchi.core.SNcloud;
+import seung.kimchi.core.types.SLinkedHashMap;
 import seung.kimchi.types.SType;
 
 @Builder

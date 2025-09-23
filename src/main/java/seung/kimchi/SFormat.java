@@ -18,8 +18,9 @@ import java.util.zip.Inflater;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
-import seung.kimchi.exceptions.SException;
-import seung.kimchi.types.SCharset;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SCharset;
+import seung.kimchi.core.types.SException;
 
 public class SFormat {
 

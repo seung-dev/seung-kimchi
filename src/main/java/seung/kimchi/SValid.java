@@ -2,7 +2,8 @@ package seung.kimchi;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import seung.kimchi.types.SRegex;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SRegex;
 
 public class SValid {
 

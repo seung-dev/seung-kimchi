@@ -9,8 +9,10 @@ import java.util.Map;
 
 import lombok.Builder;
 import lombok.NonNull;
-import seung.kimchi.exceptions.SException;
-import seung.kimchi.types.SAlgorithm;
+import seung.kimchi.core.SSecurity;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SAlgorithm;
+import seung.kimchi.core.types.SException;
 import seung.kimchi.types.aws.SS3Object;
 import seung.kimchi.types.aws.SS3ObjectVersion;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;

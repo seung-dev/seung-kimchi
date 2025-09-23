@@ -7,7 +7,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import seung.kimchi.types.SLinkedHashMap;
+import seung.kimchi.core.SText;
+import seung.kimchi.core.types.SLinkedHashMap;
 
 public class SSaxHandler extends DefaultHandler {
 

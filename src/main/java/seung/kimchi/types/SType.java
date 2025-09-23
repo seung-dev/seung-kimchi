@@ -2,8 +2,8 @@ package seung.kimchi.types;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import seung.kimchi.SJson;
-import seung.kimchi.exceptions.SException;
+import seung.kimchi.core.SJson;
+import seung.kimchi.core.types.SException;
 
 /**
  * 데이터 객체의 기본 클래스 입니다.
