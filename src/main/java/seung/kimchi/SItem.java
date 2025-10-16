@@ -1,11 +1,12 @@
 package seung.kimchi;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import seung.kimchi.core.SJson;
 import seung.kimchi.core.SSecurity;
 import seung.kimchi.core.SText;
 import seung.kimchi.core.types.SAlgorithm;
@@ -96,33 +97,49 @@ public class SItem {
 	}// end of item_no
 	
 	public static String item_hash(
+			String... values
+			) throws SException {
+		
+		return SFormat.encode_hex(SSecurity.digest(
+				SFormat.bytes(String.join("", values))//data
+				, SAlgorithm._S_MD5//algorithm
+				));
+	}// end of item_hash
+	
+	public static String item_hash(
 			SLinkedHashMap item
+			, boolean sorted
 			, List<String> excluded
 			) throws SException {
 		
-		Map<String, Object> i = new TreeMap<>();
+		Map<String, String> m = null;
+		if(sorted) {
+			m = new TreeMap<>();
+		} else {
+			m = new LinkedHashMap<>();
+		}
 		
 		for(String key : item.keys()) {
 			if(excluded != null && excluded.contains(key)) {
 				continue;
 			}
-			i.put(key, item.get(key));
+			m.put(key, item.get_text(key));
 		}// end of keys
 		
-		String data = SJson.stringify(
-				i//value
-				, false//indent
-				);
+		String[] values = m.values().stream().toArray(String[]::new);
 		
-		return SFormat.encode_hex(SSecurity.digest(
-				SFormat.bytes(data)//data
-				, SAlgorithm._S_MD5//algorithm
-				));
+		return item_hash(values);
+	}// end of item_hash
+	public static String item_hash(
+			SLinkedHashMap item
+			, boolean sorted
+			) throws SException {
+		return item_hash(item, sorted, Collections.emptyList());
 	}// end of item_hash
 	public static String item_hash(
 			SLinkedHashMap item
 			) throws SException {
-		return item_hash(item, null);
+		return item_hash(item, true);
 	}// end of item_hash
 	
 }

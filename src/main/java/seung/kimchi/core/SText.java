@@ -103,10 +103,7 @@ public class SText {
 	public static boolean is_empty(
 			final String value
 			) {
-		if(value == null) {
-			return true;
-		}
-		if(_S_BLANK.equals(value)) {
+		if(value == null || value.isBlank()) {
 			return true;
 		}
 		return false;
