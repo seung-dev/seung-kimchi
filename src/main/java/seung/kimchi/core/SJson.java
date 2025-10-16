@@ -1,7 +1,6 @@
 package seung.kimchi.core;
 
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -60,7 +59,8 @@ public class SJson {
 						, MapperFeature.AUTO_DETECT_SETTERS
 						)
 				.addModule(
-						new SimpleModule("seung", Version.unknownVersion()).addAbstractTypeMapping(Map.class, SLinkedHashMap.class)
+						new SimpleModule("seung", Version.unknownVersion())
+						.addDeserializer(Object.class, new SJsonDeserializer())
 						)
 				.accessorNaming(new DefaultAccessorNamingStrategy.Provider().withGetterPrefix("").withSetterPrefix(""))
 				.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
