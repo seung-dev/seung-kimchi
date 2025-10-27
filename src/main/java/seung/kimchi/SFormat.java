@@ -118,6 +118,16 @@ public class SFormat {
 		return text(value, SCharset._S_UTF_8);
 	}// end of text
 	
+	public static String underscore(final String value) {
+		if(value == null || value.isBlank()) {
+			return value;
+		}
+		return value
+				.replaceAll("([a-z])([A-Z])", "$1_$2")
+				.replaceAll("([A-Z])([A-Z][a-z])", "$1_$2")
+				.toLowerCase();
+	}// end of underscore
+	
 	public static byte[] encode_base64(final byte[] data) {
 		return Base64.getEncoder().encode(data);
 	}// end of encode_base64
