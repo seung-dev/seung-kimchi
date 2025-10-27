@@ -106,10 +106,13 @@ public class SHttp {
 					break;
 			}
 			
+			String encoded = URLEncoder.encode(file_name, SCharset._S_UTF_8).replaceAll("\\+", "%20");
+			
 			return new StringBuilder()
 					.append("attachment; filename=\"")
 					.append(filename)
-					.append("\"")
+					.append("\"; filename*=UTF-8''")
+					.append(encoded)
 					.toString();
 			
 		} catch (UnsupportedEncodingException e) {
