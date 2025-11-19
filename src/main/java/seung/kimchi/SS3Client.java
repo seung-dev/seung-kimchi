@@ -111,12 +111,12 @@ public class SS3Client implements AutoCloseable {
 					.build();
 			
 		} catch (SdkClientException e) {
-			throw new SException(e, "Failed to get metadata.");
+			throw new SException(e, "Failed to read metadata.");
 		} catch (S3Exception e) {
 			if(e.statusCode() == 404) {
 				return null;
 			}
-			throw new SException(e, "Failed to get metadata.");
+			throw new SException(e, "Failed to read metadata.");
 		}// end of try
 		
 	}// end of metadata
@@ -127,7 +127,7 @@ public class SS3Client implements AutoCloseable {
 		return metadata(bucket, key, true);
 	}// end of metadata
 	
-	public SS3Object put(
+	public SS3Object write(
 			final String bucket
 			, final String key
 			, final Map<String, String> metadata
@@ -168,33 +168,33 @@ public class SS3Client implements AutoCloseable {
 			return metadata(bucket, key, closeable);
 			
 		} catch (SdkClientException e) {
-			throw new SException(e, "Failed to put object.");
+			throw new SException(e, "Failed to write object.");
 		} catch (S3Exception e) {
 			if(e.statusCode() == 412) {
 				throw new SException(e, "Duplicate key is not allowed.");
 			} else {
-				throw new SException(e, "Failed to put object.");
+				throw new SException(e, "Failed to write object.");
 			}
 		}// end of try
 		
-	}// end of put
-	public SS3Object put(
+	}// end of write
+	public SS3Object write(
 			final String bucket
 			, final String key
 			, final Map<String, String> metadata
 			, final byte[] bytes
 			, final boolean diff
 			) throws SException {
-		return put(bucket, key, metadata, bytes, diff, true);
-	}// end of put
-	public SS3Object put(
+		return write(bucket, key, metadata, bytes, diff, true);
+	}// end of write
+	public SS3Object write(
 			final String bucket
 			, final String key
 			, final Map<String, String> metadata
 			, final byte[] bytes
 			) throws SException {
-		return put(bucket, key, metadata, bytes, true, true);
-	}// end of put
+		return write(bucket, key, metadata, bytes, true, true);
+	}// end of write
 	
 	public List<SS3ObjectVersion> versions(
 			final String bucket
@@ -227,9 +227,9 @@ public class SS3Client implements AutoCloseable {
 			return items;
 			
 		} catch (SdkClientException e) {
-			throw new SException(e, "Failed to get versions.");
+			throw new SException(e, "Failed to read versions.");
 		} catch (S3Exception e) {
-			throw new SException(e, "Failed to get versions.");
+			throw new SException(e, "Failed to read versions.");
 		}// end of try
 		
 	}// end of versions
@@ -240,7 +240,7 @@ public class SS3Client implements AutoCloseable {
 		return versions(bucket, key, true);
 	}// end of versions
 	
-	public SS3Object get(
+	public SS3Object read(
 			final String bucket
 			, final String key
 			, final boolean closeable
@@ -269,18 +269,18 @@ public class SS3Client implements AutoCloseable {
 					.build();
 			
 		} catch (SdkClientException e) {
-			throw new SException(e, "Failed to get object.");
+			throw new SException(e, "Failed to read object.");
 		} catch (S3Exception e) {
-			throw new SException(e, "Failed to get object.");
+			throw new SException(e, "Failed to read object.");
 		}// end of try
 		
-	}// end of download
-	public SS3Object get(
+	}// end of read
+	public SS3Object read(
 			final String bucket
 			, final String key
 			) throws SException {
-		return get(bucket, key, true);
-	}// end of download
+		return read(bucket, key, true);
+	}// end of read
 	
 	public List<SS3Object> ls(
 			final String bucket
