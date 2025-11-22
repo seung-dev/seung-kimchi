@@ -3,6 +3,7 @@ package seung.kimchi;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.time.Instant;
@@ -24,6 +25,10 @@ import seung.kimchi.core.types.SException;
 
 public class SFormat {
 
+	public static BigDecimal decimal(double value) {
+		return new BigDecimal(value);
+	}// end of decimal
+	
 	public static String date(
 			final String format
 			, final Instant datetime
