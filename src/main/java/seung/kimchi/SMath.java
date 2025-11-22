@@ -44,7 +44,7 @@ public class SMath {
 	public static String expression(
 			String formula
 			) {
-		return formula.replaceAll("\\$\\{([^}]+)}", "$1");
+		return formula.replaceAll("\\$\\{([^}]+)}", "_$1");
 	}// end of variables
 	
 	public static Set<String> variables(
@@ -54,7 +54,7 @@ public class SMath {
 		Matcher matcher = pattern.matcher(formula);
 		Set<String> variables = new HashSet<>();
 		while(matcher.find()) {
-			variables.add(matcher.group(1));
+			variables.add("_" + matcher.group(1));
 		}// end of while
 		return variables;
 	}// end of variables
