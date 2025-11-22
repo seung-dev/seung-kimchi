@@ -41,7 +41,7 @@ public class SMath {
 				;
 	}// end of evaluate
 	
-	public static String expression(
+	public static String _expression(
 			String formula
 			) {
 		return formula.replaceAll("\\$\\{([^}]+)}", "_$1");
@@ -55,6 +55,18 @@ public class SMath {
 		Set<String> variables = new HashSet<>();
 		while(matcher.find()) {
 			variables.add(matcher.group(1));
+		}// end of while
+		return variables;
+	}// end of variables
+	
+	public static Set<String> _variables(
+			String formula
+			) {
+		Pattern pattern = Pattern.compile("\\$\\{([^}]+)}");
+		Matcher matcher = pattern.matcher(formula);
+		Set<String> variables = new HashSet<>();
+		while(matcher.find()) {
+			variables.add("_" + matcher.group(1));
 		}// end of while
 		return variables;
 	}// end of variables
@@ -80,7 +92,7 @@ public class SMath {
 			, SLinkedHashMap values
 			) throws SException {
 		
-		String expression = expression(formula);
+		String expression = _expression(formula);
 		
 		Set<String> variables = variables(formula);
 		
@@ -92,7 +104,7 @@ public class SMath {
 		
 		return evaluate(
 				expression
-				, variables
+				, _variables(formula)//variables
 				, _values
 				, Collections.emptyList()
 				);
