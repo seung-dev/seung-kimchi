@@ -68,6 +68,22 @@ public class SMath {
 				);
 	}// end of evaluate
 	
+	public static double evaluate(
+			String expression
+			, String[] variables
+			, Map<String, Double> values
+			, Function[] functions
+			) throws SException {
+		
+		return new ExpressionBuilder(expression)
+				.variables(variables)
+				.functions(functions)
+				.build()
+				.setVariables(values)
+				.evaluate()
+				;
+	}// end of evaluate
+	
 	/**
 	 * e.g. expression: sum(a,b,c,d)
 	 *      variables: [a,b,c,d]
