@@ -1,25 +1,40 @@
 name: Publish Java Library to the Maven Central Repository
+
+env:
+  JAVA_VERSION: '17'
+  DISTRIBUTION: temurin
+
 on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
   workflow_dispatch:
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
-          java-version: "17"
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.DISTRIBUTION }}
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
       - name: Publish
-        run: |
-          chmod +x ./gradlew
-          ./gradlew publishToMavenCentral
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNIN_PASSWORD }}
+        run: |
+          chmod +x ./gradlew
+          ./gradlew publishToMavenCentral
