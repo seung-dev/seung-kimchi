@@ -155,13 +155,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return default_value;
 		}
 		
-		String value = get_text(key);
-		
-		if(Pattern.matches("[0-9+-]+", value)) {
-			return Integer.parseInt(value);
-		}
-		
-		throw new SException("Failed to convert to integer.");
+		return Integer.parseInt(get(key).toString());
 	}
 	public Integer get_int(Object key) throws SException {
 		return get_int(key, null);
@@ -176,13 +170,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return default_value;
 		}
 		
-		String value = get_text(key);
-		
-		if(Pattern.matches("[0-9+-]+", value)) {
-			return Long.parseLong(value);
-		}
-		
-		throw new SException("Failed to convert to long.");
+		return Long.parseLong(get(key).toString());
 	}
 	public Long get_long(Object key) throws SException {
 		return get_long(key, null);
@@ -197,13 +185,7 @@ public class SLinkedHashMap extends LinkedHashMap {
 			return default_value;
 		}
 		
-		String value = get_text(key);
-		
-		if(Pattern.matches("[0-9+-.]+", value)) {
-			return Double.parseDouble(value);
-		}
-		
-		throw new SException("Failed to convert to double.");
+		return Double.parseDouble(get(key).toString());
 	}
 	public Double get_double(Object key) throws SException {
 		return get_double(key, null);

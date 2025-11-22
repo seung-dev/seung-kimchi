@@ -23,7 +23,7 @@ public class SMath {
 	 *            log(x), log10(x), exp(x) = e^x
 	 * constants: pi, e
 	 * 
-	 * expression: ${a}+${b}+${c}
+	 * expression: _a+_b+_c
 	 */
 	public static double evaluate(
 			String expression
@@ -54,11 +54,27 @@ public class SMath {
 		Matcher matcher = pattern.matcher(formula);
 		Set<String> variables = new HashSet<>();
 		while(matcher.find()) {
-			variables.add("_" + matcher.group(1));
+			variables.add(matcher.group(1));
 		}// end of while
 		return variables;
 	}// end of variables
 	
+	/**
+	 * operators: +, -, *, /, %, ^, (, )
+	 * functions: sqrt(x), abs(x), ceil(x), floor(x), round(x), signum(x), random(x)
+	 *            sin(x), cos(x), tan(x), asin(x), acos(x), atan(x), sinh(x), cosh(x), tanh(x)
+	 *            log(x), log10(x), exp(x) = e^x
+	 * constants: pi, e
+	 * 
+	 * expression: ${	/**
+	 * operators: +, -, *, /, %, ^, (, )
+	 * functions: sqrt(x), abs(x), ceil(x), floor(x), round(x), signum(x), random(x)
+	 *            sin(x), cos(x), tan(x), asin(x), acos(x), atan(x), sinh(x), cosh(x), tanh(x)
+	 *            log(x), log10(x), exp(x) = e^x
+	 * constants: pi, e
+	 * 
+	 * expression: ${a}+${b}+${c}
+	 */
 	public static double evaluate(
 			String formula
 			, SLinkedHashMap values
@@ -71,7 +87,7 @@ public class SMath {
 		Map<String, Double> _values = new HashMap<>();
 		
 		for(String k : variables) {
-			_values.put(k, values.get_double(k));
+			_values.put("_" + k, values.get_double(k));
 		}
 		
 		return evaluate(
