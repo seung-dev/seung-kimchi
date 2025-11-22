@@ -1,10 +1,13 @@
 package seung.kimchi;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
+import seung.kimchi.core.types.SException;
+import seung.kimchi.core.types.SLinkedHashMap;
 
 public class SMath {
 
@@ -28,24 +31,52 @@ public class SMath {
 				.evaluate()
 				;
 	}// end of evaluate
-	
+	public static double evaluate(
+			String expression
+			, String[] variables
+			, SLinkedHashMap values
+			) throws SException {
+		
+		Map<String, Double> _values = new HashMap<>();
+		
+		for(String k : variables) {
+			_values.put(k, values.get_double(k));
+		}
+		
+		return evaluate(
+				expression
+				, variables
+				, _values
+				);
+	}// end of evaluate
 	public static double evaluate(
 			String expression
 			, Set<String> variables
-			, Map<String, Double> values
-			) {
+			, SLinkedHashMap values
+			) throws SException {
 		
-		return new ExpressionBuilder(expression)
-				.variables(variables)
-				.build()
-				.setVariables(values)
-				.evaluate()
-				;
+		Map<String, Double> _values = new HashMap<>();
+		
+		for(String k : variables) {
+			_values.put(k, values.get_double(k));
+		}
+		
+		return evaluate(
+				expression
+				, variables.stream().toArray(String[]::new)//variables
+				, _values
+				);
 	}// end of evaluate
 	
+	/**
+	 * e.g. expression: sum(a,b,c,d)
+	 *      variables: [a,b,c,d]
+	 *      values: {a:1,b:1,c:1,d:1}
+	 *      item_size: 4
+	 */
 	public static double avg(
 			String expression
-			, Set<String> variables
+			, String[] variables
 			, Map<String, Double> values
 			, int item_size
 			) {
