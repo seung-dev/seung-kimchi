@@ -8,7 +8,9 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.NumberToTextConverter;
@@ -36,9 +38,33 @@ public class SXlsx {
 	
 	public static final String _S_ROW_NO_BEGIN = "row_no_begin";
 	
+	private static String formula_value(final Cell cell) {
+		
+		String cell_value = null;
+		
+		FormulaEvaluator formulaEvaluator = cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
+		
+		CellValue cellValue = formulaEvaluator.evaluate(cell);
+		
+		if(CellType.STRING == cellValue.getCellType()) {
+			cell_value = cellValue.getStringValue();
+		} else if(CellType.NUMERIC == cellValue.getCellType()) {
+			cell_value = NumberToTextConverter.toText(cellValue.getNumberValue());
+		} else if(CellType.BOOLEAN == cellValue.getCellType()) {
+			cell_value = Boolean.toString(cellValue.getBooleanValue());
+		} else if(CellType.BLANK == cellValue.getCellType()) {
+			cell_value = "";
+		} else if(CellType._NONE == cellValue.getCellType()) {
+			cell_value = "";
+		}// end of cell type
+		
+		return cell_value;
+	}// end of cell_value
+	
 	private static String cell_value(final Cell cell) {
 		
 		String cell_value = null;
+		
 		if(CellType.STRING == cell.getCellType()) {
 			cell_value = cell.getStringCellValue();
 		} else if(CellType.NUMERIC == cell.getCellType()) {
@@ -50,7 +76,7 @@ public class SXlsx {
 		} else if(CellType.BOOLEAN == cell.getCellType()) {
 			cell_value = Boolean.toString(cell.getBooleanCellValue());
 		} else if(CellType.FORMULA == cell.getCellType()) {
-			cell_value = cell.getCellFormula();
+			cell_value = formula_value(cell);
 		} else if(CellType.BLANK == cell.getCellType()) {
 			cell_value = "";
 		} else if(CellType._NONE == cell.getCellType()) {
