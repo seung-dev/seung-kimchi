@@ -193,10 +193,16 @@ public class SXlsx {
 		
 		XSSFCell xssf_cell = xssf_row.createCell(cell_no);
 		
-		xssf_cell.setCellType(cell_type);
-		xssf_cell.setCellStyle(cell_style);
-		
 		while(true) {
+			
+			xssf_cell.setCellStyle(cell_style);
+			
+			if(CellType.FORMULA == cell_type) {
+				xssf_cell.setCellFormula(cell_value);
+				break;
+			}
+			
+			xssf_cell.setCellType(cell_type);
 			
 			if(cell_value == null) {
 				break;
