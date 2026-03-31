@@ -94,31 +94,49 @@ public class SXlsx {
 				.build();
 	}// end of read_cell
 	
-	private static SRow read_row(final Row row) {
+	private static SRow read_row(
+			final Row row
+			, final int max_cellnum
+			) {
 		SRow s_row = SRow.builder()
 				.row_no(row.getRowNum())
 				.build()
 				;
-		for(Cell cell : row) {
-			s_row.cells().add(read_cell(cell));
-		}// end of cell
+		
+		Cell cell = null;
+		for(int cellnum = 0; cellnum < max_cellnum; cellnum++) {
+			cell = row.getCell(cellnum);
+			if(cell != null) {
+				s_row.cells().add(read_cell(cell));
+				continue;
+			}
+			s_row.cells().add(SCell.builder()
+					.row_no(row.getRowNum())
+					.column_no(cellnum)
+					.build());
+		}
+		
 		return s_row;
 	}// end of read_row
 	
-	private static SSheet read_sheet(final Sheet sheet) {
+	private static SSheet read_sheet(
+			final Sheet sheet
+			, final int max_cellnum
+			) {
 		SSheet s_sheet = SSheet.builder()
 				.sheet_name(sheet.getSheetName())
 				.physical_number_of_rows(sheet.getPhysicalNumberOfRows())
 				.build()
 				;
 		for(Row row : sheet) {
-			s_sheet.rows().add(read_row(row));
+			s_sheet.rows().add(read_row(row, max_cellnum));
 		}// end of row
 		return s_sheet;
 	}// end of read_sheet
 	
 	public static SExcel read(
 			final byte[] file
+			, final int max_cellnum
 			) throws SException {
 		
 		SExcel s_excel = null;
@@ -135,7 +153,7 @@ public class SXlsx {
 			
 			for(Sheet sheet : workbook) {
 				
-				s_excel.sheets().add(read_sheet(sheet));
+				s_excel.sheets().add(read_sheet(sheet, max_cellnum));
 				
 			}// end of sheet
 			
