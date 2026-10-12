@@ -10,7 +10,7 @@ def charset = "UTF-8"
 
 group = "io.github.seung-dev"
 archivesBaseName = project.name
-version = "1.1.11"
+version = "1.1.12"
 description = "seung Library"
 
 sourceCompatibility = "17"
@@ -34,21 +34,21 @@ dependencies {
 	implementation group: "jakarta.annotation", name: "jakarta.annotation-api", version: "3.0.0"
 	
 	// apache commons
-	api group: "org.apache.commons", name: "commons-lang3", version: "3.14.0"
+	api group: "org.apache.commons", name: "commons-lang3", version: "3.20.0"
 	api group: "org.apache.commons", name: "commons-text", version: "1.12.0"
 	api group: "commons-io", name: "commons-io", version: "2.17.0"
 	api group: "commons-codec", name: "commons-codec", version: "1.17.1"
 	api group: "org.apache.commons", name: "commons-compress", version: "1.27.1"
 	
 	// json
-	api group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.18.0"
+	api group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.21.7"
 	
 	// http
 	api group: "com.konghq", name: "unirest-java", version: "3.14.5"
 	
 	// bouncycastle
-	api group: "org.bouncycastle", name: "bcprov-jdk18on", version: "1.78.1"
-	api group: "org.bouncycastle", name: "bcpkix-jdk18on", version: "1.78.1"
+	api group: "org.bouncycastle", name: "bcprov-jdk18on", version: "1.86"
+	api group: "org.bouncycastle", name: "bcpkix-jdk18on", version: "1.86"
 	
 	// jwt
 	implementation group: "io.jsonwebtoken", name: "jjwt-api", version: "0.12.6"
@@ -56,14 +56,14 @@ dependencies {
 	runtimeOnly group: "io.jsonwebtoken", name: "jjwt-jackson", version: "0.12.6"
 	
 	// tika
-	api group: "org.apache.tika", name: "tika-core", version: "3.0.0"
+	api group: "org.apache.tika", name: "tika-core", version: "3.3.2"
 	
 	// unzip
 	api group: "net.lingala.zip4j", name: "zip4j", version: "2.11.5"
 	
 	// poi
-	api group: "org.apache.poi", name: "poi", version: "5.3.0"
-	api group: "org.apache.poi", name: "poi-ooxml", version: "5.3.0"
+	api group: "org.apache.poi", name: "poi", version: "5.5.1"
+	api group: "org.apache.poi", name: "poi-ooxml", version: "5.5.1"
 	
 	// pdf
 	api group: "org.apache.pdfbox", name: "pdfbox", version: "3.0.3"
